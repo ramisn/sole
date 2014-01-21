@@ -1,0 +1,22 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div class="admin-panel-group-container-container">
+  <h2><%= t("banner_image_for") %>&nbsp;<%= @store.name_from_taxon %> </h2>
+  <p>Your banner image will appear at the top of all your store pages. The suggested size is 750 x 300.</p>
+  <p>Your banner image from Facebook will also work here.</p>
+  
+  <% if @store.banner_image -%>
+    <%= image_tag(@store.banner_image.attachment.url(:large)) %>
+  <% end -%>
+
+  <div class="section" >
+    <% if @store.banner_image -%>
+    
+      <%= button_link_to "Edit Picture", main_app.edit_merchant_store_banner_image_path(@store), {:remote => true, :id => 'edit_banner_image', :style => ""} %>
+      <%= button_link_to "Delete Picture", main_app.merchant_store_banner_image_path(@store), :method => :delete, :style => "" %>
+
+    <% else -%>
+      <%= button_link_to "New Picture", main_app.new_merchant_store_banner_image_path(@store), {:id => 'new_banner_image', :class => "simpleButton green"} %>
+    <% end -%>
+  </div>
+</div>

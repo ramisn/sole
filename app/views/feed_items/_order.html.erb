@@ -1,0 +1,9 @@
+<span>just purchased something</span>
+<div class="mtm">
+  <%= render :partial => "feed_items/product_images", 
+            :locals => {:products => feed_item.feedable.line_items.limit(3).includes(:variant => :product).inject([]) {|array, item| array << item.variant.product if item.variant; array}}%>
+</div>
+
+<div class="options">
+  Items recently purchased by <%= feed_item.feedable.user.display_name %>. <%= link_to "See more", purchases_member_collection_path(feed_item.feedable.user) %> <%= link_to "Comment", "#comments", :class => "show-comments" %>
+</div>

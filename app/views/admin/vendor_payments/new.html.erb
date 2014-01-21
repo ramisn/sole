@@ -1,0 +1,89 @@
+<h1>Confirm <% if @vendor_payment.amount >= 0 -%>Payment<% else -%>Chargeback<% end -%> of Vendor</h1>
+<p>Merchant: <%= @vendor_payment.vendor_payment_period.store.display_name %></p>
+<p>Amount: <%= number_to_currency @vendor_payment.amount %></p>
+
+<%= form_for  [:admin, @vendor_payment_period, @vendor_payment] do |vendor_payment_form| %>
+  <%= render '/spree/shared/error_messages', :f => vendor_payment_form, :target => @vendor_payment %>
+  <%= vendor_payment_form.hidden_field :amount %>
+  <%= vendor_payment_form.hidden_field :product_sales %>
+  <%= vendor_payment_form.hidden_field :coupons %>
+  <%= vendor_payment_form.hidden_field :shipping %>
+  <% if @vendor_payment.amount < 0 -%>
+    <h2>Step 1: Review the information below</h2>
+    <h3>Here is a summary of what you are saying is being chargedback from <%= @vendor_payment_period.store.taxon.name %> for the period <%= @vendor_payment_period.month.strftime("%m-%Y")%></h1>
+  <% else -%>
+    <h3>Here is a summary of what you are reimbursing <%= @vendor_payment_period.store.taxon.name %> for the period <%= @vendor_payment_period.month.strftime("%m-%Y")%></h1>
+  <% end -%>
+  <p>Total Amount: <%= number_to_currency @vendor_payment.amount %></p>
+  <p>Product Reimbursement: <%= number_to_currency @vendor_payment.product_sales %></p>
+  <p>Coupons: <%= number_to_currency @vendor_payment.coupons %></p>
+  <p>Shipping: <%= number_to_currency @vendor_payment.shipping %></p>
+  <% if @vendor_payment.amount < 0 -%>
+    <% count = 0 -%>
+    <% @vendor_payment.inventory_units.each do |inventory_unit| -%>
+      <%= hidden_field_tag "inventory_units[]", inventory_unit.id %>
+      <% count += 1 -%>
+    <% end -%>
+    <h3>Inventory Units that were canceled after last payment</h3>
+    <table class="index" style="width:100%;">
+      <tr>
+        <th><%= t('merchant') %></th>
+        <th><%= t('sku') %></th>
+        <th><%= t('item_title') %></th>
+        <th><%= t('price') %></th>
+        <th><%= t('commission_percentage') %></th>
+        <th><%= t('merchant_reimbursement') %></th>
+        <th><%= t('type') %></th>
+        <th><%= t('category') %></th>
+        <th><%= t('description') %></th>
+        <th><%= t('status') %></th>
+      </tr>
+      <% @vendor_payment.inventory_units.each do |inventory_unit| -%>
+          <tr>
+            <td>
+              <% store = inventory_unit.variant ? inventory_unit.variant.product.store : nil -%>
+              <% if store -%>
+                <%= link_to store.name_from_taxon, main_app.merchant_store_orders_path(store) %>
+              <% end -%>
+            </td>
+            <td valign="top">
+            	<%= inventory_unit.variant.sku if inventory_unit.variant %>
+		        </td>
+            <td>
+            	<%= inventory_unit.variant.product.name if inventory_unit.variant and inventory_unit.variant.product %>
+		        </td>
+            <td>
+            	<%= number_to_currency inventory_unit.line_item.price %>
+		        </td>
+            <td>
+              <%= inventory_unit.line_item.commission_percentage.round(2) %>%
+            </td>
+            <td>
+            	<%= number_to_currency inventory_unit.line_item.price * (100 - inventory_unit.line_item.commission_percentage) / 100 %>
+            </td>
+            <td>
+              <%= inventory_unit.variant.product.get_type if inventory_unit.variant and inventory_unit.variant.product %>
+            </td>
+            <td>
+              <%= inventory_unit.variant.product.category_taxon.name if inventory_unit.variant and inventory_unit.variant.product %>
+            </td>
+            <td>			
+              <%= raw "(" + variant_options(inventory_unit.variant) + ")" unless inventory_unit.variant.nil? or inventory_unit.variant.option_values.empty? %>
+            </td>
+            <td>
+            	<%= t(inventory_unit.state) %>
+		        </td>
+          </tr>
+      <% end %>
+    </table>
+    <h2>Step 2</h2>
+    <p>Go to <%= link_to 'USA ePay', 'http://usaepay.com', :target => '_blank'%> and debit the merchant <%= @vendor_payment.vendor_payment_period.store.display_name %> (custNum: <%= @vendor_payment.vendor_payment_period.store.usa_epay_customer_number %>) for <%= number_to_currency @vendor_payment.amount.abs %></p>
+    <h2>Step 3</h2>
+    <p>Then come right back to this page once it's been submitted and add the reference number as the response code.</p>
+    <br/>
+    <%= vendor_payment_form.label :response_code, t(:response_code) %>
+    <%= vendor_payment_form.text_field :response_code %>
+    <br/>
+  <% end -%>
+  <%= vendor_payment_form.submit (@vendor_payment.amount >= 0 ? "Pay Vendor" : "Vendor was Chargebacked") %>
+<% end -%>

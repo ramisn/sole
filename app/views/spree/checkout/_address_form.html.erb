@@ -1,0 +1,98 @@
+<table class="address-form">
+  
+  <tr>
+    <td id="<%= name %>-fname" class="field required">
+      <%= form.label :firstname, t(:first_name)  %>
+      <%= form.text_field :firstname, :class => 'required' %>
+    </td>
+    <td id="<%= name %>-lname" class="field required second">
+      <%= form.label :lastname, t(:last_name) %>
+      <%= form.text_field :lastname, :class => 'required' %>
+    </td>
+  </tr>
+  
+  
+    <% if name == 'shipping' %>
+      <tr>
+        <td id="<%= name %>-email" class="field required">
+          <%= parent_form.label :email, t('Email'), :style => "padding : 0"%>
+          <small style="font-size:9px">Where we'll send your order confirmation</small>
+          <%= parent_form.text_field :email, :class => 'required' %>
+        </td>
+      
+        <td id="<%= name %>-phone" class="field required second">
+          <%= form.label :phone, t(:phone),  :style => "padding : 0"%>
+          <small style="font-size:9px">Best number to reach you if there is a problem</small>
+          <%= form.text_field :phone, :class => 'required' %>
+        </td>
+      </tr>
+      
+      <tr style="margin:0 0 10px 0">
+        <td colspan="2">
+        	<%#= form.fields_for :user do |user_form| %>
+        	  <%#= TODO breaks >
+        		<%#= user_form.check_box :opt_in_email, {:checked => true } %> Send me information on exclusive offers and sales.
+        	<%# end %>
+        </td>
+      </tr>
+    <% end %>
+  
+
+  
+  <tr id="<%= name %>-address" >
+    <td valign="top" colspan="2"  id="<%= name %>-address-1" class="field  required">
+      <%= form.label :address1, t('Street Address') %>
+      <%= form.text_field :address1, :class => 'required' %>
+      <%= form.text_field :address2 %>
+  
+    </td>
+  </tr>
+  
+  <tr>
+    <td id="<%= name %>-city" class="field required">
+      <%= form.label :city, t(:city)  %>
+      <%= form.text_field :city, :class => 'required' %>
+    </td>
+    <% if Spree::Config[:address_requires_state] %>
+      <td class="field required second" id="<%= name %>-state">
+        <% have_states = !@order.bill_address.country.states.empty? %>
+        <%= form.label :state, 'State or Province'  %>
+        <noscript>
+          <%= form.text_field :state_name, :class => 'required' %>
+        </noscript>
+        <% state_elements = [
+           form.collection_select(:state_id, @order.bill_address.country.states,
+                              :id, :name,
+                              {:include_blank => true},
+                              {:class => have_states ? "required" : "hidden",
+                              :disabled => !have_states}) +
+            form.text_field(:state_name,
+                              :class => !have_states ? "required" : "hidden",
+                              :disabled => have_states)
+            ].join.gsub('"', "'").gsub("\n", "")
+        %>
+        <script type="text/javascript" language="javascript" charset="utf-8">
+        // <![CDATA[
+        document.write("<%== state_elements %>");
+        // ]]>
+        </script>
+
+      </td>
+    <% end %>
+    
+  </tr>
+  <tr>
+    
+    <td id="<%= name %>-zip" class="field required" style="width:50%">
+      <%= form.label :zipcode, t('Postal Code')%>
+      <%= form.text_field :zipcode, :class => 'required' %>
+    </td>
+    
+    <td id="<%= name %>-country" class="field required second">
+      <%= form.label :country_id, t(:country) %>
+      <%= form.collection_select :country_id, [Spree::Country.find_by_name('United States')], :id, :name, {}, {:class => 'required', :style=>"margin: 0 0 0 2px" }%>
+    </td>
+    
+
+  </tr>
+</table>

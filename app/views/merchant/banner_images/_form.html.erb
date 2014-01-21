@@ -1,0 +1,16 @@
+<div class="yui-gc">
+  <div class="yui-u first">
+    <%= f.field_container :attachment do %>
+      <%= f.label :attachment, t("attachment") %> <span class="required">*</span><br />
+      <%= f.file_field :attachment  %>
+      <%= f.error_message_on :attachment %>
+    <% end %>
+
+    <%= f.field_container :alt do %>
+      <%= f.label :alt, t("Alt Text")%><br />
+      <span class="alt_input_message"><em>Providing alt text will help more people find your store on search engines.</em></span><br />
+      <%= f.text_field :alt %>
+      <%= f.error_message_on :alt %>
+    <% end %>
+  </div>
+</div>

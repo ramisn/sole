@@ -1,0 +1,74 @@
+<div id="filters">
+  
+  <h5><span class="label">Price</span></h5>
+  <ul id="filter-prices" name="price">
+    <% if @min_price < 50 %>
+      <li>
+        <input type="checkbox" value="0,50" id="filter-prices-0">
+        <label for="filter-prices-0">Under $50</label>
+      </li>
+    <% end -%>
+    <% if @max_price >= 50 && @min_price <= 250 %>
+      <li>
+        <input type="checkbox" value="50,250" id="filter-prices-1">
+        <label for="filter-prices-1">From $50 - $250</label>
+      </li>
+    <% end -%>
+    <% if @max_price > 250 %>
+      <li>
+        <input type="checkbox" value="250,<%= @max_price.ceil %>" id="filter-prices-2">
+        <label for="filter-prices-2">Over $250</label>
+      </li>
+    <% end %>
+  </ul>
+  
+  <h5><span class="label">Brands</span></h5>
+  <ul id="filter-brands" name="brand">
+    <% @brands.each_with_index do |brand,i| %>     
+      <li>
+        <input type="checkbox" value="<%= brand.value %>" id="filter-brands-<%= i %>">
+        <label for="filter-brands-<%= i %>"><%= "#{brand.value} (#{brand.count})" %></label>
+      </li>
+    <% end %>
+  </ul>
+  
+  <h5><span class="label">Color</span></h5>
+  <ul id="filter-colors" name="color">
+    <% @colors.each_with_index do |color,i| %> 
+          
+      <% col =  @products.facet("color_facet").rows.detect{|color_row| color_row.value.downcase == color} %>
+      <% if col %>
+        <li>
+          <input type="checkbox" value="<%= color.downcase %>" id="filter-colors-<%= i %>">
+          <label for="filter-colors-<%= i %>"><%= "#{col.value.capitalize}  (#{col.count})" %></label>
+        </li>
+      <% end -%>
+      
+  	<% end %>
+	</ul>
+	
+  <h5><span class="label">Department</span></h5>
+  <ul id="filter-departments" name="department">
+    <% @departments.each_with_index do |department,i| %>
+      <li>
+        <input type="checkbox" value="<%= department.value %>" id="filter-departments-<%= i %>">
+        <label for="filter-departments-<%= i %>"><%= "#{department.value.capitalize} (#{department.count})" %></label>
+      </li>
+  	<% end %>
+	</ul>
+	
+	<% if !@taxon.nil? && @taxon.has_size? %>
+    <h5><span class="label">Size</span></h5>
+    <ul id="filter-sizes" name="size">
+      <% (Spree::Product.sizes.sort_by{|size| size.position}.map(&:presentation) & @products.facet("size_facet").rows.map(&:value)).each_with_index do |size, i| %>
+      <% size_row = @products.facet("size_facet").rows.detect{|size_row| size_row.value == size} %>
+        <li>
+          <input type="checkbox" value="<%= size_row.value %>" id="filter-sizes-<%= i %>" >
+          <label  for="filter-sizes-<%= i %>"><%= "#{size_row.value} (#{size_row.count})" %></label>
+        </li>
+        
+      <% end %>
+    </ul>
+  <% end %>
+
+</div>

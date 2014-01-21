@@ -1,0 +1,11 @@
+<% @body_id = 'stores-account' %>
+
+
+<%= render :partial => '/spree/admin/shared/product_sub_menu' %>
+<%= render :partial => "merchant/products/errors" %>
+
+
+<div id="new-product-container">
+
+  <%= render :partial => 'merchant/shared/product_details', :locals => { :product => @product }%>
+</div>

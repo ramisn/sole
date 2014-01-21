@@ -1,0 +1,90 @@
+@import "store/configuration";
+
+.filters {
+  position : absolute;
+}
+
+#content #filters {
+  position  : relative;
+  padding   : 0 0 10px 0;
+  
+  #filter-select {
+    padding : 10px 0 0 0;
+  }
+}
+
+
+#filter-taxonomies {
+  margin        : 0 0 20px 0;
+  font-size     : 12px;
+  
+  li {
+    padding   : 5px 0 0 0;
+  }
+
+}
+
+
+#search-filters {
+  position    : relative;
+  padding     : 0;
+}
+
+
+#filters {
+  
+  .ui-accordion-header {
+    font-size   : 12px;
+    font-weight : normal;
+    background  : none;
+    margin      : 0;
+    padding     : 5px 0 5px 0;
+    border      : none;
+    
+    .label {
+      position  : relative;
+      float     : left;
+      display   : block;
+      margin    : 0 10px 0 0;
+      color     : $grey;
+    }
+    
+    .ui-icon {
+      position    : static;
+      background  : transparent $sprite 0 -160px no-repeat;
+      height      : 7px;
+      left        : 3px;
+      display     : inline-block;
+    }
+    
+    .ui-icon-triangle-1-s {
+      background-position : -40px -160px;
+    }
+  }
+  
+  ul {
+    background  : #eee;
+    border      : solid 1px #ccc;
+    padding     : 0;
+    max-height  : 250px;
+  }
+  
+  li {
+    font-size   : 12px;
+    padding     : 5px 5px 5px 20px;
+    
+    a, label {
+      font-weight : normal;
+      color       : $grey;
+    }
+    
+    label {
+      padding     : 0 0 0 0;
+    }
+    
+    input[type='checkbox'] {
+      position    : absolute;
+      left        : 5px;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+<h1>Vendor Payment<% if @vendor_payment.amount < 0 %> Reversed<% end -%></h1>
+
+<p><%= link_to t('view_vendor_payment_periods'), main_app.admin_vendor_payment_periods_path %></p>
+<p><%= link_to t('view_reversed_vendor_payments'), main_app.reversed_admin_vendor_payments_path %></p>
+<p><%= link_to t('view_vendor_payments'), main_app.admin_vendor_payments_path %></p>
+
+<p>Response Code: <%= @vendor_payment.response_code %></p>
+<p>Merchant: <%= @vendor_payment.vendor_payment_period.store.display_name %></p>
+
+<p>Total Amount: <%= number_to_currency @vendor_payment.amount %></p>
+<p>Product Reimbursement: <%= number_to_currency @vendor_payment.product_sales %></p>
+<p>Coupons: <%= number_to_currency @vendor_payment.coupons %></p>
+<p>Shipping: <%= number_to_currency @vendor_payment.shipping %></p>
+<p>
+  Response Data: <br/>
+  <%= raw @vendor_payment.response_data.gsub("\n", '<br/>') if @vendor_payment.response_data %>
+</p>
+
+<% if @vendor_payment.amount < 0 -%>
+<h3>Inventory Units that were debited back</h3>
+<table class="index" style="width:100%;">
+  <tr>
+    <th><%= t('merchant') %></th>
+    <th><%= t('sku') %></th>
+    <th><%= t('item_title') %></th>
+    <th><%= t('price') %></th>
+    <th><%= t('commission_percentage') %></th>
+    <th><%= t('merchant_reimbursement') %></th>
+    <th><%= t('type') %></th>
+    <th><%= t('category') %></th>
+    <th><%= t('description') %></th>
+    <th><%= t('status') %></th>
+  </tr>
+  <% @vendor_payment.inventory_units.each do |inventory_unit| -%>
+      <tr>
+        <td>
+          <% store = inventory_unit.variant ? inventory_unit.variant.product.store : nil -%>
+          <% if store -%>
+            <%= link_to store.name_from_taxon, main_app.merchant_store_orders_path(store) %>
+          <% end -%>
+        </td>
+        <td valign="top">
+        	<%= inventory_unit.variant.sku if inventory_unit.variant %>
+        </td>
+        <td>
+        	<%= inventory_unit.variant.product.name if inventory_unit.variant and inventory_unit.variant.product %>
+        </td>
+        <td>
+        	<%= number_to_currency inventory_unit.line_item.price %>
+        </td>
+        <td>
+        	<%= inventory_unit.line_item.commission_percentage.round(2) %>%
+        </td>
+        <td>
+        	<%= number_to_currency inventory_unit.line_item.price * (100 - inventory_unit.line_item.commission_percentage) / 100 %>
+        </td>
+        <td>
+          <%= inventory_unit.variant.product.get_type if inventory_unit.variant and inventory_unit.variant.product %>
+        </td>
+        <td>
+          <%= inventory_unit.variant.product.category_taxon.name if inventory_unit.variant and inventory_unit.variant.product %>
+        </td>
+        <td>			
+          <%= raw "(" + variant_options(inventory_unit.variant) + ")" unless inventory_unit.variant.nil? or inventory_unit.variant.option_values.empty? %>
+        </td>
+        <td>
+        	<%= t(inventory_unit.state) %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+<% end -%>

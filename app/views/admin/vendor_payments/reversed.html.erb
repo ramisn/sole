@@ -1,0 +1,39 @@
+
+<h1><%= t("reversed_vendor_payments") %></h1>
+
+<table class="index" id='vendor_payments'>
+  <thead>
+    <tr data-hook="admin_vendor_payments_index_headers">
+      <th><%= t('reversal_date')%></th>
+      <th><%= t('status')%></th>
+      <th><%= t('merchant')%></th>
+      <th><%= t('period')%></th>
+      <th><%= t('amount_reversed')%></th>
+      <th><%= t('period_reimbursements_net_of_reversals')%></th>
+      <th><%= t('#_reversed_items')%></th>
+      <th><%= t('#_items_reimbursed')%></th>
+      <th><%= t('admin') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @vendor_payments.count > 0 -%>
+    <% @vendor_payments.each do |vendor_payment| %>
+      <tr data-hook="admin_vendor_payments_index_rows">
+        <td><%= link_to vendor_payment.updated_at.strftime("%-m/%d/%Y"), admin_vendor_payment_path(vendor_payment) %></td>
+        <td><%= t(vendor_payment.state) %></td>
+        <td><%= link_to vendor_payment.vendor_payment_period.store.display_name, main_app.merchant_store_orders_path(vendor_payment.vendor_payment_period.store) %></td>
+        <td><%= link_to vendor_payment.vendor_payment_period.month.strftime("%b %Y"), merchant_store_vendor_payment_period_path(vendor_payment.vendor_payment_period.store, vendor_payment.vendor_payment_period) %></td>
+        <td><%= number_to_currency vendor_payment.amount %></td>
+        <td><%= number_to_currency vendor_payment.vendor_payment_period.total %></td>
+        <td><%= vendor_payment.inventory_units.count %></td>
+        <td><%= vendor_payment.vendor_payment_period.line_items.sum(:quantity) %></td>
+        <td><%= Spree::User.find(vendor_payment.admin_id).name %></td>
+      </tr>
+    <% end -%>
+  <% else -%>
+    <tr><td><%= t('there_are_no_reversed_vendor_payments_at_this_time')%></td></tr>
+  <% end -%>
+  </tbody>
+</table>
+<%= paginate(@vendor_payments, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+

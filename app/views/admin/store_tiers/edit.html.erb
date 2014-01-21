@@ -1,0 +1,31 @@
+<fieldset>
+  <legend>Edit Store Tier</legend>
+  <%= form_for([:admin, @store_tier]) do |f| %>
+    <%= f.field_container :name do %>
+      <%= f.label :name, t(:name) %> <span class="required space-right">*</span>
+      <%= f.text_field :name, :class => 'title'  %>
+      <%= f.error_message_on :name %>
+    <% end %>
+
+    <%= f.field_container :discount do %>
+      <%= f.label :discount, t("discount")%><span class="required space-right">*</span>
+      <%= f.text_field :discount, :class => 'title' %>
+      <%= f.error_message_on :discount %>
+    <% end %>
+
+    <div style="width:320px; text-align:center; margin:auto;">
+      <p class="form-buttons">
+        <%= button t("update") %>
+        <%= t('or') %> <%= link_to t("cancel"), "#", :id => "cancel_link" %>
+      </p>
+    </div>
+
+  <% end %>
+</fieldset>
+<script type="text/javascript">
+  jQuery('#cancel_link').click(function (event) {
+    jQuery('#new_store_link').show();
+    jQuery('#new_store').html('');
+  });
+
+</script>

@@ -1,0 +1,17 @@
+<%= render :partial => '/spree/users/sidebar' %>
+
+<div id="profile-image-edit">
+  <h2>Profile Picture</h2>
+  <%= form_for current_user.profile_image, :url => main_app.account_profile_image_path, :html => { :method => :put, :multipart => true } do |image_form| %>
+    <%= render :partial => '/spree/shared/error_messages', :locals => {:target => current_user.profile_image} %>
+    <%= render :partial => "form", :locals => { :f => image_form } %>    
+    <p class="form-buttons">
+      <%= image_form.submit 'Update Profile Picture', :class => "simpleButton green inline" %>
+      <%= t('or') %> <%= link_to t("cancel"), main_app.account_profile_image_path, :id => "cancel_link" %>
+    </p>
+  <% end -%>
+</div>
+
+
+
+

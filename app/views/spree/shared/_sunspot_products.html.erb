@@ -1,0 +1,64 @@
+<!--  This partial isn't used anymore, temporary keeping it for reference -->
+
+<%
+#  paginated_products = @searcher.products if params.key?(:keywords)
+  paginated_products ||= (products.respond_to?(:results) ? products.results : products)
+%>
+
+
+<div id="product-container">
+  <% if params.key?(:keywords) %>
+    <h3><%= t(:search_results, :keywords => h(params[:keywords])) %></h3>
+  <% end %>
+  <% if !@hide_product_pages -%>
+    <div id="paginate">
+
+      <% if paginated_products.is_a?(Array) && paginated_products.total_pages > 1
+        params.delete(:search)
+        params.delete(:taxon)
+
+      %><%= will_paginate(paginated_products, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") -%>
+      <%- end -%>
+    </div>
+  <% end -%>
+  
+  <div id="collection" class="content">
+    <div id="bg">
+      <div id="main-container">
+        <div id="product-wrapper">
+          <% unless products.blank? %>
+            <ul id="products" class="product-listing">
+              <% products.each_hit_with_result do |result,product| %>
+                <% if !product.nil? && (Spree::Config[:show_zero_stock_products] || product.has_stock? || product.is_a?(UserProduct)) %>
+                  <%= render :partial => "shared/product_listing.html", :locals => {:product => product} %>
+                <% end %>
+              <% end %>
+              
+              <script type="text/javascript">
+                var addthis_config = {
+                  ui_click: true, <%# normally would disable mouseover behavior %>
+                }
+              </script>
+              <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e8e0f8646eae991"></script>
+            </ul>
+          <% else %>
+          <br />
+            <span class="noProd"><%= t(:no_products_found) %></span>
+          <br />
+          <% end %>
+        </div>
+          
+        <% if !@hide_product_pages -%>
+          <div id="paginate">
+            <%- if paginated_products.respond_to?(:total_pages) && paginated_products.total_pages.is_a?(Integer) -%>
+              <%- params.delete(:search) -%>
+              <%- params.delete(:taxon) -%>
+              
+              <%= paginate(paginated_products, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") -%>
+            <%- end -%>
+          </div>
+        <% end -%>
+      </div>
+    </div>
+  </div>
+</div>

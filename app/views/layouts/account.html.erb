@@ -1,0 +1,133 @@
+<% content_for :head do -%>
+  <%= stylesheet_link_tag '/assets/store/account' %>
+<% end -%>
+
+
+<%= render :file => '/spree/layouts/spree_application'%>
+
+
+
+<% content_for :content do -%>
+
+
+  <div id="header-banner">
+    <a href="/account" title="Account Settings Home">
+      <span class="user-name">
+        <%= current_user.display_name(true) %>
+      </span>
+    </a>
+    <%= link_to 'view profile', main_app.member_path(current_user) %>
+  </div>
+
+  <div id="account-body">
+    <% if !current_user.facebook_connected? -%>
+      <div id="account-recommend-facebook">
+        <p>Update your account and easily share with your friends by linking your account to <%= link_to 'Facebook', "#", :class => "facebook login_popup" %>.</p>
+      </div>
+    <% end -%> 
+    <%= render :partial => 'shared/flash_messages' %>
+    <div style="background-color:#FFF;">
+      <div id="storefront-styles">
+        <div id="storefront-left-nav" style="margin-top:0px;">
+
+          <a href="#" id="linkForOpen1">Info &amp; Appearance</a>
+          <a href="#" id="linkForClose1">Info &amp; Appearance</a>
+          <div id="hiddenBox1" class="hiddenBox">
+            <ul>
+              <li><a href="/account/edit_profile">Name and info</a></li>
+              <li><a href="/account/profile_image/">Profile picture</a></li>
+            </ul>
+          </div>
+
+          <a href="#" id="linkForOpen2">Connections</a>
+          <a href="#" id="linkForClose2">Connections</a>
+          <div id="hiddenBox2" class="hiddenBox">
+            <ul>
+              <li><a href="/account/authentications">Link your profile to Facebook</a></li>
+              <li><%= link_to "Change your email/password", edit_account_path %></li>
+              <!--<li>Manage email subscriptions</li>
+              <li>Manage notifications</li>-->
+            </ul>
+          </div>
+          
+          <% if params[:controller] != "users" and params[:action] != "authentications" %>
+          <a href="#" id="linkForOpen4">Your Orders</a>
+          <a href="#" id="linkForClose4">Your Orders</a>
+          <div id="hiddenBox4" class="hiddenBox">
+            <ul>
+              <li>Outstanding orders</li>
+              <li>Cancel an order</li>
+            </ul>
+          </div>
+
+          <% end %>
+
+          <%= javascript_tag do %>
+
+            $('#linkForOpen1').click(function() {
+            $('#hiddenBox1').show();
+            $('#linkForOpen1').hide();
+            $('#linkForClose1').show();
+            return false;
+            });
+            $('#linkForClose1').click(function() {
+            $('#hiddenBox1').hide();
+            $('#linkForOpen1').show();
+            $('#linkForClose1').hide();
+            return false;
+            });
+
+
+            $('#linkForOpen2').click(function() {
+            $('#hiddenBox2').show();
+            $('#linkForOpen2').hide();
+            $('#linkForClose2').show();
+            return false;
+            });
+            $('#linkForClose2').click(function() {
+            $('#hiddenBox2').hide();
+            $('#linkForOpen2').show();
+            $('#linkForClose2').hide();
+            return false;
+            });
+
+
+            $('#linkForOpen3').click(function() {
+            $('#hiddenBox3').show();
+            $('#linkForOpen3').hide();
+            $('#linkForClose3').show();
+            return false;
+            });
+            $('#linkForClose3').click(function() {
+            $('#hiddenBox3').hide();
+            $('#linkForOpen3').show();
+            $('#linkForClose3').hide();
+            return false;
+            });
+
+
+            $('#linkForOpen4').click(function() {
+            $('#hiddenBox4').show();
+            $('#linkForOpen4').hide();
+            $('#linkForClose4').show();
+            return false;
+            });
+            $('#linkForClose4').click(function() {
+            $('#hiddenBox4').hide();
+            $('#linkForOpen4').show();
+            $('#linkForClose4').hide();
+            return false;
+            });
+
+
+          <% end %>
+
+
+        </div>
+        <div id="account-content">
+          <%= content_for?(:page_container) ? yield(:page_container) : yield %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end -%>

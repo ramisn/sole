@@ -1,0 +1,3 @@
+<% unless product.nil? %>
+  <%= render :partial => "spree/products/product_listing.html", :locals => {:product => product, :featured => true } %>
+<% end %>

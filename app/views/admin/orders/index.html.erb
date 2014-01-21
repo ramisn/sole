@@ -1,0 +1,140 @@
+<div id="admin-order-search">
+  
+  <h3><%= t(:search) %></h3>
+  <%= form_for [:admin, @search] do |f| %>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><%= t("start") %></th>
+          <th><%= t("stop") %></th>
+          <th><%= t("checkout_stage") %></th>
+          <th><%= t 'order_number' %></th>
+          <th><%= t 'email' %></th>
+          <th><%= t("show_only_complete_orders") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= t("date_range") %></td>
+          <td><%= f.text_field :created_at_greater_than, :class => 'datepicker' %></td>
+          <td><%= f.text_field :created_at_less_than, :class => 'datepicker' %></td>
+          <td><%= f.select :state_equals, ['cart','address','delivery','payment','complete','canceled'].collect {|status| [t("order_state.#{status}"), status]}, {:include_blank => true} %></td>
+          <td><%= f.text_field :number_like, :size=>25 %></td>
+          <td><%= f.text_field :email_like, :size=>25 %></td>
+          <td><%= f.check_box :completed_at_is_not_null, {:checked => @show_only_completed}, "1", "" %></td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-hook="admin_orders_index_search_buttons">
+      <p><%= button t("search") %></p>
+    </div>
+  <% end %>
+
+</div>
+
+<div id="admin-order-stats">
+  <h3>Totals</h3>
+  <table>
+    <thead>
+      <tr>
+        <th><%= t('number_of_orders')%></th>
+        <th><%= t('number_of_items')%></th>
+        <th><%= t('product_sales')%></th>
+        <th><%= t('coupons')%></th>
+        <th><%= t('product_reimbursement') %>
+        <th><%= t('sales_tax')%></th>
+        <th><%= t('shipping')%></th>
+        <th><%= t('total_sales')%></th>
+        <th><%= t('commission')%></th>
+        <th><%= t('commission_%')%></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @total_orders %></td>
+        <td><%= @total_items %></td>
+        <td><%= number_to_currency(@total_product_sales) %></td>
+        <td><%= number_to_currency(@total_coupons) %></td>
+        <td><%= number_to_currency(@total_product_reimbursement) %></td>
+        <td><%= number_to_currency(@total_tax) %></td>
+        <td><%= number_to_currency(@total_shipping) %></td>
+        <td><%= number_to_currency(@total_sales) %></td>
+        <td><%= number_to_currency(@total_commission) %></td>
+        <td><%= @total_commission_percent %>%</td>
+      </tr>
+    </tbody>
+</div>
+
+<div class='toolbar order-links'>
+  <%= button_link_to t("new_order"), new_admin_order_url, :icon => 'add', :id => 'admin_new_order' %>
+</div>
+
+<%= render :partial => 'admin/shared/order_sub_menu' %>
+
+<h1><%= t("listing_orders") %></h1>
+
+<h3><%= link_to 'Download as CSV', admin_orders_path({:search => params[:search], :format => :csv})%></h3>
+
+<table class="index" id='listing_orders'>
+  <thead>
+    <tr data-hook="admin_orders_index_headers">
+      <% if @show_only_completed %>
+        <th><%= sort_link @search, :completed_at, t("activerecord.attributes.order.completed_at") %></th>
+      <% else %>
+        <th><%= sort_link @search, :created_at,   t("order_date") %></th>
+      <% end %>
+      <th><%= sort_link @search, :number,         t("order_number") %></th>
+      <th><%= t("shipping_to") %></th>
+      <th><%= t('coupon_codes')%></th>
+      <th><%= t('num_merchants')%></th>
+      <th><%= t('num_items')%></th>
+      <th><%= t('product_sales')%></th>
+      <th><%= t('coupon_discount') %></th>
+      <th><%= t('product_reimbursement') %></th>
+      <th><%= t('shipping') %></th>
+      <th><%= t('tax') %></th>
+      <th><%= sort_link @search, :total,          t("total") %></th>
+      <th><%= t('commission_$')%></th>
+      <th><%= t('commission_%')%></th>
+      <th><%= sort_link @search, :state,          t("checkout_stage") %></th>
+      <th><%= sort_link @search, :payment_state,  t("payment_state") %></th>
+      <th><%= sort_link @search, :shipment_state, t("shipment_state") %></th>
+      <th><%= sort_link @search, :email,          t("customer") %></th>
+      <th><%= t('admin.orders.payment_gateway') %></th>
+      <th data-hook="admin_orders_index_header_actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @orders.each do |order| %>
+    <tr data-hook="admin_orders_index_rows">
+      <td><%= (@show_only_completed ? order.completed_at : order.created_at).strftime("%m-%d-%Y") %></td>
+      <td><%= link_to order.number, admin_order_path(order) %></td>
+      <td><%= order.ship_address.state if order.ship_address %></td>
+      <td><%= order.promotion_credits.count > 0 ? order.promotion_credits.collect {|pc| pc.source.code if pc.source }.join(", ") : ""%></td>
+      <td><%= order.orders_stores.count %></td>
+      <td><%= order.total_quantity %></td>
+      <td><%= number_to_currency(order.item_total) %></td>
+      <td><%= number_to_currency(order.coupon_total) %></td>
+      <td><%= number_to_currency(order.total_product_reimbursement) %></td>
+      <td><%= number_to_currency(order.ship_total) %></td>
+      <td><%= number_to_currency(order.tax_total) %></td>
+      <td><%= number_to_currency(order.total) %></td>
+      <td><%= number_to_currency(order.soletron_commission) if order.complete? %><%# number_to_currency(order.soletron_commission) if !order.soletron_commission.blank? %></td>
+      <td><%= begin "#{order.soletron_commission_rate.round(1)}" if order.complete? rescue '-' end %></td>
+      <td><%= t("order_state.#{order.state.downcase}") %></td>
+      <td><%= link_to t("payment_states.#{order.payment_state}"), admin_order_payments_path(order) if order.payment_state %></td>
+      <td><%= t("shipment_states.#{order.shipment_state}") if order.shipment_state %></td>
+      <td><%= order.email %></td>
+      <td><%= order.payments.joins(:payment_method).where(payment_methods: {type: ['main_app.new_account_profile_image_path', 'Gateway::PayPal']}).collect {|payment| payment.payment_method.class.name.split('::').last}.join(",") %></td>
+      <td class='actions' data-hook="admin_orders_index_row_actions">
+        <%= link_to_edit_url edit_admin_order_path(order), :title => "admin_edit_#{dom_id(order)}" %> | 
+        <% if order.completed? -%>
+          <%= link_to 'force cancel', confirm_force_cancel_admin_order_path(order) %>
+        <% end -%>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate(@orders, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>

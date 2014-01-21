@@ -1,0 +1,14 @@
+<% params.delete(:search) %>
+<% params.delete(:taxon) %>
+
+<div id="products">
+  <%= paginate products, :window => 1, :outer_window => 1 %>
+  <ul id="results">
+    <% products.each_with_index do |product, i| %>
+      <%= render :partial => "/spree/products/product_listing.html", :locals => { :product => product, :featured => false, :klass => (i%3 == 0 ? 'left-edge' : '' ) } %>
+    <% end -%>
+  </ul>
+  <div id="bottom-pagination">
+    <%= paginate products, :window => 1, :outer_window => 1 %>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+Hi <%= @store %>,<br />
+
+Here are items which are going to be out of stock soon!
+<% @products.each do|prod| %>
+  <%= prod.name %><br />
+  Quantity: <%= prod.count_on_hand %>
+<% end %>
+
+Thanks

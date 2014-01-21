@@ -1,0 +1,22 @@
+<% content_for :sidebar do %>
+  <div id="merchant-sidebar-menu">
+    <dl>
+      <dt><h4>Store Profile</h4></dt>
+      <dd><%= link_to 'Company info', main_app.edit_merchant_store_path(@store) %></dd>
+      <dd><%= link_to 'Profile picture', main_app.merchant_store_profile_image_path(@store) %></dd>
+      <dd><%= link_to 'Banner image', main_app.merchant_store_banner_image_path(@store) %></dd>
+      <dd><%= link_to 'Connections', main_app.facebook_page_merchant_store_path(@store) %></dd>
+      <dd><%= link_to 'Manage admin', main_app.edit_merchant_store_admin_url(@store) %></dd>
+
+    </dl>
+    
+    <dl>
+      <dt><h4>Orders &amp; Sales</h4></dt>
+      <dd><%= link_to "Orders", main_app.merchant_store_orders_path(@store) %></dd>
+      <dd><%= link_to 'Promotions', main_app.merchant_store_promotions_path(@store) %></dd>
+      <dd><%= link_to 'View/edit Listings', main_app.merchant_store_products_url(@store) %></dd>
+      <dd><%= link_to 'Payments', main_app.merchant_store_vendor_payment_periods_url(@store) %></dd>
+    </dl>
+    
+  </div>
+<% end -%>

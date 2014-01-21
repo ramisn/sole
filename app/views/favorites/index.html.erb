@@ -1,0 +1,23 @@
+<h1 id="account-title"><%= @user.display_name %> Favorites</h1>
+<% if @favorites and @favorites.size > 0 -%>
+
+  <% column = 0 -%>
+
+  <% @favorites.each do |favorite| -%>
+    <% if column == 0 -%>
+      <ul class="follow-list">
+    <% end -%>
+    
+    <li class="follow-list-item">
+    
+    <%= link_to product_image(favorite.product, :width => 140, :title => favorite.product.name, :alt => "picture of #{favorite.product.name}"), favorite.product, :class => 'follow-image-link' %><br/>
+    <%= link_to (favorite.product.name || ""), favorite.product, :class => 'follow-name-link' %><br/>
+    </li>
+            
+    <% column += 1 -%>
+    <% if column == 3 
+      column = 0 -%>
+    </ul>
+    <% end -%>
+  <% end -%>
+<% end -%>

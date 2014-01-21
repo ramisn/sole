@@ -1,0 +1,20 @@
+<li class="result c-<%= column %>">
+  <%= link_to image_tag(profile_picture_url(result, :size => :list), :alt => result.name), entity_profile_path(result), :class => 'follow-image-link avatar' %>
+  
+  <h4><%= link_to(result.is_a?(Store) ? 'SHOP' : 'PROFILE', entity_profile_path(result))  %></h4>
+  
+  <div class="overlay">
+    <%= link_to truncate(result.display_name, :length => 25), entity_profile_path(result), :class => 'follow-name-link' %>
+    <span class="location"><%= result.location.gsub(","," ") if result.location %></span>
+  </div>
+  
+  <% if @acting_as && @acting_as != result -%>
+    <% if @acting_as.is_following?(result) %>
+      <%= link_to 'Unfollow', stop_following_entity_path(result), :method => :delete, :class => "simpleButton  action" %>
+    <% else -%>
+      <%= link_to 'Follow', follow_entity_path(result), :method => :post, :class => "simpleButton green action" %>
+    <% end -%>
+  <% else -%>
+    <span class="simpleButton action">&nbsp;</span>
+  <% end -%>
+</li>

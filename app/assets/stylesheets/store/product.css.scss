@@ -1,0 +1,279 @@
+@import "store/configuration";
+
+.fullsize-icon {
+  width           : 40px !important;
+  height          : 40px !important;
+}
+
+#product-images {
+  position          : relative;
+  float             : left;
+  overflow          : hidden;
+  background        : #FFF;
+  width             : 470px;
+  height            : auto;
+  padding           : 10px;
+  
+
+  #main-image {
+    border          : solid 1px #dedede;
+    width           : 468px;
+    height          : 468px;
+    overflow        : hidden;
+    
+    img {
+      width         : 100%;
+    }
+  }
+  
+  .enlarge {
+    background      : $green;
+    padding         : 5px;
+    display         : block;
+    color           : #FFF;
+    text-align      : center;
+  }
+  
+  #alt-image-container {
+    
+  }
+  
+  #thumbnails {
+    position        : relative;
+    overflow        : hidden;
+    padding         : 10px 0 0 0;
+    
+    li {
+      display       : inline-block;
+    }
+  }
+}
+
+#product-info {
+  margin            : 0 0 0 520px;
+  
+  h2 {
+    padding         : 0;
+    a {
+      font-size       : 26px;
+      color           : $grey;
+      text-transform  : uppercase;
+      line-height     : 1.1em !important;
+    }
+  }
+
+  
+  h6 {
+    font-size       : 14px;
+    font-weight     : normal;
+  }
+  
+  dl {
+    margin          : 10px 0 10px 0;
+  }
+  
+  dt {
+    font-size       : 12px;
+    font-weight     : bold;
+    margin          : 0 0 5px 0;
+  }
+  
+  select {
+    border          : solid 1px #CCC;
+    min-width       : 50px;
+  }
+  
+  form  {
+    position        : relative;
+    float           : right;
+    padding         : 10px 10px 20px 10px;
+    margin          : 15px 0 0 0;
+    background      : #FFF;
+    width           : 156px;
+    border          : solid 1px #CCC;
+    text-align      : center;
+    overflow        : hidden;
+    
+    input[type='submit'] {
+      background      : $green;
+      padding         : 10px;
+      text-transform  : uppercase;
+      color           : #FFF;
+    }
+    
+    em {
+      font-size     : 13px;
+      display       : block;
+      text-align    : center;
+      font-style    : normal;
+      line-height   : 1.5em;
+    }
+    
+    label {
+      font-size     : 9px;
+      color         : $grey;
+      padding       : 0 0 15px 0;
+    }
+  }
+  
+  .follow-link {
+    text-transform  : uppercase;
+    color           : $green;
+    display         : inline-block;
+    padding         : 0 10px 10px 0;
+  }
+  
+  
+}
+
+#product-price {
+  color             : $green;
+  font-size         : 18px;
+  
+  .original {
+    color           : $grey;
+    text-decoration : line-through;
+  }
+}
+
+#product-sizes  {
+  width             : 250px;
+  
+  a, span {
+    display         : inline-block;
+    padding         : 3px;
+    width           : 40px;
+    text-transform  : uppercase;
+    border          : solid 1px #ccc;
+    text-align      : center;
+    margin          : 0 4px 4px 0;
+  
+  }
+  
+  a {
+    cursor          : pointer;
+    background      : #FFF;
+  }
+  
+  a:hover {
+    background      : $green;
+    color           : #FFF;
+    text-decoration : none;
+  }
+  
+  .disabled {
+    background     : #ddd;
+    border         : solid 1px #ddd;
+    color          : #eee; 
+  }
+  
+  .ui-active {
+    background     : $grey;
+    border         : solid $grey 1px;
+    color          : #FFF;
+   
+  }
+}
+
+
+#product-colors {
+
+  dd {
+    display   : inline-block;
+    width     : 25px;
+    height    : 25px;
+  }
+  
+  span {
+    position  : relative;
+    display   : block;
+    width     : 50%;
+    height    : 25px;
+    margin    : 0 0 0 50%;
+  }
+  .colorGreen {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -1px;
+  }
+  .colorBlue {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -61px;
+  }
+  .colorPurple {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -121px;
+  }
+  .colorRed {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -181px;
+  }
+  .colorPink {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -241px;
+  }
+  .colorBeige {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -301px;
+  }
+  .colorBrown {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -361px;
+  }
+  .colorYellow {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -421px;
+  }
+  .colorOrange {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -481px;
+  }
+  .colorBlack {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -541px;
+  }
+  .colorWhite {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -601px;
+  }
+  .colorGray {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -661px;
+  }
+  .colorGold {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -721px;
+  }
+  .colorSilver {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -781px;
+  }
+  .colorTeal {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -851px;
+  }
+  .colorGlow {
+  	background: image_url('colors_stretched.gif') no-repeat -2px -911px;
+  }
+}
+
+
+#product-share {
+  height        : 50px;
+  padding       : 20px 0 0 0;
+  
+  a {
+    width       : 80px;
+  }
+  
+  a.addthis_button_google_plusone {
+    width       : 60px;
+  }
+  
+  a.share {
+    width       : 60px;
+    background  : #FFF $sprite -240px 0 no-repeat;
+    text-indent : -10000px;
+    
+    span {
+      background  : none !important;
+      line-height : 12px;
+    }
+  }
+}
+
+
+#product-tags {
+  
+  .tag {
+    text-transform  : none;
+    padding         : 5px;
+    margin-bottom   : 4px;
+    display         : inline-block;
+    font-weight     : normal;
+  }
+}

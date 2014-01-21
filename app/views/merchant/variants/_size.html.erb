@@ -1,0 +1,17 @@
+<p class="inline required">
+  <!--% if !option.nil? %-->
+    <%= label :variant_data.to_s + "[0]" + :per_size_data.to_s + "[#{sizeCount}]", :size, :id => "idSize" %>
+    <%= select(:variant_data.to_s + "[0]" + :per_size_data.to_s + "[#{sizeCount}]", :size, [], {:include_blank => true}, :onchange => "setDirty($(this));", :class => "product-size") %>
+  <!--% end %-->
+
+  <% if Spree::Config[:track_inventory_levels] %>
+    
+    <%= label :variant_data.to_s + "[0]" + :per_size_data.to_s + "[#{sizeCount}]", :on_hand, t('Quantity'), :id => "idOnHand" %>
+    <%= text_field :variant_data.to_s + "[0]" + :per_size_data.to_s + "[#{sizeCount}]", :on_hand, {:style => "margin-right:5px;", :onchange => "setDirty($(this));"} %>
+	      <a href="javascript:void(0)" onclick="setDirty($(this).parent()); removeElement($(this).parent()); return false;" style="display:none"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0" /></a>
+	  
+  <% end %>
+
+  <%= text_field :variant_data.to_s + "[0]" + :per_size_data.to_s + "[#{sizeCount}]", :skip, :value => 1, :type => "hidden" %>
+
+</p>

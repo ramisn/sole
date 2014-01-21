@@ -1,0 +1,255 @@
+<% if current_user.admin? -%>
+  
+  <% if !@vendor_payment_period.inactive? !@vendor_payment_period.paid? -%>
+    <% if @vendor_payment_period.to_pay > 0 -%>
+      <div id="pay-vendor-button"><%= link_to "Pay #{@vendor_payment_period.to_pay}", new_admin_vendor_payment_period_vendor_payment_path(@vendor_payment_period), :class => "fancyButton green noMargin" %></div>
+    <% elsif @vendor_payment_period.to_pay < 0 -%>
+      <div id="pay-vendor-button"><%= link_to "Confirm Chargedback #{@vendor_payment_period.to_pay*-1}", new_admin_vendor_payment_period_vendor_payment_path(@vendor_payment_period), :class => "fancyButton green noMargin" %></div>
+    <% end -%>
+  <% end -%>
+<% end -%>
+<h2><%= link_to t('back_to_store_account_settings'), main_app.merchant_store_path(@store)%></h2>
+<% if current_user.admin? -%>
+  <h2><%= link_to t('view_all_vendor_payment_periods_in_admin'), main_app.admin_vendor_payment_periods_path %></h2>
+<% end -%>
+
+<div class="vendor-payment-period-section">
+<h1><%= t('order_reimbursement_detail_for') %> <%= @vendor_payment_period.month.strftime("%b %Y") %></h1>
+<h3><%= t('reimbursement_status')%>: <%= t("vendor_payment_period_states.#{@vendor_payment_period.state}") %></h3>
+<h3><%= t('total_reimbursement_owed_by_soletron')%>: <%= number_to_currency @vendor_payment_period.total %></h3>
+<h3><%= t('total_paid_by_soletron')%>: <%= number_to_currency @vendor_payment_period.payment_total %></h3>
+</div>
+
+<div class="vendor-payment-period-section">
+<h2><%= t('csv_downloads') %></h2>
+<p>
+  <%= link_to t('line_items_csv'), main_app.line_items_data_merchant_store_vendor_payment_period_path(@store, @vendor_payment_period, :format => :csv) %> | 
+  <%= link_to t('shipping_csv'), main_app.shipping_data_merchant_store_vendor_payment_period_path(@store, @vendor_payment_period, :format => :csv) %> | 
+  <%= link_to t('coupons_csv'), main_app.coupons_data_merchant_store_vendor_payment_period_path(@store, @vendor_payment_period, :format => :csv) %> 
+</p>
+</div>
+
+
+<div class="vendor-payment-period-section">
+<h2><%= t('payments_from_soletron')%></h2>
+
+<% if current_user.admin? and @store.usa_epay_customer_number.blank? -%>
+  <p>The USA ePay customer number (custNum) must be added to <%= @store.taxon.name %> before you can pay them. <%= link_to 'Edit Store', edit_admin_store_path(@store) %></p>
+<% end -%>
+<div id="vendor_payments">
+  <table class="index" >
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Reference Number</th>
+        <th>Status</th>
+        <% if current_user.admin? -%>
+          <th>Payment made by</th>
+        <% end -%>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @vendor_payment_period.vendor_payments.count == 0 -%>
+        <tr><td>There are no payments currently.</td></tr>
+      <% else -%>
+        <% @vendor_payment_period.vendor_payments.each do |vendor_payment| -%>
+          <tr>
+            <td>
+              <% if vendor_payment.amount < 0 -%>
+                <%= link_to vendor_payment.created_at.strftime("%d/%m/%Y"), admin_vendor_payment_path(vendor_payment) %>
+              <% else -%>
+                <%= vendor_payment.created_at.strftime("%d/%m/%Y") %>
+              <% end -%>
+            </td>
+            <td><%= number_to_currency vendor_payment.amount %></td>
+            <td>
+              <% if current_user.admin? -%>
+                <%= link_to vendor_payment.response_code, main_app.admin_vendor_payment_path(vendor_payment) %>
+              <% else -%>
+                <%= vendor_payment.response_code%>
+              <% end -%>
+            </td>
+            <td><%= vendor_payment.state %></td>
+            <% if current_user.admin? -%>
+              <td><%= Spree::User.find(vendor_payment.admin_id).name if vendor_payment.admin_id %></td>
+            <% end -%>
+          </tr>
+        <% end -%>
+      <% end -%>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div class="vendor-payment-period-section">
+<h2><%= t('items_purchased_during_period')%></h2>
+<table class="index" id='line_items'>
+  <thead>
+    <tr data-hook="merchant_vendor_payment_periods_show_line_items_headers">
+        <th><%= t('order_date')%></th>
+        <th><%= t('order_#')%></th>
+        <th><%= t('sku')%></th>
+        <th><%= t('name')%></th>
+        <th><%= t('product_type')%></th>
+        <th><%= t('category')%></th>
+        <th><%= t('description')%></th>
+        <th><%= t('quantity')%></th>
+        <th><%= t('price')%></th>
+        <th><%= t('merchant_%')%></th>
+        <th><%= t('merchant_amount')%></th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  <% @vendor_payment_period.line_items.order('orders.completed_at ASC').each do |line_item| %>
+    <tr data-hook="merchant_vendor_payment_periods_show_line_items_rows">
+      <td><%= line_item.order.completed_at.strftime("%-m/%-d/%Y") %></td>
+      <td><%= link_to merchant_store_order_path @store, line_item.order.number %></td>
+      <td><%= line_item.variant.sku if line_item.variant %></td>
+      <td><%= line_item.variant.product.name if line_item.variant and line_item.variant.product %></td>
+      <td><%= line_item.variant.product.get_type if line_item.variant and line_item.variant.product %></td>
+      <td><%= line_item.variant.product.category_taxon.name if line_item.variant and line_item.variant.product %></td>
+      <td><%= raw(variant_options(line_item.variant)) if line_item.variant %></td>
+      <td><%= line_item.quantity %></td>
+      <td><%= number_to_currency line_item.price %></td>
+      <td><%= (100 - line_item.commission_percentage).round(1) %>%</td>
+      <td><%= number_to_currency line_item.store_amount %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <th><%= t('#_line_items') %></th>
+    <th><%= t('#_orders') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th><%= t('quantity_sold') %></th>
+    <th><%= t('average_price') %></th>
+    <th><%= t('merchant_%') %></th>
+    <th><%= t('merchant_payment') %></th>
+  </tr>
+  <tr data-hook="merchant_vendor_payment_periods_show_line_items_rows">
+    <td><%= @vendor_payment_period.line_items.count %></td>
+    <td><%= @vendor_payment_period.orders_stores.count %></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><%= @vendor_payment_period.line_items.sum(:quantity) %></td>
+    <td><%= number_to_currency @vendor_payment_period.line_items.average(:price) %></td>
+    <% store_amount = @vendor_payment_period.line_items.sum(:store_amount) -%>
+    <% total_amount = @vendor_payment_period.line_items.sum(:total_amount) -%>
+    <td><%= (store_amount / total_amount * 100).round(1) %>%</td>
+    <td><%= number_to_currency store_amount %></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="vendor-payment-period-section">
+<h2><%= t('shipping_reimbursement') %></h2>
+<table class="index" id='shipping'>
+  <thead>
+    <tr data-hook="merchant_vendor_payment_periods_show_shipping_headers">
+        <th><%= t('order_date')%></th>
+        <th><%= t('order_#')%></th>
+        <th><%= t('product_reimbursement') %></th>
+        <th><%= t('#_items')%></th>
+        <th><%= t('total_shipping')%></th>
+        <th><%= t('shipping_method')%></th>
+        <th><%= t('last_shipping_date')%></th>
+        <th><%= t('shipping_state')%></th>
+        <th><%= t('reference_numbers')%></th>
+        <th><%= t('carriers')%></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @vendor_payment_period.shipping_charges.order('orders.completed_at ASC').each do |shipping_charge| %>
+    <% orders_store = shipping_charge.order.orders_stores.where(:store_id => @vendor_payment_period.store).limit(1).first -%>
+    <tr data-hook="merchant_vendor_payment_periods_show_shipping_rows">
+      <td><%= shipping_charge.order.completed_at.strftime("%-m/%-d/%Y") %></td>
+      <td><%= shipping_charge.order.number %></td>
+      <td><%= orders_store.product_reimbursement %></td>
+      <td><%= shipping_charge.source.inventory_units.count %></td>
+      <td><%= number_to_currency shipping_charge.amount %></td>
+      <td><%= shipping_charge.source.shipping_method.name %></td>
+      <td><%= orders_store.shipments.order('shipped_at DESC').first.shipped_at.strftime("%m-%d-%Y") if orders_store.shipments.order('shipped_at DESC').first.shipped_at %></td>
+      <td><%= orders_store.state %></td>
+      <td><%= orders_store.shipments.collect {|shipment| shipment.tracking }.join(';') %></td>
+      <td><%= orders_store.shipments.collect {|shipment| shipment.vendor_shipping_method }.join(';') %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <th><%= t('#_shipping_charges') %></th>
+    <th></th>
+    <th></th>
+    <th><%= t('quantity_shipped') %></th>
+    <th><%= t('total_shipping_charges') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr data-hook="merchant_vendor_payment_periods_show_line_items_rows">
+    <td><%= @vendor_payment_period.shipping_charges.count %></td>
+    <td></td>
+    <td></td>
+    <td><%= @vendor_payment_period.shipping_charges.collect{|s| s.source.inventory_units.count }.sum %></td>
+    <td><%= number_to_currency @vendor_payment_period.shipping_charges.sum(:amount) %></td>
+    <td></td>
+    <td></v>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="vendor-payment-period-section">
+<h2><%= t('coupons_discounted') %></h2>
+<table class="index" id='coupons'>
+  <thead>
+    <tr data-hook="merchant_vendor_payment_periods_show_coupons_headers">
+        <th><%= t('order_date')%></th>
+        <th><%= t('order_#')%></th>
+        <th><%= t('coupon_codes')%></th>
+        <th><%= t('coupon_discount')%></th>
+        <th><%= t('product_reimbursement')%></th>
+        <th><%= t('coupon_value')%></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @vendor_payment_period.orders_stores.coupons_applied.joins(:order).order('orders.completed_at ASC').each do |orders_store| %>
+    <tr data-hook="merchant_vendor_payment_periods_show_coupons_rows">
+      <td><%= orders_store.order.completed_at.strftime("%-m/%-d/%Y") %></td>
+      <td><%= orders_store.order.number %></td>
+      <td><%= (orders_store.order.promotion_credits.count > 0 ? orders_store.order.promotion_credits.collect {|pc| pc.source.code if pc.source }.join(",") : "") %></td>
+      <td><%= (orders_store.order.promotion_credits.count > 0 ? orders_store.order.promotion_credits.collect {|pc| promotion_discount(pc.source) if pc.source and pc.source.calculator }.join(",") : "") %></td>
+      <td><%= orders_store.product_reimbursement %></td>
+      <td><%= number_to_currency orders_store.coupons %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <th><%= t('#_coupons_applied') %></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th><%= t('total_coupon_value') %></th>
+  </tr>
+  <tr data-hook="merchant_vendor_payment_periods_show_line_items_rows">
+    <td><%= @vendor_payment_period.orders_stores.coupons_applied.count %></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><%= number_to_currency @vendor_payment_period.orders_stores.coupons_applied.sum(:coupons) %></td>
+  </tr>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,53 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div id="merchant-facebook-connect">
+  <h2>Link your store with Facebook</h2>
+  
+  <% if @store.facebook_id -%>
+    <div id="merchant-current-fb-account">
+      <p>Your store is currently linked to the following  Facebook page:</p>
+      
+      <%= image_tag "http://graph.facebook.com/#{@store.facebook_id}/picture?type=large", :class => "fb-avatar"%>
+      <h4><%= link_to "#{@store.facebook_name}", "http://facebook.com/#{@store.facebook_id}", :target => "_blank" %></h4>
+    </div>
+  <% end -%>
+  
+  <div class="section text">
+    <% if !current_user.facebook_auth -%>
+      
+      <p>You need to link your account with your facebook account before you can manage your facebook page.</p>
+      <p style="margin:20px 0 0 0"><%= link_to "Link My Account with Facebook",  authenticate_url('facebook', 'add_scope' => 'manage_pages'), :class => "facebook  simpleButton green", :title => "Sign in with Facebook"  %></p>
+    <% elsif !current_user.manage_facebook_pages? %>
+      <h1>You need more Facebook permissions</h1>
+      <p>In order to manage your facebook page, you need to give Soletron to manage your Facebook pages.</p>
+      <p><%= link_to "Give Soletron Permission", authenticate_url('facebook', 'add_scope' => 'manage_pages'), :class => "#facebook", :title => "Sign in with Facebook" %></p>
+    <% elsif @not_logged_in_with_facebook -%>
+   
+		  <h1 style="position:relative; left:0px; margin-left:0px; padding-left:0px;">You must log in with your Facebook account first in order to link your Soletron store to your Facebook fan page.</h1>
+		  <p style="position:relative; left:0px;"><%= link_to image_tag('/assets/smaller_facebook_signin_button.png', :height => 22, :width => 150, :alt => 'Signin with Facebook'), authenticate_url('facebook', 'add_scope' => 'manage_pages'), :class => "facebook", :title => "Sign in with Facebook" %></p>
+    <% else -%>
+      
+      <%= form_for @store, :url => main_app.update_facebook_page_merchant_store_path(@store) do |facebook_form| %>
+        <%= render :partial => '/spree/shared/error_messages', :locals => {:target => @store} %>
+        <%= facebook_form.field_container :facebook_id do %>
+          <%= facebook_form.label :facebook_id, t("facebook_page") %> <span class="required">*</span><br />
+          <%= facebook_form.select :facebook_id, facebook_pages_as_options(@store)  %>
+          <%= facebook_form.error_message_on :facebook_id %>
+        <% end %>
+        <%= facebook_form.submit('Link Facebook Page to Store') %>
+      <% end -%>
+    <% end -%>
+  </div>
+  
+  <div class="section text">
+    <h4>Why link your Soletron store to Facebook?</h4>
+    <ul>
+      <li>Generate more product views and purchases: each time you upload new products on Soletron, your Facebook fans will see the item and its image on their Facebook walls</li>
+      <li>Gain more Facebook fans: when you connect through Facebook, you get a Facebook "Like" button right on your Soletron store profile pages</li>
+      <li>Gain more Soletron followers: all your likes on Facebook automatically become followers on Soletron when those users  sign up</li>
+      <li>Save time managing profile information: automatically populate your Soletron profile with your Facebook profile info to save time</li>
+    </ul>
+    Linking to Facebook means LESS EFFORT, MORE FANS and MORE SALES
+  </div>
+
+</div>

@@ -1,0 +1,70 @@
+<%= render :partial => 'admin/shared/order_sub_menu' %>
+
+<h1><%= t("listing_vendor_payment_periods") %></h1>
+
+<p><%= link_to t('view_reversed_vendor_payments'), reversed_admin_vendor_payments_path %></p>
+<p><%= link_to t('view_vendor_payments'), admin_vendor_payments_path %></p>
+
+<%= form_tag admin_vendor_payment_periods_path, :method => :get do %>
+  <%= label_tag :name %>
+  <%= text_field_tag :name, params[:name]%>
+  <%= label_tag :status %>
+  <%= select_tag :state,  options_for_select([nil]+VendorPaymentPeriod.state_machine.states.collect{|state| [t(state.name), state.name]}, params[:state])%>
+  <% month_options = VendorPaymentPeriod.group(:month).order('vendor_payment_periods.month DESC').all.collect{|vpp| [vpp.month.strftime("%b %Y"), vpp.month.strftime("%Y-%m")]} -%>
+  <%= label_tag :start_month %>
+  <%= select_tag :start_month, options_for_select([nil]+month_options, params[:start_month])%>
+  <%= label_tag :end_month %>
+  <%= select_tag :end_month, options_for_select([nil]+month_options, params[:end_month])%>
+  <%= submit_tag "Filter" %>
+<% end -%>
+
+<table class="index" id='vendor_payment_periods'>
+  <thead>
+    <tr data-hook="admin_vendor_payment_periods_index_headers">
+        <th><%= t('status')%></th>
+        <th><%= t('merchant')%></th>
+        <th><%= t('month')%></th>
+        <th><%= t('#_orders')%></th>
+        <th><%= t('total')%></th>
+        <th><%= t('payment_amount')%></th>
+        <th><%= t('last_payment_date')%></th>
+        <th><%= t('last_reference_number')%></th>
+      <th data-hook="admin_vendor_payment_periods_index_header_actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @vendor_payment_periods.each do |vendor_payment_period| %>
+    <tr>
+      <% unless vendor_payment_period.store.nil? %>
+      <td><%= t("vendor_payment_period_states.#{vendor_payment_period.state}") %></td>
+      <td><%= link_to vendor_payment_period.store.display_name, main_app.merchant_store_orders_path(vendor_payment_period.store) %></td>
+      <td><%= link_to vendor_payment_period.month.strftime("%b %Y"), merchant_store_vendor_payment_period_path(vendor_payment_period.store, vendor_payment_period) %></td>
+      <td><%= vendor_payment_period.orders_stores.count %></td>
+      <td><%= number_to_currency vendor_payment_period.total %></td>
+      <td><%= number_to_currency vendor_payment_period.payment_total %></td>
+      <% last_payment = vendor_payment_period.vendor_payments.order('payments.created_at DESC').limit(1).first -%>
+      <td><%= last_payment.created_at.strftime("%m-%d-%Y") if last_payment %></td>
+      <td><%= link_to(last_payment.response_code, admin_vendor_payment_path(last_payment)) if last_payment %></td>
+      <td class='actions' data-hook="admin_orders_index_row_actions">
+        <% if vendor_payment_period.store.usa_epay_customer_number.blank? -%>
+          <span><%= link_to t('add_usa_epay_customer_number'), main_app.edit_admin_store_path(vendor_payment_period.store) %></span>
+        <% elsif vendor_payment_period.inactive? -%>
+          <span><%= t('not_ready_to_pay') %></span>
+        <% elsif vendor_payment_period.payable? -%>
+          <% if vendor_payment_period.vendor_payments.count > 0 and vendor_payment_period.vendor_payments.count == vendor_payment_period.vendor_payments.failed.count -%>
+            <%= link_to 'Pay Again', new_admin_vendor_payment_period_vendor_payment_path(vendor_payment_period) %>
+          <% else -%>
+            <%= link_to 'Make Payment', new_admin_vendor_payment_period_vendor_payment_path(vendor_payment_period) %>
+          <% end -%>
+        <% elsif vendor_payment_period.chargeback_required? -%>
+          <%= link_to 'Chargeback Required', new_admin_vendor_payment_period_vendor_payment_path(vendor_payment_period) %>
+        <% end -%>
+        <%# link_to_edit_url edit_admin_order_path(order), :title => "admin_edit_#{dom_id(order)}" %> | 
+        <%# link_to 'force cancel', confirm_force_cancel_admin_order_path(order) %>
+      </td>
+      <% end # vendor_payment_period.nil? %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate(@vendor_payment_periods, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>

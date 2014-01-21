@@ -1,0 +1,181 @@
+@import "store/configuration";
+
+@mixin icon($row, $col) {
+  background            : transparent $sprite $col*-40px $row*-40px no-repeat;
+  
+  &:hover {
+    background-position : $col*-40px ($row+1)*-40px;
+  }
+}
+
+#footer {
+  position          : relative;
+  clear             : both;
+  background        : $footer_color;
+  
+  .container {
+    position        : relative;
+    width           : $pageWidth - 40px;
+    margin          : 0 auto;  
+  	padding         : 20px;
+  	min-height      : 400px;
+  	z-index         : 10;
+  }
+  
+  nav {
+    width           : $pageWidth - 280px;
+  }
+
+  a {
+    color           : $grey_2;
+		text-decoration : none;
+		
+		&:hover {
+		  color         : $green;
+		}
+  }
+  
+  dl {
+    width               : 170px;
+		height              : 180px;
+		margin              : 0px 10px 0 0;
+		float               : left;
+		position            : relative;
+		font-size           : 14px;
+		
+		dt {
+		  font-weight       : bold;
+  		color             : #FFF;
+  		font-family       : $titleFont;
+  		font-size         : 18px;
+      text-transform    : uppercase;
+      letter-spacing    : 1px;
+		}
+		
+		dd {
+		  width             : 131px;
+  		height            : auto;
+  		margin            : 1px 0px;
+  		position          : relative;
+  		display           : block;
+  		
+      
+      a {
+        font-weight     : normal;
+        font-size       : 11px;
+      }
+		}
+  }
+  
+  #dl-sign-up {
+    width           : 240px;
+    margin          : 0;
+    position        : absolute;
+    right           : 10px;
+    
+    dd {
+      display       : inline-block;
+      width         : 25px;
+      height        : 25px;
+    
+      a {
+        display     : block;
+        text-indent : -10000px;
+        line-height : 25px;
+      }
+    }
+    
+    #dd-sign-up-form {
+      display       : block;
+      width         : 240px;
+      margin        : 5px 0 10px 0;
+      
+      input[type='text'] {
+        background  : $green;
+        color       : #FFF;
+        width       : 222px;
+        border      : none;
+        padding     : 7px;
+      }
+      
+      input[type='submit'] {
+        position    : absolute;
+        top         : 3px;
+        right       : 7px;
+        padding     : 5px 5px 4px 5px;
+        color       : #FFF;
+        line-height : 13px;
+        font-size   : 12px;
+        background  : $grey;
+        text-transform  : uppercase;
+        font-family     : TrumpGothic;
+        
+        &:hover {
+          background  : $grey_2;
+        }
+      }
+      
+      
+    }
+    
+    #dd-facebook {
+      @include icon(5,0);
+    }
+    
+    #dd-twitter {
+      @include icon(5,1);
+    }
+    
+    #dd-pinterest {
+      @include icon(5,2);
+    }
+    
+    #dd-youtube {
+      @include icon(5,3);
+    }
+    
+    #dd-flickr {
+      @include icon(5,4);
+    }
+    
+    #dd-spotify {
+      @include icon(5,5);
+    }
+    
+    #dd-rss {
+      @include icon(5,6);
+    }
+    
+    #dd-instagram {
+      @include icon(5,7);
+    }
+    
+  }
+
+	#copyright {
+	  display         : block;
+	  width           : auto !important;
+		text-align      : left;
+		margin          : 10px 0 0 0;
+		font-size       : 12px;
+	}
+
+	#soletron-app-icon {
+	  margin      : 5px 0 0 0;
+	  width       : 60px;
+	  height      : 60px;
+	  background  : transparent $sprite -160px -360px no-repeat;
+	  text-indent : -10000px;
+	  display     : block;
+	}
+
+}
+
+@-moz-document url-prefix() {
+    /* firefox-only css goes here */
+    #dd-sign-up-form {
+      input[type="submit"] {
+        //        padding : 3px 5px;
+      }
+    }
+}

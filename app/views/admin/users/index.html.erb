@@ -1,0 +1,55 @@
+<div class='toolbar'>
+  <ul class='actions'>
+    <li>
+      <p><%= button_link_to t("new_user"), new_object_url, :icon => 'add', :id => 'admin_new_user_link' %></p>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+
+
+<h1><%= t("listing_users") %></h1>
+
+
+<table class="index" id='listing_users'>
+  <thead>
+  <tr>
+    <%= hook :admin_users_index_headers do %>
+      <th><%= sort_link @search,:email,t("user"),{}, {:title => 'users_email_title'} %></th>
+      <th>
+        <%= hook :admin_users_index_header_actions %>
+      </th>
+    <% end %>
+  </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user|%>
+      <tr id="<%= dom_id user %>">
+        <%- locals = {:user => user} %>
+        <%= hook :admin_users_index_rows, locals do %>
+          <td width="350px" class='user_email'><%=link_to user.email, object_url(user) %></td>
+        <% end %>
+        <td>
+          <%= hook :admin_users_index_row_actions, locals do %>
+            <%= link_to_edit user, :class => "edit" %> &nbsp;
+            <%= link_to_delete user %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate(:previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+
+
+<% content_for :sidebar do %>
+  <div class="box">
+    <% @search = Spree::User.search %>
+    <%= form_for [:admin, @search] do |f| %>
+        <%= t("email:") %>
+        <%= f.text_field :email_contains, :size=>40, :style => "margin-right:15px" %>
+        <button type="submit" class="fancyButton green rightFLoat" style="margin:0px; display:inline">Search</button>
+    <% end %>
+  </div>
+<% end %>

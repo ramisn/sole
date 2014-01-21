@@ -1,0 +1,120 @@
+<% @body_id = 'stores-account' %>
+<h2><%= t(:all_orders) %></h2>
+<p>Total Sales <%= number_to_currency(@total_reimbursement) %></p>
+
+<div>
+  <%= form_for [:merchant_store, @search], :url => main_app.merchant_store_orders_path do |f| %>
+    <table id="merchant-orders-search" class="spreadsheet">
+      <tr>
+        <th>
+          <% if current_user.has_role? 'admin' %>
+            <%= t(:search_all_orders) %>
+          <% else %>
+            <%= t(:search_your_orders) %>
+          <% end %>
+        </th>
+        <th>Keyword</th>
+        <th>Date Start</th>
+        <th>Date End</th>
+        <th></th>
+      </tr>
+      <tr>
+        <td><%= select_tag :search_key, options_for_select(@search_keys, params[:search_key]) %></td>
+        <td><%= text_field_tag :search_content, @search_content, :size=>25 %></td>
+        <td><%= f.text_field :created_at_greater_than, :class => 'datepicker' %></td>
+        <td><%= f.text_field :created_at_less_than, :class => 'datepicker' %></td>
+        <td><button type="submit" class="simpleButton green" style="display:inline-block;">Search</button></td>
+      </tr>
+
+
+    </table>  
+    <%= hidden_field_tag :search_state_equals, params[:search][:state_equals], :name => "search[state_equals]" %>
+    <%= hidden_field_tag :search_state_equals, params[:search][:state_is_not_null] ? "1" : nil, :name => "search[state_is_not_null]" %>
+    <%= hidden_field_tag :search_meta_sort, params[:search][:meta_sort], :name => "search[meta_sort]" %>
+  <% end %>
+</div>
+
+<div id="sort-options">
+  <%= orders_link(params, :all_orders) %>
+  <%= orders_link(params, :open_orders) %>
+  <%= orders_link(params, :past_due_orders) %>
+  <%= orders_link(params, :complete_orders) %>
+  <%= orders_link(params, :closed_late_orders) %>
+  <%= orders_link(params, :canceled_orders) %>
+<%# orders_link(params, :default) %>
+</div>
+
+<table class="spreadsheet" id='listing_orders'>
+  <thead>
+    <tr>
+      <th><%= sort_link @search, :number, t("order_number")  %></th>
+      <th><%= sort_link @search, :completed_at, t("Completed")  %></th>
+      <th><%= t("status") %></th>
+      <th><%= t("customer") %></th>
+      <th><%= t('product_sales_total')%></th>
+      <th><%= t("product_sales_vendor_cut") %></th>
+      <th><%= t("shipping") %></th>
+      <th><%= t("merchant_coupons") %></th>
+      <th><%= t('total_vendor_cut')%></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @orders.blank? %>
+      <tr>
+        <td colspan='7'><%= t("there_are_no_orders_at_this_time") %>.</td>
+      </tr>
+    <% end %>
+    <% @orders.each do |order| %>
+      <tr>
+        <td>
+          <%= link_to order.number, main_app.edit_merchant_store_order_path(@store, order.order) %>
+        </td>
+        <td><%= order.order.completed_at.blank? ? "" : order.order.completed_at.strftime("%m/%d/%Y %I:%M %p") %></td>
+        <td><%= order.state %></td>
+        <td><%= order.order.user.username %></td>
+        <%#*<td align='center'>%>
+          <%#= order.line_items.sum(:quantity) %>
+        <%#*</td>%>
+        <td><%= number_to_currency(order.product_sales) %></td>
+        <td><%= number_to_currency(order.product_reimbursement) %></td>
+        <td><%= number_to_currency(order.shipping) %></td>
+        <td><%#= number_to_currency(order.store_coupons)  #TODO %></td>
+        <td><%= number_to_currency(order.total_reimbursement) %></td>
+        <td class='actions'>
+          <% if !order.canceled? %>
+            <% if !order.shipped? -%>
+              <%= link_to t(:edit), main_app.edit_merchant_store_order_path(@store, order.order.number) %>
+              |
+            <% end -%>
+            <% if current_user.admin? -%>
+              <%= link_to t(:force_cancel), main_app.confirm_force_cancel_merchant_store_order_path(@store, order.order.number) %>
+              |
+            <% end -%>
+            <%= link_to t(:cancel_remaining), main_app.confirm_cancel_remaining_merchant_store_order_path(@store, order.order.number) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div id="paginate">
+  <%= paginate( @orders,
+    :previous_label => "&#171; #{t('previous')}",
+    :next_label => "#{t('next')} &#187;") %>
+</div>
+
+<% begin -%>
+<div id="merchant-orders-qa">
+  <p>How do I fulfill an order? <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=orders_fulfillment", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=orders_fulfillment')}' ,'#000', 700)", :onMouseout => "hideddrivetip()") %></p>
+
+  <p>Can I fulfill only part of an order? <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=orders_partial", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=orders_partial')}' ,'#000', 700)", :onMouseout => "hideddrivetip()") %></p>
+
+  <p>When are orders condisered to be complete, open, or past-due? <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=orders_complete", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=orders_complete')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></p>
+
+  <p>How long do I have to deliver an order to my customer? <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=orders_time", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=orders_time')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></p>
+</div>
+<% rescue %>
+<% end -%>
+

@@ -1,0 +1,68 @@
+form {
+  input[type='text'] {
+    background      : #eee;
+    border          : solid 1px #ccc;
+    padding         : 5px;
+    width           : auto;
+    size            : auto;
+  }
+  
+  textarea {
+    background      : #eee;
+    border          : solid 1px #ccc;
+    padding         : 5px;
+  }
+  
+  input[type='password'] {
+    padding         : 5px;
+    background      : #eee;
+    border          : solid 1px #ccc;
+  }
+  
+  fieldset {
+    position        : relative;
+    margin          : 0 0 10px 0;
+    padding         : 20px;
+    background      : #FFF;
+  }
+  
+  label {
+    font-weight     : bold;
+    font-size       : 11px;
+    display         : block;
+    padding         : 0 0 5px 0;
+  }
+  
+  input[type='submit'] {
+    cursor          : pointer;
+  }
+  
+  
+  legend {
+    font-family : TrumpGothic;
+    font-size   : 24px;
+    text-transform : uppercase;
+  }
+  
+  p {
+    position    : relative;
+    margin      : 0 0 20px 0;
+    
+  }
+  
+  
+  p.inline {
+    display   : inline-block;
+    margin    : 0 10px 10px 0;
+  }
+  
+  
+  .required {
+    label:after {
+      content   : "*";
+      color     : red;
+      padding   : 0 0 0 3px;
+    }
+  }
+  
+}

@@ -1,0 +1,96 @@
+<% preview_window_name = "_preview" %>
+
+  <%= text_field :check, :action, :type => "hidden" %>
+  <table style="width:auto; margin:10px auto;"><tr><td valign="middle" style="vertical-align:middle">
+  <% if (defined? button_text_prev) && !button_text_prev.nil? %>
+    <%= button_link_to "<< Previous", get_product_details_url(@store, @product), {:title => alt_text_prev, :class => "fancyButton blue leftFloat noMargin", :onclick => "return(handleClick(previous));"} %>
+  <% end %>
+  </td><td valign="middle" style="vertical-align:middle">
+  <% if !(defined? preview) || preview %>
+    <%= button_link_to image_tag("/assets/admin/icons/new-window.png", :style => "display:inline; margin-right:3px; position:relative; top:0px; height:10px;") + t(:preview), get_preview_product_url(@product), {:title => t(:preview_alt), :class => "fancyButton blue leftFloat noMargin", :target => "#{preview_window_name}", :onclick => "return(handleClick(preview));"} %>
+  <% end %>
+  </td><td valign="middle" style="vertical-align:middle">
+  <%= button_link_to button_text_next, merchant_store_product_images_url(@store, @product), {:title => alt_text_next, :style => "float:left", :class => " fancyButton green leftFloat noMargin", :onclick => "return(handleClick(next));"} %>
+  </td><td valign="middle" style="vertical-align:middle">
+  <%= t("or") %> <%= link_to t("actions.cancel"), merchant_store_url(params[:store_id]) %>
+</td></tr></table>
+<%= javascript_tag do %>
+function handleClick(fn)
+{
+  try
+  {
+    if ($("input#check_dirty").val() == 0)
+    {
+      return true;
+    }
+    else
+    {
+      var form = document.forms["<%= @form_name %>"];
+      if (form != null)
+      {
+        return(fn(form));
+      }
+      else
+      {
+        return true;
+      }
+    }
+  }
+  catch (e)
+  {
+    alert("An Error has occurred: " + e.description);
+    return true;
+  }
+}
+
+function submitForm(form, action)
+{
+  $('input#check_action').val(action);
+  form.submit();
+  return false;
+}
+
+function next(form)
+{
+  return(submitForm(form, "<%= ACTIONS[:next] %>"));
+}
+
+function previous(form)
+{
+  return(submitForm(form, "<%= ACTIONS[:previous] %>"));
+}
+
+function preview(form)
+{
+  $('input#check_action').val("<%= ACTIONS[:preview] %>");
+  window.open("about:blank", "<%= preview_window_name %>");
+  target = form.target;
+  form.target = "<%= preview_window_name %>";   // form.target isn't XHTML compliant... but I don't know of another way to do this
+  form.submit();
+  form.target = target;
+
+  // reset status on current page since we're staying here, but the form has already been submitted
+  $("input#check_dirty").val(0);
+  try
+  {
+  jQuery.each($("div#divSKUParent").children(), function() {
+    if (this.tagName.toLowerCase() == "input")
+    {
+      $(this).remove();
+    }
+    else
+    {
+      var status_input = $("input#variant_data_status_" + this.id, parent);
+      status_input.val("<%= STATUS[:default] %>");
+    }
+  });
+  }
+  catch (e)
+  {
+    alert(e.description);
+  }
+
+  return false;
+}
+
+<% end %>

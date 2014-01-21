@@ -1,0 +1,25 @@
+<%= form_for(:user, :url => user_session_path) do |f| %>
+
+    <p>
+      <%= f.label(:login, "Username or Email Address:") %>
+      <%= f.text_field(:login, :class => 'title') %>
+    </p>
+
+    <p>
+      <%= f.label :password, t("password:") %>
+      <%= f.password_field 'password', :class => 'title' %>
+    </p>
+
+    <p>
+      <label>
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, t('remember_me'), :style => "display:inline-block" %>
+      </label>
+    </p>
+
+    <p>
+      <%= submit_tag "log on", { :class => 'simpleButton green' } %>
+    </p>
+
+  
+<% end %>

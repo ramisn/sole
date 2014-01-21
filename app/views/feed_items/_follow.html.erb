@@ -1,0 +1,19 @@
+<span>now following <%= link_to feed_item.feedable.following.display_name, entity_profile_path(feed_item.feedable.following) %></span>
+
+<% products = latest_products(feed_item.feedable.following, 3, :type => :favorite) -%>
+
+<% if products and products.size > 0 -%>
+  <div class="mtm">
+    <%= render :partial => "feed_items/product_images", 
+            :locals => {:products => products}%>
+  </div>
+  <div class="options">
+    <% if feed_item.feedable.following.is_a?(Store) -%><%# Will later need to be Store %>
+      Items recently listed by <%= feed_item.feedable.following.display_name %> - <%= link_to 'View all', entity_profile_path(feed_item.feedable.following) %>
+    <% else -%>
+      Items recently added to <%= feed_item.feedable.following.display_name %>'s favorites - <%= link_to 'See more', entity_profile_path(feed_item.feedable.following) +"/favorites" %>
+    <% end -%>
+    <%= link_to "Comment", "#comments", :class => "show-comments" %>
+  </div
+  >
+<% end -%>

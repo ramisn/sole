@@ -1,0 +1,24 @@
+<% @body_id = 'stores-account' %>
+
+<h4><%= t("new_image") %></h4>
+<% @store = Store.find(params[:store_id]) %>
+<% @product = Product.find_by_permalink(params[:product_id]) %>
+<%= form_for([:merchant, @store, @product, @image], :html => { :multipart => true }) do |form| %>
+  <table class="basic-table">
+    <%= render :partial => "form", :locals => { :f => form } %>
+  </table>
+  <table style="width:auto; margin:10px auto;"><tr><td valign="middle" style="vertical-align:middle">
+    <%= button 'Update', nil, 'submit', {:style => "float:none; width:100px;", :class => "fancyButton green inline noMargin" } %></td>
+    <td valign="middle" style="vertical-align:middle"><%= t('or') %> <%= link_to "Cancel", "#", :id => "cancel_link" %></td>
+    </tr></table>
+    
+<% end %>
+
+
+<script type="text/javascript">
+  jQuery('#cancel_link').click(function (event) {
+    jQuery('#new_image_link').show();
+    jQuery('#images').html('');
+  });
+
+</script>

@@ -1,0 +1,14 @@
+<dl class="search-legend">
+  <dd data-type="product" url="<%= spree.products_url %>">Search for Items</dd>
+  <dd data-type="member" url="<%= main_app.search_members_path %>">Search for People</dd>
+  <dd data-type="store" url="<%= main_app.search_stores_path %>">Search for Brands</dd>
+  <dd data-type="blog" url="<%= main_app.redirects_path %>">Search the Blog</dd>
+  <dd data-type="community" url="<%= main_app.redirects_path %>">Search the Community</dd>
+</dl>
+
+<%= form_tag products_url, :id => 'search-form', :role => 'search', :method => :get do %>
+  <%= hidden_field_tag :q, params[:q], :id => 'search-type', :value => '' %>
+  
+  <%= text_field_tag :keywords, params[:keywords], :id => 'search-terms', :value => 'SEARCH' %>
+  <%= submit_tag 'search', :name => nil, :id => 'searchsubmit' %>
+<% end %>

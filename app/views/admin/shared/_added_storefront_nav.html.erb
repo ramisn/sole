@@ -1,0 +1,17 @@
+<% if @store -%>
+  <li class="<%= request.path.index(main_app.store_path(@store)) ? "selected" : "" %>">
+    <%= link_to 'View Profile', main_app.store_path(@store) %>
+  </li>
+  <li class="<%= request.path.index(main_app.edit_merchant_store_path(@store)) ? "selected" : "" %>">
+    <%= link_to 'Edit Profile', main_app.edit_merchant_store_path(@store) %>
+  </li>
+  <li class="<%= request.path.index(merchant_store_profile_image_path(@store)) ? "selected" : "" %>">
+    <%= link_to 'Profile Image', main_app.merchant_store_profile_image_path(@store) %>
+  </li>
+  <li class="<%= request.path.index(main_app.merchant_store_banner_image_path(@store)) ? "selected" : "" %>">
+    <%= link_to 'Banner Image', main_app.merchant_store_banner_image_path(@store) %>
+  </li>
+  <li class="<%= request.path.index(main_app.facebook_page_merchant_store_path(@store)) ? "selected" : "" %>">
+    <%= link_to 'Facebook Page', main_app.facebook_page_merchant_store_path(@store) %>
+  </li>
+<% end -%>

@@ -1,0 +1,8 @@
+  <%="#{address.firstname} #{address.lastname}" %><br/> 
+  <%= "#{address.phone}" %><%= " - Alt: #{address.alternative_phone}" unless address.alternative_phone.blank? %><br/> 
+  <%= ("#{address.company}<br/>").html_safe unless address.company.blank? %> 
+  <%= address.address1 %><br/>
+  <%= ("#{address.address2}<br/>").html_safe unless address.address2.blank? %>
+  <%= "#{address.city}, #{address.state_text}" %>&nbsp;&nbsp;<%= "#{address.zipcode}" %><br/> 
+  <%= " #{address.country.name}" %>
+

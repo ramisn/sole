@@ -1,0 +1,80 @@
+<%= render :partial => 'sidebar'%>
+
+<div id="profile-edit">
+  <h2 class="tab-header">Name and info</h2>
+  
+  <% if @user.facebook_auth -%>
+    <%= form_for(@user, :url => update_profile_account_path, :html => { :method => :put }) do |facebook_form| %>
+      <%= hidden_field_tag "from_facebook[name]", 1 %>
+      <%= hidden_field_tag "from_facebook[username]", 1 %>
+      <%= hidden_field_tag "from_facebook[current_city]", 1 %>
+      <%= hidden_field_tag "from_facebook[gender]", 1 %>
+      <%= hidden_field_tag "from_facebook[birthday]", 1 %>
+      <%= hidden_field_tag "from_facebook[about]", 1 %>
+      <%= facebook_form.submit "Update My Profile with My Facebook Data" %>
+    <% end -%>
+  <% end -%>
+
+  <%= form_for(@user, :url => main_app.update_profile_account_path, :html => { :method => :put }) do |user_form| %>
+
+    <%= render :partial => '/spree/shared/error_messages', :locals => {:target => @user} %>
+    
+    <fieldset>
+      <label>Email address: <span style="margin-left:10px;font-weight:normal"><%= @user.email %></span></label>
+      <label>Username: <span style="margin-left:10px;font-weight:normal"><%= @user.username %></span></label>
+    </fieldset>
+
+    <fieldset class="form-item">
+      <%= user_form.label :name %> 
+      <%= user_pull_from_facebook?(:name) %>
+      
+      <%= user_form.text_field :name, :class => 'title'  %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :current_city, "Current City (example: Seattle, WA)" %>
+      <%= user_pull_from_facebook?(:current_city) %>
+      
+      <%= user_form.text_field :current_city, :class => 'title'  %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :gender %>
+      <%= user_pull_from_facebook?(:gender) %>
+      
+      <%= user_form.select :gender, [['Male','Male'],['Female','Female']], :class => 'title'  %>
+    </fieldset>
+
+    <fieldset class="form-item">
+      <%= user_form.label :birthday %>
+      <%= user_pull_from_facebook?(:birthday) %>
+      
+      <%= user_form.date_select :birthday, :start_year => Time.now.year, :end_year => 1905, :order => [:month, :day, :year], :prompt => { :day => 'Day', :month => 'Month', :year => 'Year' } %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :favorite_brands %>
+      <%= user_form.text_area :favorite_brands, :class => 'title', :rows => 4  %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :favorite_sneakers %>
+      <%= user_form.text_area :favorite_sneakers, :class => 'title', :rows => 4  %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :favorite_street_shops %>
+      <%= user_form.text_area :favorite_street_shops, :class => 'title', :rows => 4  %>
+    </fieldset>
+  
+    <fieldset class="form-item">
+      <%= user_form.label :about %> 
+      <%= user_pull_from_facebook?(:about) %>
+      
+      <%= user_form.text_area :about, :class => 'title'  %>
+    </fieldset>
+  
+    <%= user_form.submit "Update My Profile", :class => "simpleButton green"%>
+  <% end %>
+
+</div>

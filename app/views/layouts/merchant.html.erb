@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns="https://www.w3.org/1999/xhtml">
+  <head>
+  <meta name="google-site-verification" content="0NWjSCNvV2Chs5G0afZREI1PHbH-kGX-4cN8P3UeTHo" />
+    <%= render 'shared/exceptional'%>
+    
+    <%= render '/shared/head' %>
+    
+    <%= stylesheet_link_tag '/assets/store/merchant/all' %>
+    <%= javascript_include_tag '/assets/store/merchant/all' %>
+    <!--<script type='text/javascript' src='https://connect.facebook.net/en_US/all.js?ver=3.1.2'></script> -->
+
+    
+  </head>
+ 
+  
+  <body class="<%= body_class %> merchant" id="<%= @body_id || 'default' %>" data-area="merchant">
+    <div id="dhtmltooltip"></div>
+
+    <div id="filter-spinner-new">
+    	<div>
+    		Loading
+    		<%= image_tag "/assets/spinner.gif" %>
+    	</div>
+    </div>
+    
+    <div id="page" class="<%= defined?(current_user) ? 'logged-in' : '' %>">
+
+      <div id="header">
+
+        <!-- Temp Disabled #TODO  Do you still need this? if yes, any way to bring it back to rails ? If needed please uncomment -->
+        <%#== Net::HTTP.get('soletron.com', '/countdown.php') unless @acting_as %>
+        <%#= Net::HTTP.get('soletron.com', '/impressions.php?pageNameForTracking=shopDrop') %>
+
+       
+        <%= render '/shared/top_nav_bar' %>
+        <div id="header-nav-sub-merchant">
+          <div class="wrap">
+            <h1 id="merchant-store-name"><%= link_to @store.display_name, main_app.account_url %></h1>
+          
+            <ul>
+              <li><a href="<%= main_app.store_path(@store) %>" >view store</a></li>
+              <li>
+                <a href="<%= main_app.merchant_store_orders_path(@store, :open_orders => 1) %>">
+                  <span class="order-count"><%= @store.open_order_count %></span> open orders
+                </a>
+              </li>
+              <li>
+                <%= link_to 'add products', main_app.new_merchant_store_product_url(@store) %>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <%= yield :header %>
+      </div>
+      
+      <div id="main-container" class="<%= content_for?(:sidebar) ? "with-side-bar" : "" %>">
+        
+        <div id="wrapper">
+          
+          <%= render :partial => '/shared/flash_messages' if flash -%>
+          <%= link_to '< Back to Main Page', main_app.merchant_store_path(@store), :id => "back-link"  unless params[:controller] == 'merchant/store' && params[:action] == 'show' %>
+          <div id="sidebar">
+            <%= yield :sidebar %>
+          </div>
+          
+          <div id="content">
+            <%= yield :promo %>
+            <%= content_for?(:content) ? yield(:content) : yield %>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      <%= render :partial => '/shared/footer' %>
+      
+    </div>
+    
+  </body>
+
+  <script type="text/javascript" charset="utf-8">
+  
+    // Google Analytics
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21659901-1']);
+    _gaq.push(['_setDomainName', '.soletron.com']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  
+    // Get Satisfaction
+    
+    var is_ssl = ("https:" == document.location.protocol);
+    var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "https://s3.amazonaws.com/getsatisfaction.com/";
+    document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E")); 
+    
+    var feedback_widget_options = {};
+    feedback_widget_options.display   = "overlay";  
+    feedback_widget_options.company   = "soletron";
+    feedback_widget_options.placement = "right";
+    feedback_widget_options.color     = " #000";
+    feedback_widget_options.style     = "idea";
+    var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+  </script>
+
+</html>

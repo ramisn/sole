@@ -1,0 +1,164 @@
+<% @body_id = 'stores-account' %>
+<div>
+  <%= link_to 'Back to Orders', main_app.merchant_store_orders_path(@store) %>
+</div>
+<h2><%= t(:order) + ' ' + @order.number %></h2>
+
+<div style="padding: 0 0 20px 0" id="merchant-order-summary">
+  <p><%= link_to 'Force Cancel Entire Order', main_app.confirm_force_cancel_merchant_store_order_path(@store, @order.number) , :style => "color:#5FBB30" if current_user.admin? %></p>
+  </p>
+  <p>
+    <label><%= t(:order_date) %></label>
+    <%= (!@order.completed_at.blank? ? @order.completed_at : @order.created_at).strftime("%m/%d/%Y %I:%M %p") %>
+  </p>
+
+  
+  <p><label><%= t(:status) %></label> <%= @orders_store.state %> 
+  
+  <p><label><%= t(:email) %></label> <%=  @order.user and !@order.user.anonymous? ? @order.user.email : @order.email %></p>
+  <% if current_user.admin? -%>
+    <p><label><%= t(:customer_phone) %></label>
+    <%= @order.bill_address.phone if @order.bill_address %>
+    </p>
+    
+  <% end -%>
+  <p><label><%= t(:username) %></label>
+  <%= @order.user.username %></p>
+  
+</div>
+
+<% if @order.ship_address %>
+  <div class='adr' style="padding: 0 0 20px 0" id="merchant-order-address">
+    <p>
+    <label><%= t("ship_address") %></label>
+    <%= render :partial => 'admin/shared/address', :locals => {:address => @order.ship_address} %>
+    </p>
+  </div>
+<% end %>
+
+
+<table class="spreadsheet">
+  <tr><td>
+
+
+
+
+  
+  <%= render "/spree/shared/error_messages", :target => @shipment %>
+  <% if @shipment.blank? %>
+    <p>
+      <%= t(:no_shipment_record) %>
+    </p>
+  <% else %>
+    <%= form_for(@shipment, :url => main_app.ship_merchant_store_order_path(@store, @order.number), :html => { :method => :put }) do |f| %>
+      <%= f.hidden_field :id %>
+      <%= hidden_field_tag :store_id, @store.id %>
+      
+      <table class="index" style="width:100%;">
+        <tr>
+          <th><%= t('include_in_shipment') %></th>
+          <th><%= t('sku') %></th>
+          <th><%= t('item_title') %></th>
+          <th><%= t('description') %></th>
+          <th><%= t('status') %></th>
+          <th><%= t('ship_date') %></th>
+          <th><%= t('tracking_number')%></th>
+          <th><%= t('carrier') %></th>
+          <th></th>
+        </tr>
+        
+        <% @orders_store.inventory_units.each do |inventory_unit| %>
+            <tr>
+              <td style="text-align:center;">
+              <% if !inventory_unit.canceled? -%>
+    		        <%= check_box_tag "inventory_units[#{inventory_unit.id}]",
+                  ((inventory_unit.shipment == @shipment) and !%w(shipped backordered returned).include?(inventory_unit.state)) ? :true : :false,
+                  ((inventory_unit.shipment == @shipment) and !%w(shipped backordered returned).include?(inventory_unit.state)),
+                  { :disabled => %w(shipped backordered returned canceled).include?(inventory_unit.state),
+                  :class => 'inventory_unit'} %>
+              <% end -%>
+              </td>
+              <% if inventory_unit.variant -%>
+                <td valign="top">
+                  <%= inventory_unit.variant.sku %>
+      		      </td>
+                <td>
+                	<%= inventory_unit.variant.product.name %>
+  		          </td>
+                <td>			
+                  <%= raw "(" + variant_options(inventory_unit.variant) + ")" unless inventory_unit.variant.option_values.empty? %>
+                </td>
+              <% else -%>
+                <td colspan='3'></td>
+              <% end -%>
+              <td>
+              	<%= t(inventory_unit.state) %>
+		          </td>
+              <% if inventory_unit.backordered? %>
+                <td colspan='3'><%= t('not_included_in_this_shipment') %></td>
+              <% elsif inventory_unit.shipped? %>
+                <%= puts "**** inventory unit shipment: #{inventory_unit.shipment.id}" %>
+			          <td><%= inventory_unit.shipment.shipped_at.strftime("%m/%d/%Y") if inventory_unit.shipment.shipped_at %></td>
+				        <td><%= inventory_unit.shipment.tracking %></td>
+				        <td><%= inventory_unit.shipment.vendor_shipping_method %>
+			        <% else %>
+			    <td colspan="3"></td>
+              <% end %>
+              <td>
+                <% if inventory_unit.shipped? and current_user.admin? -%>
+                  <%= link_to 'force cancel', main_app.confirm_force_cancel_merchant_store_inventory_unit_path(@store, inventory_unit) %>
+                <% elsif !inventory_unit.canceled? -%>
+                	<%= link_to 'cancel', main_app.confirm_cancel_merchant_store_inventory_unit_path(@store, inventory_unit) %>
+                <% end -%>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+      
+      </td></tr></table>
+      <% if @shipment.ready? %>
+        <table class="index" style="margin: 10px 0 0 0">
+          <tr>
+            <th colspan="6"><%= t("shipment_details") %></th>
+          </tr>
+		  <tr>
+		  	<td><%= t(:special_instructions) %></td>
+		  	<td colspan="5"><%= @shipment.instructions %></td>
+		  </tr>
+          <tr>
+            <td>
+              <%= f.label :shipping_method, t(:preferred_shipping_method) + ":" %>
+            </td>
+            <td>
+              <%= @shipment.shipping_method.name%>
+            </td>
+            <td>
+              <%= f.label :vendor_shipping_method, t(:carrier) + ":" %>
+            </td>
+            <td>
+              <%= f.text_field :vendor_shipping_method, :value => "", :class => 'required' %>
+			</td>
+			<td>
+              <%= f.label :tracking, t(:tracking) + ":" %>				
+			</td>
+            <td>
+              <%= f.text_field :tracking, :class => 'required' %>
+			</td>
+          </tr>
+        </table>
+        <div>
+          <%= submit_tag( 'Mark as Shipped', :confirm => t(:are_you_sure), :class => "fancyButton green") %>
+        </div>
+      <% elsif @orders_store.open? or @orders_store.past_due? -%>
+        <%= submit_tag( 'Complete Order', :confirm => t(:are_you_sure), :class => "fancyButton green") %>
+      <% else %>
+        <p style="padding:10px 0 0 0">
+          <%= t(:no_open_shipments) %>
+        <p>
+      <% end # shipment.can_ship? %>
+    <% end # form_for %> 
+  <% end # shipment.blank? %>
+
+</div>
+
+

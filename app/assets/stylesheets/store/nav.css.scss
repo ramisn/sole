@@ -1,0 +1,126 @@
+@import "store/configuration";
+
+#template {
+  width     : 721px;
+}
+
+#secondary-navigation a {
+  display : block !important;
+}
+
+////////////////////////////////////////
+// Pagination
+////////////////////////////////////////
+
+.pagination {
+  position          : absolute;
+  text-align        : left;
+  width             : auto;
+  right             : 0;
+  padding           : 0;
+  margin            : 0;
+  z-index           : 500;
+  
+  .page {
+    padding         : 0;
+    margin          : 0;
+    background-color: none;
+  }
+  
+  span {
+    color           : $grey;
+  	height          : 28px;
+  	line-height     : 28px;
+  	text-align      : center;
+  	padding         : 0;
+  	margin          : 0;
+  }
+  
+  .current {
+    
+  }
+  
+  a {
+    display         : inline-block;
+  	font-style      : $defaultFont;
+  	font-size       : 12px;
+  	font-weight     : normal !important;
+  	
+  }
+  
+  a:hover {
+    color           : $green;
+  	text-decoration : none;
+  }
+  
+  .page:after {
+    content         : "|"; 
+    padding         : 0 .3em; 
+    color           : $grey;
+  }
+  
+  .current {
+    color           : $green;
+  }
+    
+  .prev, .next {
+  	width           : auto;
+  	background      : none;
+  }
+  
+  .prev a, .next a {  	
+  	width           : auto;
+  	margin-left     : 5px;
+  	margin-right    : 5px;
+  }
+  
+  .first, .last {
+    display         : none;
+  }
+  
+  .disabled {
+    text-transform  : uppercase;
+  }
+  
+  
+
+}
+
+
+#bottom-pagination {
+  position          : relative;
+  height            : 50px;
+  margin            : 0 8px 0 0;
+  
+  .pagination {
+    .span, a {
+      padding       : 7px 15px !important;
+      line-height   : 1em !important;
+      height        : auto !important;
+      background    : $grey;
+      color         : #FFF;
+      margin        : 0;
+    }
+    
+    .current {
+
+      background    : $green !important;
+      color         : #FFF;
+      padding       : 7px 15px !important;
+      line-height   : 1em !important;
+      display       : inline-block;
+      height        : auto;
+    }
+    
+    .next a, .prev a {
+      background    : $grey_2;
+      color         : #FFF;
+    }
+
+    .page:after {
+     content      : none;
+     padding      : 0 !important;
+     margin       : 0;
+    }
+  }
+}

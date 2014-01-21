@@ -1,0 +1,46 @@
+<div id="new_store" style="padding-bottom: 10px"></div>
+
+<div class='toolbar'>
+  <ul class='actions'>
+    <li id="new_store_link">
+      <%= button_link_to t(:new_store), new_object_url, {:remote => true, :icon => 'add', :id => 'new_store'} %>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+
+<h1><%= "#{t("actions.listing")} #{t("stores")}" %></h1>
+
+<div id="new_store"></div>
+
+<table class="index" id='listing_stores'>
+  <tr>
+    <% @search = Spree::Taxon.search %>
+    <th><%= sort_link @search,:name, t("name"), {}, {:title => 'admin_stores_listing_name_title'} %></th>
+    <th></th>
+  </tr>
+<% @collection.each do |store| %>
+  <tr id="<%= dom_id store %>">
+    <td width="350px" class='user_email'><%=link_to store.name_from_taxon, main_app.merchant_store_path(store) %></td>
+    <td class="actions">
+      <%= link_to_with_icon 'edit', 'Edit', edit_admin_store_url(store), :class => 'edit' %>
+      &nbsp;
+      <%= link_to_delete store  %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= paginate(@collection, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+
+<% content_for :sidebar do %>
+  <div class="box">
+    <% @search = Store.search %>
+    <%= form_for [:admin, @search] do |f| %>
+        <%= t("store name:") %>
+        <%= f.text_field :taxon_name_contains, :size=>18, :style => "margin-right:15px" %>
+        <%= t("brand:") %>
+        <%= f.text_field :brands_name_contains, :size=>18, :style => "margin-right:15px" %>
+        <button type="submit" class="fancyButton green rightFLoat" style="margin:0px; display:inline">Search</button>
+    <% end %>
+  </div>
+<% end %>

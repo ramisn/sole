@@ -1,0 +1,35 @@
+<div id="signup-screen" class="modal-screen">
+  <div class="modal-window" >
+    <div class="modal-window-header">
+      <a href="#" class="close">X</a>
+      <h2>Create Your Soletron Account</h2>
+    </div>
+    <div class="modal-window-content">
+      <p>Sign up through your social networks or create your own account</p>
+      <div class="column column-left" >
+        
+        <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget">
+          <div>
+            <fb:login-button perms="email" size="small" >
+              <%= link_to content_tag(:span, 'Login Facebook', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "signup-social-button", :id => "signup-facebook", :title => "Sign Up with Facebook" %>
+            </fb:login-button>
+            <%= link_to content_tag(:span, 'Login Twitter', :class => "fb_button_text"), '#TODO', :class => "signup-social-button", :id => "signup-twitter", :title => "Sign Up with Twitter" %>
+          </div>
+        </div>
+        
+        <dl>
+          <dt>Sign up with Facebook or Twitter and you can:</dt>
+          <dd>Automatically follow brands that you "Like" or "Follow"</dd>
+          <dd>Get instant Facebook notifications when your favorite brands come out with new products</dd>
+          <dd>Gain early access to new products and exclusive Soletron offers</dd>
+          <dd>Share your purchases with your social networks</dd>
+        </dl>
+        
+      </div>
+      <div class="column column-right">
+        <%= render :partial => "/spree/users/new" %>
+      </div>
+      
+    </div><!-- modal-window-content -->
+  </div><!-- modal-window-wrap -->
+</div><!-- modal-window -->

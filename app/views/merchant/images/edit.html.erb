@@ -1,0 +1,22 @@
+<% @body_id = 'stores-account' %>
+
+<%= render :partial => '/spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'admin/shared/product_tabs', :locals => {:current => "Images"} %>
+
+<%= render "/spree/shared/error_messages", :target => @image %>
+
+<%= form_for([:merchant, @store, @product, @image], :html => { :multipart => true }) do |f| %>
+  <table class="basic-table">
+    <tr>
+      <td style="text-align:right"><%= label :img, :thumb, t("thumbnail") %>:</td>
+      <td><%= link_to(image_tag(@image.attachment.url(:mini)), @image.attachment.url(:product)) %></td>
+    </tr>
+    <%= render :partial => "form", :locals => { :f => f } %>
+  </table>
+
+    <table style="width:auto; margin:10px auto;"><tr><td valign="middle" style="vertical-align:middle">
+    <%= button t("update"), nil, 'submit', :style => "float:none", :class => "fancyButton green inline noMargin" %></td>
+    <td valign="middle" style="vertical-align:middle"><%= t('or') %> <%= link_to t("cancel"), merchant_store_product_images_url(@store, @product), :id => "cancel_link" %></td>
+    </tr></table>
+<% end %>

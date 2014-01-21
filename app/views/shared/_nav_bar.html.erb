@@ -1,0 +1,229 @@
+<div id="header-topnav">
+  <div id="header-topnav-left">
+
+    <% if @acting_as -%>
+      <div id="icon-number-wrapper-messages">
+        <a href="" title="7 New Messages">
+          <span>7</span>
+        </a>
+      </div>
+
+      <div id="icon-number-wrapper-status">
+        <% number_notifications = @acting_as.notifications.not_viewed.count -%>
+        <%= link_to content_tag(:span, number_notifications), main_app.notifications_url, :title => "Notifications" %>
+      </div>
+
+      <div id="static-icon-wrapper">
+
+        <%= link_to raw('&nbsp;'), entity_feed_url(@acting_as, :all), :class => 'static-icon', :id => 'mic-icon', :title => 'Solefeed'%>
+       
+        <% if @acting_as.is_a?(Store) %>
+          <%= link_to raw('&nbsp;'), main_app.store_store_url(@acting_as), :class => "static-icon", :id => "basket-icon", :title => "Collection" %>
+        <% elsif @acting_as.is_a?(Spree::User) %>
+          <%= link_to raw('&nbsp;'), main_app.member_collection_url(@acting_as), :class => "static-icon", :id => "hanger-icon", :title => "My Closet" %>
+        <% end %>
+      
+        <%= link_to raw('&nbsp;'), main_app.about_member_url(@acting_as), :class => 'static-icon', :id => 'head-icon', :title => 'Account Profile'%>
+      
+        <% if @acting_as.is_a?(Spree::User) -%>
+          <%= link_to raw('&nbsp;'), main_app.member_feedbacks_url(@acting_as), :id => 'thumb-icon', :class => 'static-icon' %>
+        <% elsif @acting_as.is_a?(Store) -%>
+          <%= link_to raw('&nbsp;'), main_app.store_feedbacks_url(@acting_as), :id => 'thumb-icon', :class => 'static-icon' %>
+        <% end -%>
+
+      </div>
+    <% end -%>
+
+  </div>
+  
+  <div id="header-topnav-right">
+
+    <%= link_to_cart %>
+    <%= render 'shared/login_bar' %>
+
+  </div>
+  
+  <div class="clear"></div>
+
+  <% if current_user -%>
+
+    <div id="float-middle-container-settings">
+      <div id="float-middle-settings">
+        <div id="settings-dropdown" class="settings-dropdown <% if current_user.stores.count == 0 %>non-store-owner<% end %>">
+
+        <div id="settings-dropdown-content-container" <% if current_user.stores.count == 0 %>class="non-store-owner"<% end %>>
+          <div id="settings-dropdown-content">
+            <h2><%= link_to 'Account Settings', account_url %></h2>
+
+            <% if current_user.has_role?("merchant") && !current_user.stores.nil? && current_user.stores.count > 0 %>
+              <div id="settings-dropdown-soletron-stores">
+                Use Soletron as your store
+
+                <% current_user.stores.each do |store| %>
+                  <div class="soletron-store-option">
+                    <%= link_to main_app.merchant_store_url(store) do %>
+
+                      <div class="store-list">
+                        <%= image_tag(profile_picture_url(store, :size => :small)) %>
+                        <span><%= store.name_from_taxon %></span>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+
+              </div>
+            <% end %>
+
+            <h2><%= link_to 'Sign out', spree.destroy_user_session_url %></h2>
+
+          </div>
+        </div>
+      </div><!-- #settings-dropdown -->
+      </div><!-- #float-middle-settings -->
+    </div><!-- #float-middle-container-settings -->
+    
+      <%= javascript_tag do %>
+        $('#settings-icon').click(function() {
+          if ($('#settings-dropdown').is(":visible")) {
+            $('.settings-dropdown').show();
+            $('#settings-dropdown').hide();
+
+          $('a#settings-icon').css({'background-color': 'transparent', 'color': '#FFF'}) ;
+          }else{
+            $('.settings-dropdown').hide();
+            $('#settings-dropdown').show();
+          $('a#settings-icon').css({'background-color': '#FFF', 'color': '#000'}) ;
+
+          }
+            return false;
+        });
+
+
+        $('body').click(function(event) {
+          if ($(event.target).parents('#settings-dropdown').length == 0) {
+            $('.settings-dropdown').hide();
+
+          $('a#settings-icon').css({'background-color': 'transparent', 'color': '#FFF'}) ;
+          }
+        });
+
+      <% end %>
+     
+  <% else %>
+
+
+
+
+
+
+
+
+  <div id="float-middle-container">
+    <div id="float-middle">
+      <div id="signup-container" class="signin-container">
+        <div id="signup-container-inner" class="signin-container-inner">
+
+          <h2 class="header"><span>Create Your Soletron Account</span> <a href="#" class="close-signup"><img src="http://shop.soletron.com/assets/registration-x.png" alt="Close" /></a></h2>
+          <h4>Join with Facebook or create your own account</h4><br />
+          <table width="680" class="signinPopup">
+            <tr>
+              <td width="320" valign="top">
+                <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget">
+                  <div>
+                    <fb:login-button perms="email" size="small" >
+                      <% if controller.controller_name == 'user_sessions' -%>
+                        <%= link_to content_tag(:span, 'Login', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "fb_button fb_button_small" %>
+                      <% else -%>
+                        <%= link_to content_tag(:span, 'Login', :class => "fb_button_text"), '#', :class => "facebook login_popup fb_button fb_button_small" %>
+                      <% end -%>
+                    </fb:login-button>
+                  </div>
+                </div>
+                <div class="fbShpeal">
+                  <strong>By signing up with Facebook you can:</strong><br /><br />
+
+                  Automatically follow brands on Soletron that you "Like" on Facebook<br /><br />
+
+                  Get instant Facebook notifications when your favorite brands come out with new products<br /><br />
+
+                  Gain early access to new products and exclusive Soletron offers<br /><br />
+
+                  Share your purchases with your Facebook Friends<br /><br />
+                </div>
+              </td>
+              <td class="or" valign="middle" width="20">&nbsp;</td>
+              <td width="320">
+                <%= render :partial => "/spree/users/new" %>
+                
+              </td>
+            </tr>
+          </table>
+        </div><!-- #signup-container-inner -->
+      </div><!-- #signup-container -->
+    </div><!-- #float-middle -->
+  </div><!-- #float-middle-container -->
+
+  <%= javascript_tag do %>
+    $('#login_link').click(function() {
+      $('.signin-container').hide();
+      $('#signin-container').show();
+    $('a#login_link').css({'background-image': 'url(http://shop.soletron.com/assets/fb_dropdown_btn_bg-hover.png)', 'color': '#000'}) ;
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('div#screen-shadow').css({'display': 'none'}) ;
+      return false;
+    });
+    $('#signin-link').click(function() {
+      $('.signin-container').hide();
+      $('#signin-container').show();
+    $('a#login_link').css({'background-image': 'url(http://shop.soletron.com/assets/fb_dropdown_btn_bg-hover.png)', 'color': '#000'}) ;
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('div#screen-shadow').css({'display': 'none'}) ;
+    $('input#navbar_username:last').focus();
+      return false;
+    });
+    $('#register_link').click(function() {
+      $('.signin-container').hide();
+      $('#signup-container').show();
+    $('a#login_link').css({'background-image': 'url(http://shop.soletron.com/assets/fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg-hover.png)', 'color': '#000'}) ;
+    $('div#screen-shadow').css({'display': 'block'}) ;
+
+      return false;
+    });
+    $('#signup-link').click(function() {
+      $('.signin-container').hide();
+      $('#signup-container').show();
+    $('a#login_link').css({'background-image': 'url(http://shop.soletron.com/assets/fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg-hover.png)', 'color': '#000'}) ;
+    $('div#screen-shadow').css({'display': 'block'}) ;
+      return false;
+    });
+    $('.close-signup').click(function() {
+      $('.signin-container').hide();
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('div#screen-shadow').css({'display': 'none'}) ;
+      return false;
+    });
+
+    $('body').click(function(event) {
+      if ($(event.target).parents('.signin-container').length == 0) {
+        $('.signin-container').hide();
+    $('a#login_link').css({'background-image': 'url(http://shop.soletron.com/assets/fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('a#register_link').css({'background-image': 'url(http://shop.soletron.com/assets/n-fb_dropdown_btn_bg.png)', 'color': '#FFF'}) ;
+    $('div#screen-shadow').css({'display': 'none'}) ;
+      }
+    });
+
+      $(document).ready(function() {
+              ('#signin-container').ShadowMe();
+              obj = $('input#id_receive_emails');
+              obj.val(obj.attr("checked") ? 1 : 0);
+              obj.click(function(){
+                  $(this).val($(this).attr("checked") ? 1 : 0);
+              });
+    });
+  <% end %>
+    
+  <% end -%>
+</div>
+

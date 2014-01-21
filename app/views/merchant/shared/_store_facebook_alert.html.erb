@@ -1,0 +1,25 @@
+<% if !current_user.facebook_connected? -%>
+  <div id="admin-facebook-alert">
+    <p><%= link_to "You need to connect your account to Facebook to be able to have your actions update your store's Facebook page.", "#", :class => "facebook_pages_login_popup" %></p>
+  </div>
+<% elsif !current_user.manage_facebook_pages? -%>
+  <div id="admin-facebook-alert">
+    <p><%= link_to "You need to give Soletron permission from Facebook to have your actions update your store's Facebook page.", "#", :class => "facebook_pages_login_popup" %></p>
+  </div>
+<% elsif @store && !(@store.respond_to?(:facebook_id) && @store.facebook_id) -%>
+  <div id="" class="flash notice" style="background-image:none; padding-left:10px; font-weight:500;">
+    Did you know that by linking your Soletron store to your Facebook fanpage, you can give all your fans automatic updates on Facebook each time you come out with new products on Soletron? <strong><%= link_to "Click here to find out more.", main_app.facebook_page_merchant_store_path(@store) %></strong>
+  </div>
+<% elsif @store and !current_user.admin? and !@store.managers.find_by_user_id(current_user).facebook_manager? -%>
+  <div id="admin-facebook-alert">
+    <p>You are not listed as a manager of the store's Facebook page. Please contact the page's owner, so that your actions can update the store's Facebook page.</p>
+  </div>
+<% end -%>
+
+<script>
+$(document).ready(function () {
+  $('.facebook_pages_login_popup').click(function(event) {
+    login('<%= authenticate_url('facebook', 'add_scope' => 'manage_pages', 'display' => 'popup') %>', 400, 400);
+  });
+});
+</script>

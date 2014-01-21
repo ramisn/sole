@@ -1,0 +1,58 @@
+Thank you for your order
+
+Order number: <%= @order.number %>
+
+
+Dear <%= @order.billing_firstname %> <%= @order.billing_lastname %>,
+
+Thank you for shopping with SOLETRON!  Please review your order details below.
+
+Please contact the seller(s) directly if you have any questions or comments.
+
+Order Summary
+
+<% for item in @order.line_items %>
+  [Item #<%=item.variant.sku if item.variant %>] <%=item.variant.product.name if item.variant and item.variant.product %> <%= variant_options(item.variant) if item.variant %> | <%=item.quantity%> @ <%= number_to_currency item.price %> = <%= number_to_currency(item.price * item.quantity) %>
+  from <%= item.store.taxon.name %><%= " - #{item.store.email}" if !item.store.email.blank? %>
+  
+<% end %>
+
+Deliver method(s)
+<% @order.shipments.each do |shipment| %>
+	<%= shipment.shipping_method.name %>
+<% end %>
+
+Estimated delivery
+<%= (@order.completed_at + 5.days).strftime("%m/%d/%Y")%> to <%= (@order.completed_at + 10.days).strftime("%m/%d/%Y")%>
+For custom products, please allow up to 4 weeks.
+Order date
+<%= @order.completed_at.strftime("%m/%d/%Y, %I:%M %p") %>
+
+Order summary
+Subtotal: <%= number_to_currency @order.item_total %>
+<% @order.adjustments.each do |adjustment| %>
+  <%= "#{adjustment.label}: #{number_to_currency adjustment.amount}"%>
+<% end %>
+Order Total: <%= number_to_currency @order.total %>
+
+Payment
+<% @order.payments.each do |payment| %>
+	<%= payment.updated_at.strftime("%m/%d/%Y") %> <%= payment.source_type %> <%= number_to_currency(payment.amount) %>
+<% end %>
+
+Shipping address
+<%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.ship_address} %>
+
+Billing address
+<%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.bill_address} %>
+
+Questions or comments?
+Please note that your order is being shipped from an outside warehouse (one that is not owned by Soletron). If you have any questions, please contact the seller directly. You can also send us an email at support@soletron.com, and we will get back to you as soon as we can.
+
+Visit our FAQ: http://soletron.com/forum/faq.php
+
+Thank you for your business.
+
+Soletron is dedicated to providing you with the best customer service possible. If you need to speak with a service professional directly, please call us at 305-793-4430
+
+Soletron has no control over or responsibility for actual transactions or the quality of purchased items, as Soletron does not take possession of or hold purchased items, which are shipped directly from the seller. Sellers are solely responsible for any failure to ship or deliver a purchased item, any non-conformity of the purchased item with its description on the site, or any other defects or problems with a purchased item.

@@ -1,0 +1,10 @@
+<p>Welcome!</p>
+
+<p>Thank you for verifying your email address! Click the URL below to continue checking out.</p>
+ 
+<p><%= link_to @confirmation_link, @confirmation_link, :method => :get %></p>
+ 
+<p>If the above link does not work try copying and pasting it into your browser.
+Or enter <b><%= @confirmation_token %></b> as the activation code where you are prompted.
+If you continue to have problems, please feel free to contact us at 
+<%= link_to 'support@soletron.com', 'mailto://support@soletron.com' %>.</p>

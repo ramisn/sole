@@ -1,0 +1,15 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div class="admin-panel-group-container-container">
+
+<%= form_for ProfileImage.new, :url => main_app.merchant_store_profile_image_path(@store), :html => { :method => :post, :multipart => true } do |image_form| %>
+  <%= render :partial => '/spree/shared/error_messages', :locals => {:target => @profile_image} %>
+  <%# render :partial => 'admin/shared/edit_resource_links' %>
+  <%= render :partial => 'form', :locals => {:f => image_form} %>
+  <p class="form-buttons">
+    <%= image_form.submit 'Add Profile Picture', :class => "simpleButton green" %>
+    <%= t('or') %> <%= link_to t("cancel"), main_app.merchant_store_profile_image_path(@store), :id => "cancel_link" %>
+  </p>
+<% end %>
+
+</div>

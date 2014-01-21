@@ -1,0 +1,102 @@
+/* secondary-navigation
+------------------------*/
+#secondary-navigation a {
+	display: none;
+}
+
+#secondary-navigation img{
+	float: left;
+	margin: 5px 0px 5px 0px;
+	width:150px;
+	border: none;
+}
+
+#secondary-navigation img:hover{
+	opacity: .85; MozOpacity: .85; KhtmlOpacity: .85; filter: alpha(opacity=85);
+}
+
+/* first level
+---------------*/
+ul.sf-menu{
+	position: absolute;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+}
+
+	ul.sf-menu li{
+		list-style-type: none;
+		float: left;
+		margin: 0px 0px 0px 0px;
+	}
+	
+		ul.sf-menu li a{
+			padding: 12px 35px 13px 35px;
+			text-decoration: none;
+			color: #fff;
+		}
+		
+		ul.sf-menu li:hover a,
+		ul.sf-menu li.current-menu-item a,
+		ul.sf-menu li a:hover{
+			text-decoration: none;
+			color: #fff;
+			background: #262626;
+		}
+
+/* 2nd level
+-------------*/
+ul.sf-menu li ul{
+	display: block;
+	position: absolute;
+	margin: 0px;
+	padding: 18px 25px 20px 25px;
+	background: #262626 url('/assets/dd-background.png') right top no-repeat;
+	-moz-border-radius: 0px 0px 8px 8px; -khtml-border-radius: 0px 0px 8px 8px; -webkit-border-radius: 0px 0px 8px 8px; border-radius: 0px 0px 8px 8px;
+}
+
+	ul.sf-menu li ul ul{
+		position: relative;
+		float: left;
+		width: 120px;
+		margin: 0px;
+		padding: 0px;
+		background: none;
+		-moz-border-radius: 0px 0px; -khtml-border-radius: 0px 0px; -webkit-border-radius: 0px 0px; border-radius: 0px 0px;
+	}
+
+	ul.sf-menu li ul ul.middle{
+		margin: 0px 20px 0px 20px;
+	}
+
+	ul.sf-menu li ul ul.right{
+		width: 190px;
+	}
+
+	ul.sf-menu li ul ul li{
+		float: none;
+		/*text-align:left;*/
+		margin: 0px 0px 0px 0px;
+		padding: 0px;
+		color: #fff;
+	}
+	ul.sf-menu li ul ul li span.translation_missing{
+		padding-left:28px;
+	}
+	
+	
+		ul.sf-menu li:hover ul ul li a,
+		ul.sf-menu li ul ul li a{
+			width: 120px;
+			padding: 0px 5px 0px 0px;
+			text-decoration: none;
+			color: #60BB32;
+			background: none;
+		}
+
+		ul.sf-menu li ul ul.right li a{
+			width: 190px;
+		}
+
+		ul.sf-menu li ul ul li a:hover{
+			color: #fff;
+		}

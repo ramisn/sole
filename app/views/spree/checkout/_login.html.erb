@@ -1,0 +1,30 @@
+<% #TODO Reconnect paths of fields_for to match single form page %>
+<% @user = Spree::User.new %>
+
+<fieldset id="checkout-login">
+  
+  
+  <a href="<%= spree.new_user_password_url %>" id="password-forget-link">forgot your password?</a>
+  <strong>Returning Customer Sign-in</strong>
+  
+  <%= fields_for(:existing_user, @user, :url => spree.user_session_path) do |u| %>
+
+    <table>
+      <tr>
+        <td class="field">
+      <%= u.label(:login, "Username or Email") %>
+      <%= u.text_field(:login) %>  
+        </td>
+        <td class="field">
+          <%= u.label :password, t("password") %>
+          <%= u.password_field :password %>
+        </td>
+      </tr>
+    </table>
+
+  <% end %>
+  
+</fieldset>
+
+
+

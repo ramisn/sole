@@ -1,0 +1,12 @@
+<fieldset id="order_details">
+  <div class="clear"></div>
+  <legend><%= t("confirm") %></legend>
+  <%= render :partial => 'shared/order_details', :locals => {:order => @order} %>
+</fieldset>
+
+<hr />
+
+<div class="form-buttons">
+  <%= link_to t("previous"), checkout_state_path('payment'), :class => 'continue simpleButton grey leftFloat', :title => "" %>
+  <input type="submit" class="continue fancyButton green rightFloat" value="<%=t("place_order") %>", :title => ""/>
+</div>

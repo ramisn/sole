@@ -1,0 +1,6 @@
+<div>
+  <%= render :partial => "/spree/shared/products", :locals => {
+    :products => @products.results, :taxon => @taxon, :sort => params[:sort], :title => @collection_title
+  } %>
+  <%= render :partial => "/spree/products/filters" %>
+</div>

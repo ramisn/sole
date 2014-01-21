@@ -1,0 +1,387 @@
+@import "store/configuration";
+
+
+
+#header-nav-sub-merchant {
+  position      : relative;
+  height        : 60px;
+  background    : #726f6f;
+  
+  .wrap {
+    position    : relative;
+    width       : $pageWidth - 40px;
+    margin      : 0 auto;
+  }
+  
+  #merchant-store-name {
+
+    
+    a {
+      font-size       : 30px;
+      color           : #FFF;
+      line-height     : 70px;
+      text-transform  : uppercase;
+      font-family     : TrumpGothic;
+    }
+  }
+  
+  ul {
+    position    : absolute;
+    right       : 0;
+    top         : 0;
+  }
+  
+  li {
+    display     : inline-block;
+    line-height : 60px;
+    height      : 40px;
+    padding     : 10px 10px 10px 10px;
+    color       : #FFF;
+  }
+  
+  a {
+    color       : #FFF;
+  }
+}
+
+
+#merchant-account {
+  
+  .column {
+    width       : 320px;
+    position    : relative;
+    float       : left;
+  }
+  
+  #orders-and-sale {
+    width       : 640px;
+  }
+  
+}
+
+#back-link {
+  position      : relative;
+  display       : block;
+  margin        : 0 0 20px 0;
+}
+
+#store-permalink {
+  position      : relative;
+  margin        : 0 0 20px 0;
+  
+  span {
+    color       : $green;
+  }
+  
+  span, a, input {
+    display     : inline-block;
+  }
+  
+  #permalink {
+    width       : 200px;
+    display     : none;
+    padding     : 1px;
+    border      : none;
+  }
+  
+  a.cancel {
+    display     : none;
+  }
+}
+
+
+#store-form-fieldset-city {
+ display        : inline-block;
+ width          : 500px; 
+ margin         : 0 8px 0 0;
+ 
+ input {
+   width        : 478px !important;
+ }
+}
+
+#store-form-fieldset-state {
+  display        : inline-block;
+  width          : 200px;
+}
+
+
+#merchant-facebook-connect {
+  
+  #merchant-current-fb-account {
+    .fb-avatar {
+      position    : relative;
+      float       : left;
+      width       : 60px;
+      margin      : 10px;
+    }
+    
+    h4 {
+      line-height : 60px;
+      padding     : 10px;
+    }
+  }
+
+  
+  
+}
+
+
+#stores-account {
+  
+  
+  #sort-options {
+    position        : relative;
+    margin          : 20px 3px 3px 3px;
+    
+    a {
+      padding       : 5px;
+      display       : inline-block;
+      
+    }
+    
+    a:hover, a.selected {
+      background    : $green;
+      color         : #FFF;
+      text-decoration : none;
+    }
+  
+
+  }
+  
+  #merchant-orders-search {
+    background    : none !important;
+    text-align    : left;
+    margin        : 20px 0 20px 0;
+    
+    input[type="text"], textarea {
+      padding       : 4px;
+    }
+    
+    .ui-datepicker-trigger {
+      margin        : 0 0 0 5px;
+    }
+    
+    td, th {
+      padding       : 5px 15px 0 0;
+    }
+    
+    table, tr, td, th, thead, tbody {
+      background    : none !important;
+      
+    }
+    
+    th {
+      text-align    : center;
+    }
+  }
+  
+  #merchant-orders-qa {
+    margin      : 50px 0 50px 0;
+    p {
+      padding : 5px 0;
+    }
+  }
+}
+
+#spree_product_form {
+  
+  label {
+    padding   :0 0 5px 0;
+  }
+
+  h5 {
+    font-size : 14px;
+    margin    : 0 0 20px 0;
+  }
+  
+  
+  input[type="text"], textarea {
+    width       : 900px;
+  }
+  
+  .field_with_errors {
+    input[type="text"], textarea, select {
+      border: $error_border_color solid 1px;
+    }
+  }
+
+  select.field_with_errors {
+    border: $error_border_color solid 1px;
+  }
+
+  .formError {
+    color: $error_text_color;
+  }
+  
+  #product-form-price-availability {
+    input {
+      width     : 300px;
+      margin    : 0 10px 0 0;
+    }
+  }
+  
+  #product-form-sku-info {
+    
+    .inline {
+      width     : 200px;
+      margin    : 0 10px 0 0;
+      display   : inline-block;
+      vertical-align: top;
+      
+      input {
+        width   : 185px;
+      }
+    }
+    
+    select {
+      min-width   : 198px;
+      height      : 25px;
+    }
+
+    .remove-size-and-quantity {
+      display: inline-block;
+      padding-top: 27px;
+    }
+    
+    .remove {
+      background  : #000;
+      color       : #FFF;
+      text-align  : center;
+      display     : block;
+      width       : 20px;
+      line-height : 20px;
+      font-size   : 14px;
+      font-weight : bold;
+      position    : absolute;
+      right       : 0;
+      top         : 0;
+    }
+    
+    .options {
+      text-align  : right;
+    }
+  }
+  
+  #variant_data_0 {
+    .remove {
+      display     : none;
+    }
+  }
+  
+  .radios span {
+    padding      : 0 20px 0 0;
+  }
+}
+
+#product-form-images {
+  position      : relative;
+  overflow      : hidden;
+  
+  .inline {
+    position    : relative;
+    float       : left;
+    width       : 160px;
+    margin      : 0 70px 0 0;
+    text-align  : center;
+  }
+  
+  .image {
+    position    : relative;
+    background  : #eee;
+    padding     : 0;
+    height      : 160px;
+    width       : 160px;
+    border      : none;
+  }
+  
+  input {
+    position    : absolute;
+    width       : 120px;
+    margin      : 60px auto;
+
+    -moz-opacity: 0;
+    opacity     : 0;
+    z-index     : 2;
+  }
+  
+  .add {
+    width       : 120px;
+    margin      : 70px auto;
+    display     : block;
+  }
+  
+  .options {
+    padding     : 5px;
+    display     : none;
+  }
+  
+  .edit:after {
+    content     : '|'; 
+    padding     : 0 0 0 4px;
+  }
+
+  .uploaded-image {
+    position: relative;
+    .delete-uploaded-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-indent: 500px;
+      overflow: hidden;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background: url("/assets/white-x.png") no-repeat;
+    }
+  }
+    
+  .image-uploads {
+    .upload-section {
+      position: relative;
+      .uploading-file {
+        margin: 40% 0 0 17%;
+      }
+      .qq-upload-button {
+        cursor: pointer;
+        input[type='file'] {
+          cursor: pointer;
+          width: auto;
+        }
+      }
+      .uploading-icon {
+        width: 100%;
+        margin-top: 45%;
+        text-align: center;
+        img {
+          width: auto;
+        }
+      }
+    }
+    .inline {
+      margin-right: 93px;
+    }
+  }
+}
+
+#product-form-actions {
+  text-align    : right;
+}
+
+.errorExplanation {
+  h2 {
+    color: $error_text_color;
+  }
+}
+
+
+#merchant-order-summary, #merchant-order-address {
+  label {
+    display     : block;
+    font-weight : bold;
+  }
+  
+  p {
+    padding     : 0 0 5px 0;
+  }
+}

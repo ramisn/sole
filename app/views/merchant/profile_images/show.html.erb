@@ -1,0 +1,21 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div class="admin-panel-group-container-container">
+
+  <h2><%= t("profile_image_for") %>&nbsp;<%= @store.name_from_taxon %> </h2>
+
+  <div id="new_profile_image"></div>
+  <div id="edit_profile_image"></div>
+
+  <%= image_tag(store_profile_picture_url(@store))%>
+
+  <div class="options" style="display:block;padding:20px 0 0 0">
+   <% if @store.profile_image -%>
+      <%= link_to "Edit Picture", main_app.edit_merchant_store_profile_image_path(@store) %> | 
+      <%= link_to "Delete Picture", main_app.merchant_store_profile_image_path(@store), :method => :delete %>
+    <% else -%>
+      <%= link_to "New Picture", main_app.new_merchant_store_profile_image_path(@store), :class => "simpleButton green" %>
+    <% end -%>
+  </div>
+</div>
+

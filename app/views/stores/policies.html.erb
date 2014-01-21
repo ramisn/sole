@@ -1,0 +1,31 @@
+<div id="product-page-styles"  class="text-page">
+  <div>
+  <h2 class="profile"><%= "#{@store.name_from_taxon}  #{t(:store_policies)}" %></h2>
+
+  <dl>
+    <dt class="title1">Phone Number</dt>
+    <dd>
+      <%= @store.customer_support_phone %>
+    </dd>
+      
+    <dt class="title1">Email</dt>
+    <dd>
+      <%= @store.customer_support %>
+    </dd>
+     
+    <dt class="title1">Shipping &amp; Return Policies</dt>
+    <dd>
+      <h5 style="padding:10px 0 0 0">How to contact us</h5>
+      <p>If you have a question about your order, please contact us via the Customer Support email address or phone number provided above.</p>
+      <div class="wpp-post-title">Delivery times</div>
+      <p>Regular items are generally shipped within two business days of purchase. They should arrive approximately 10 business days after the date of purchase.</p>
+      <p>If you bought an item and it has not arrived within the estimated delivery date emailed to you at purchase, please contact us directly, as our inventory is not shipped from Soletron's warehouse. Please note that some custom and hand-crafted items (such as custom sneakers and hats) often require extended delivery of up to 4 weeks because those items are made specifically and specially for you.</p>
+      <h5 style="padding:10px 0 0 0">Returns and refunds</h5>
+      <p>Soletron currently has a 'no refund' policy. If the item delivered to you is damaged or is not the item that you ordered, please contact us AND Soletron immediately after you receive the item, as all return and/or refund requests for damaged/wrong items must be submitted to us within 14 days after the date of purchase.</p>
+      <p>Emails to Soletron regarding orders should be directed to <%= link_to "support@soletron.com", "mailto:support@soletron.com" %>.</p>
+      <div class="wpp-post-title">At no point does Soletron take possession of or hold purchased items.</div>
+    </dd>
+      
+    </dl>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<%= render :partial => '/spree/users/sidebar' %>
+
+<div id="profile-image">
+  <h2 >Profile Picture</h2>
+
+  <%= if current_user then image_tag(profile_picture_url(current_user)) else "" end %>
+
+  <% if current_user.profile_image -%>
+    <p><%= link_to 'Edit Image', main_app.edit_account_profile_image_path %></p>
+    <p><%= link_to 'Delete Image', main_app.account_profile_image_path, :method => :delete %></p>
+  <% else -%>
+    <p style="padding:20px 0 0 0"><%= link_to 'New Image', main_app.new_account_profile_image_path, :class => "simpleButton green" %></p>
+  <% end -%>
+</div>
+
+
+

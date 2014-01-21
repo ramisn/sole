@@ -1,0 +1,45 @@
+<h3 class="profile"><%= get_display_name(@parent)%> Feedback</h3>
+
+<%= render 'header' %>
+
+<p style="position:relative; left:2px;">
+  <%= link_to 'Date - latest first', entity_feedback_path(@parent, :done, :sort_by => 'date_latest'), :class => "feedback-filter #{@filter == 'date_latest' ? 'selected' : ''}" %> 
+  <%= link_to 'Date - oldest first', entity_feedback_path(@parent, :done, :sort_by => 'date_oldest'), :class => "feedback-filter #{@filter == 'date_oldest' ? 'selected' : ''}" %> 
+  <%= link_to 'Rating - High to Low', entity_feedback_path(@parent, :done, :sort_by => 'rating_high_low'), :class => "feedback-filter #{@filter == 'rating_high_low' ? 'selected' : ''}" %> 
+  <%= link_to 'Rating - Low to High', entity_feedback_path(@parent, :done, :sort_by => 'rating_low_high'), :class => "feedback-filter #{@filter == 'rating_low_high' ? 'selected' : ''}" %>
+</p>
+
+<table id="feedback-table">
+  <thead>
+    <tr>
+      <th class="entity"><%= @parent.is_a?(Store) ? 'Customer' : 'Store' %></th>
+      <th class="rating">Rating</th>
+      <th class="feedback">Feedback</th>
+      <th class="date">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr><td colspan="4">&nbsp;</td></tr>
+    <% @feedbacks.each do |feedback| -%>
+      <tr>
+        <td align="left">
+          <% if @parent.is_a?(Store) and feedback.order -%>
+            <%# Display user%>
+            <p><%= link_to image_tag(profile_picture_url(feedback.order.user, :size => :small), :width => 40, :height => 40), entity_profile_path(feedback.order.user), :style => "margin:0px 4px 0px 0px; position:relative; top:0px;" %><span style="position:relative; top:-15px;"><%= link_to feedback.order.user.display_name, entity_profile_path(feedback.order.user), :style => "line-height:20px;" %></span></p>
+          <% elsif @parent.is_a?(Spree::User) and feedback.store -%>
+            <%# Display merchant%>
+            <p><%= link_to image_tag(profile_picture_url(feedback.store, :size => :small), :width => 40, :height => 40), entity_profile_path(feedback.store), :style => "margin:0px 4px 0px 0px; position:relative; top:0px;" %><span style="position:relative; top:-15px;"><%= link_to feedback.store.display_name, main_app.store_path(feedback.store) %></span></p>
+            <!--<p class="store-rating"><%= star_feedback_rating(feedback.store.feedback_rating) %></p>-->
+          <% end -%>
+        </td>
+        <td align="left"><p class="store-rating" style="margin-left:0px; text-align:left;"><%= star_feedback_rating(feedback.rating) %></p></td>
+        <td align="left"><%= feedback.message %></td>
+        <td align="left"><p><%= feedback.feedback_left_at.strftime('%b %e, %Y') %></p></td>
+      </tr>
+      <tr><td colspan="4">&nbsp;</td></tr>
+      <tr><td colspan="4" style="border-top:#CCC 1px dashed;">&nbsp;</td></tr>
+    <% end if @feedbacks-%>
+  </tbody>
+</table>
+
+<%= paginate @feedbacks %>

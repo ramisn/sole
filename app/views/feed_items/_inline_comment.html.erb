@@ -1,0 +1,10 @@
+<div class="comment">
+  <%= link_to 'x', comment_path(comment), :method => :delete, :class => 'closeBtn' if @acting_as == comment.commenter %>
+  <%= link_to image_tag(profile_picture_url(comment.commenter, :size => :small), :width => 20, :height => 20), entity_profile_path(comment.commenter), :class => 'inline-comment-picture' %>
+  
+  <div class="comment-content">
+    <%= link_to comment.commenter.display_name, entity_profile_path(comment.commenter), :class => 'username'%>
+    <span><%= comment.message %></span>
+    <div class="timeStamp">posted <%= time_ago_in_words(comment.created_at) %> ago</div>
+  </div>
+</div>

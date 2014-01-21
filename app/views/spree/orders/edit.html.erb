@@ -1,0 +1,101 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'store/checkout' %>
+<% end %>
+
+<div id="shopping-cart">
+  
+  <div id="shopping-cart-header">
+    <div class="seals" style="position:absolute;right:0;">
+      <h4 id="free-shipping-promo">FREE SHIPPING OVER $50</h4>
+      <script type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=I3O3OXmF5HvQwmAKrCe2GPNPsL7ohFqZej1LsUhxwDSdgJWtrEwZ"></script>
+    </div>
+    <h2>Your Cart</h2>
+  </div>
+  
+  <% if @order.line_items.empty? %>
+    <p><%= t("your_cart_is_empty") %>!</p>
+    <%= link_to "CONTINUE SHOPPING", spree.products_path, :class => "simpleButton grey" %>
+  <% else %>
+    
+    <%= form_for(@order, :url => update_cart_path, :html=>{:id=>'updatecart'}) do |order_form| %>
+      <table class="cart">
+        <thead>
+          <tr style="font-size:11px">
+            <th><%= t("item") %></th>
+            <th><%= t("description") %></th>
+            <th><%= t("Estimated Delivery") %></th>
+            <th><%= t("unit_price") %></th>
+            <th><%= t("quantity") %></th>
+            <th><%= t("subtotal") %></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="shopping-cart-line-items">
+          <%= render :partial => 'form', :locals => {:order_form => order_form, :condensed => false } %>
+        </tbody>
+        <tbody id="shopping-cart-summary">
+          
+          <tr id="shopping-cart-order-discount">
+            <td colspan="7">
+              <%# Shane wants this to be a total of how much you're saving by buying something on sale. %>
+              <%= "You're saving #{number_to_currency(Soletron::SavingsCalculator.compute(@order))}" %>
+            </td>
+          </tr>
+          <tr class="mod">
+            <td colspan="7" >
+              Shipping: <%= number_to_currency(@order.ship_total) %>
+            </td>
+          </tr>
+          <tr class="mod">
+            <td colspan="7">
+              Sales Tax: <%= number_to_currency(@order.tax_total) %>
+            </td>
+          </tr>
+
+          <tr id="shopping-cart-order-total" >
+            <td colspan="7" style="padding-top:30px">
+              <%= link_to "CONTINUE SHOPPING", spree.products_path, :class => "simpleButton grey" %>
+              <strong>Order Subtotal: <%= "$#{@order.total}" %></strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+    <% end %>
+    
+    <div id="shopping-cart-checkout-options">
+      <%= link_to("Checkout with Credit Card", spree.checkout_path,
+      :class => 'simpleButton green', :id => 'shopping-cart-checkout-link', :title => "Checkout using your credit card") %>
+      
+      <%= link_to "", "#TODO", :id => "shopping-cart-checkout-with-paypal-link", :title => "Checkout using Paypal"%>
+    </div>
+    
+  <% end %>
+  
+  <div class="section">
+    <h4>Need Help?</h4>
+    <p>Need help? Give us a call at (305) 793-4430 or email us at <a href="mailto:support@soletron.com">support@soletron.com</a></p>
+  </div>
+  
+  
+  <% 
+    # TODO : Create an algorithm to get suggested products based on order items
+    # Please move this logic to the appropriate controller
+    @suggested_products = Spree::Product.randomize.limit(5) 
+  %>
+    
+  <%= render :partial => "/spree/products/section", :locals => {
+    :section_id     => 'shopping-cart-suggested-products',
+    :section_title  => "Add these to your order",
+    :products       => @suggested_products
+  }%>
+
+  <%= render :partial => "/spree/checkout/seals" %>
+
+</div>
+
+<script type="text/javascript">
+  $(document).bind("cart:update", function(event, data) {
+    location.href = location.href;
+  });
+</script>

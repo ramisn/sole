@@ -1,0 +1,23 @@
+<%= render :partial => 'sidebar' %>
+
+<div id="password-edit">
+  <%= render "/spree/shared/error_messages", :target => @user %>
+
+  <h2>Change your email/password</h2>
+
+  <% if Rails.env == "development"
+    form_url = user_path(@user)
+  else
+    form_url = user_path(@user, {:only_path => false, :protocol => 'https'})
+  end %>
+  
+  <%= form_for(:user, :url => form_url, :html => { :method => :put }) do |f| %>
+    <%= render '/spree/shared/user_form', :f => f, :show_username => false %>
+  
+    <p>
+      <%=submit_tag t("update"), :class => "simpleButton green" %>
+    </p>
+  <% end %>
+  
+</div>
+

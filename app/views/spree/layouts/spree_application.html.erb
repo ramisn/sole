@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns="https://www.w3.org/1999/xhtml">
+  <head>
+  <meta name="google-site-verification" content="0NWjSCNvV2Chs5G0afZREI1PHbH-kGX-4cN8P3UeTHo" />
+    <%= render 'shared/exceptional'%>
+        
+    <%= render '/shared/head' %>
+    <!--<script type='text/javascript' src='https://connect.facebook.net/en_US/all.js?ver=3.1.2'></script> -->
+  </head>
+  <% area = params[:controller].split('/').last.downcase %>
+  
+  <body class="<%= body_class %> <%= area %> " id="<%= @body_id || 'default' %>" data-area="<%= area %>" >
+    <div id="dhtmltooltip"></div>
+
+    <div id="filter-spinner-new">
+    	<div>
+    		Loading
+    		<%= image_tag "/assets/spinner.gif" %>
+    	</div>
+    </div>
+    <div class="saving-spinner" style="display:none">
+    	<div>
+          <span class="text">Adding</span>
+          <%= image_tag "/assets/spinner.gif" %>
+    	</div>
+    </div>
+    
+    <div id="page" class="<%= defined?(current_user) ? 'logged-in' : '' %> <%= area %> <%= @page_class || "" %>">
+
+      <div id="header">
+
+        <!-- Temp Disabled #TODO  Do you still need this? if yes, any way to bring it back to rails ? If needed please uncomment -->
+        <%#== Net::HTTP.get('soletron.com', '/countdown.php') unless @acting_as %>
+        <%#= Net::HTTP.get('soletron.com', '/impressions.php?pageNameForTracking=shopDrop') %>
+
+       
+        <%= render '/shared/top_nav_bar' %>
+        <%= render '/shared/sub_nav' %>
+        
+        <%= yield :header %>
+      </div>
+      
+      <div id="main-container" class="<%= content_for?(:sidebar) ? "with-side-bar" : "" %>">
+        
+        <div id="wrapper">
+          <%= breadcrumbs(@taxon, '\\\\') if @taxon %>
+          <%= render :partial => '/shared/flash_messages' if flash -%>
+          
+          <div id="sidebar">
+            <%= yield :sidebar %>
+          </div>
+          
+          <div id="content">
+            <%= yield :promo %>
+            <%= content_for?(:content) ? yield(:content) : yield %>
+          </div>
+          
+        </div>
+        
+      </div>
+      <%= puts "FOOTER"%>
+      <%= render :partial => '/shared/footer' %>
+      
+    </div>
+    
+  </body>
+
+  <% if Rails.env == 'production' %>
+  
+    
+    <script type="text/javascript" charset="utf-8">
+    
+      // Google Analytics
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-21659901-1']);
+      _gaq.push(['_setDomainName', '.soletron.com']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    
+      // Get Satisfaction
+      
+      var is_ssl = ("https:" == document.location.protocol);
+      var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "https://s3.amazonaws.com/getsatisfaction.com/";
+      document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E")); 
+      
+      var feedback_widget_options = {};
+      feedback_widget_options.display   = "overlay";  
+      feedback_widget_options.company   = "soletron";
+      feedback_widget_options.placement = "right";
+      feedback_widget_options.color     = " #000";
+      feedback_widget_options.style     = "idea";
+      var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+    </script>
+    
+
+  <% end %>
+  
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  
+</html>
+
+<% if @checkout_process %>
+  <%= render :partial => '/spree/products/checkout' %>
+<% else %>
+  <%= render :partial => '/spree/products/main', :locals => { :ssl_page => @ssl_page } %>
+<% end %>
+

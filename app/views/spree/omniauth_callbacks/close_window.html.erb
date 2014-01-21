@@ -1,0 +1,49 @@
+<% if flash.size > 0 -%>
+<!DOCTYPE HTML>
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+<style>
+
+.flash {
+  margin: 0px;
+  padding: 10px 40px;
+  overflow:hidden;
+}
+
+.flash.facebook {
+  background-color: #d44;
+  border: solid 1px #e22;
+}
+
+.flash.facebook a {
+  color: #000;
+  font-weight: bold;
+}
+
+.flash.error {
+  background-color: #FCC;
+  border: solid 1px #C66;
+}
+
+.flash.notice {
+  background-color: #FFC;
+  border: solid 1px #CC6;
+}
+
+.flash.success {
+  background-color: #CFC;
+  border: solid 1px #6C6;
+}
+
+</style>
+</head>
+<body>
+  <%= render :partial => 'shared/flash_messages' %>
+</body>
+</html>
+<% else -%>
+  <script type="text/javascript">
+    window.close();
+    window.opener.location.reload(true);
+  </script>
+<% end -%>

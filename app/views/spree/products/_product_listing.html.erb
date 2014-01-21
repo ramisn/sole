@@ -1,0 +1,58 @@
+<li class="product-item <%= !product.is_a?(UserProduct) && product.sale? ? 'sale' : '' %> <%= defined?(klass) ? klass : '' %>" id="product_<%= product.id %>">
+
+  <div class="promo"></div>
+
+  <div class="image">
+    <div class="overlay">
+      <h4><a href="<%= spree.product_path(product)  %>">VIEW ITEM</a></h4>
+      <div class="product-overlay-sizes">
+        <% if !product.is_a?(UserProduct) %>
+          <% product.variants.each_with_index do |variant,i| %>
+            <% if variant.count_on_hand > 0 && !variant.size_options.empty? %>
+              <%= link_to variant.size_options[0].presentation, "#add-to-cart", :class => "size select-variant", "data-variant_id" => variant.id %>
+            <% end -%>
+          <% end -%>
+        <% end -%>
+      </div>
+      <!-- #TODO, change this url to add product to the cart automatically-->
+      <% 
+        count = product.variants.inject(0){|r, v| r += v.count_on_hand if v.count_on_hand.present?; r}
+        without_size = count > 0 && !product.require_size?        
+        variant_attr = without_size ? "data-variant_id=#{product.variants.first.id}" : ""
+      %>
+      <a href="<%= spree.product_path(product) %>" class="simpleButton green add-to-cart add-product-to-cart" title="add this product to your cart" data-product_id="<%= product.id %>" <%= variant_attr %> >Add to cart</a>
+
+      <div class="social-icons addthis_toolbox addthis_default_style">
+
+        <a class="addthis_button_facebook"></a>
+        <a class="addthis_button_pinterest_share" title="Send to Pinterest"></a>
+        <a class="addthis_button_twitter"></a>
+        <a class="addthis_button_email"></a>
+        <a class="addthis_button_compact"></a>
+        <% if product.store %>
+          <%= link_to 'product home', main_app.store_path(product.store), :class => 'product-home-link' %>
+        <% end -%>
+        <%= link_to_favorite(product) if current_user  %>
+      </div>
+
+    </div>
+    <%= show_image(product, featured, (defined?(large) ? large : :market)) %>
+  </div>
+  <div class="metadata">
+   
+    <% if product.store %>
+    <a href="<%= main_app.store_path(product.store) %>" class="seller-avatar" title="<%= product.store.name %>"><img src="<%= store_profile_picture_url(product.store, {:size => :mini}) %>"  alt="<%= product.store.name %>" /></a>
+    <div class="wrap">
+      <h5><%= product_sale_name_link(product) %></h5>
+      <p class="description"><%= store_name_link product %></p>
+      <div class="price">
+        <% if product.sale? %>
+          <span class="original"><%= product_price(product, :uniform_price => false) %></span>
+        <% end -%>
+          <%= product_price(product) %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+
+</li>

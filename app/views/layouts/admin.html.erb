@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+  <%= render 'admin/shared/headsoletron' %>
+  <!--<script type='text/javascript' src='https://connect.facebook.net/en_US/all.js?ver=3.1.2'></script> -->
+  <%= yield :head %>
+  <%= render :partial => 'shared/login_popup'%>
+  
+  	<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "https://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";  
+  feedback_widget_options.company = "soletron";
+  feedback_widget_options.placement = "right";
+  feedback_widget_options.color = " #000";
+  feedback_widget_options.style = "idea";
+   var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+</head>
+<body class="<%= body_class %> admin <%= if @fullsize then 'fullsize' end %>" id="<%= @body_id || 'default' %>" style="line-height:16px; font-size:16px;">
+
+
+<div id="dhtmltooltip"></div>
+<script type="text/javascript">
+
+/***********************************************
+* Cool DHTML tooltip script- © Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+var offsetxpoint=-60 //Customize x offset of tooltip
+var offsetypoint=20 //Customize y offset of tooltip
+var ie=document.all
+var ns6=document.getElementById && !document.all
+var enabletip=false
+if (ie||ns6)
+var tipobj=document.all? document.all["dhtmltooltip"] : document.getElementById? document.getElementById("dhtmltooltip") : ""
+
+function ietruebody(){
+return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
+}
+
+function ddrivetip(thetext, thecolor, thewidth){
+if (ns6||ie){
+if (typeof thewidth!="undefined") tipobj.style.width=thewidth+"px"
+if (typeof thecolor!="undefined" && thecolor!="") tipobj.style.backgroundColor=thecolor
+tipobj.innerHTML=thetext
+enabletip=true
+return false
+}
+}
+
+function positiontip(e){
+if (enabletip){
+var curX=(ns6)?e.pageX : event.clientX+ietruebody().scrollLeft;
+var curY=(ns6)?e.pageY : event.clientY+ietruebody().scrollTop;
+//Find out how close the mouse is to the corner of the window
+var rightedge=ie&&!window.opera? ietruebody().clientWidth-event.clientX-offsetxpoint : window.innerWidth-e.clientX-offsetxpoint-20
+var bottomedge=ie&&!window.opera? ietruebody().clientHeight-event.clientY-offsetypoint : window.innerHeight-e.clientY-offsetypoint-20
+
+var leftedge=(offsetxpoint<0)? offsetxpoint*(-1) : -1000
+
+//if the horizontal distance isn't enough to accomodate the width of the context menu
+if (rightedge<tipobj.offsetWidth)
+//move the horizontal position of the menu to the left by it's width
+tipobj.style.left=ie? ietruebody().scrollLeft+event.clientX-tipobj.offsetWidth+"px" : window.pageXOffset+e.clientX-tipobj.offsetWidth+"px"
+else if (curX<leftedge)
+tipobj.style.left="5px"
+else
+//position the horizontal position of the menu where the mouse is positioned
+tipobj.style.left=curX+offsetxpoint+"px"
+
+//same concept with the vertical position
+if (bottomedge<tipobj.offsetHeight)
+tipobj.style.top=ie? ietruebody().scrollTop+event.clientY-tipobj.offsetHeight-offsetypoint+"px" : window.pageYOffset+e.clientY-tipobj.offsetHeight-offsetypoint+"px"
+else
+tipobj.style.top=curY+offsetypoint+"px"
+tipobj.style.visibility="visible"
+}
+}
+
+function hideddrivetip(){
+if (ns6||ie){
+enabletip=false
+tipobj.style.visibility="hidden"
+tipobj.style.left="-1000px"
+tipobj.style.backgroundColor=''
+tipobj.style.width=''
+}
+}
+
+document.onmousemove=positiontip
+
+</script>
+<div id="screen-shadow">&nbsp;</div>
+    <div id="filter-spinner-new">
+		<div>
+			<% if rand(2) == 1 %>
+			Oh, u fancy, huh? 
+			<% else %>
+			U know my steeez
+			<% end %>
+			<%= image_tag "spinner.gif" %>
+		</div>
+    </div>
+  <div id="body-header">
+    <div id="main-container">
+      <div id="main-container-float">
+        <div id="header-container">
+          <%= render 'shared/nav_bar' %>
+          <div id="progress"><%= image_tag '/assets/progress.gif' %> <%= t('loading') %>...</div>
+
+          <!-- BUGBUG - aslepak: remove from production version! -->
+          <div id="admin-menu" style="display:none">
+            <ul data-hook="admin_tabs">
+              <%= render 'admin/shared/tabs' %>
+            </ul>
+            <br class="clear" />
+          </div>
+        </div>
+        <div id="template-container">
+          <div id="general-content-container">
+            <%= render :partial => 'shared/flash_messages' %>
+              <% if !@fullsize -%>
+              <div id="left-admin-column-container-container" style="margin-top: 10px">
+                  <%= yield(:sidebar_top)%>
+                  <div id="left-admin-column-container">
+                      <div id="left-admin-column">
+                        <%= link_to t(:soletron_home), root_url %><br/><br />
+                        <%= link_to t(:admin_panel_home), admin_url %><br/><br />
+                        Site Statistics<br/><br/>
+                        <%= link_to t(:orders_list), admin_orders_url %><br/>
+                        <%= link_to t(:users_list), admin_users_url %><br/>
+                        <%= link_to t(:stores_list), admin_stores_url %><br/>
+                        <%= link_to t(:products_list), admin_products_url %><br />
+                        <%= link_to t(:promotions_coupons), admin_promotions_url %><br/>
+                        <%= link_to t(:store_tiers), admin_store_tiers_url %><br /><br />
+                        <%= link_to t(:site_settings), admin_configurations_url %><br /><br />
+                        <%= link_to t(:refunds), refunds_payable_admin_payments_url %><br /><br />
+                        <%= link_to t(:vendor_payments), admin_vendor_payment_periods_url %><br /><br />
+                        <%= link_to t(:line_items), admin_line_items_url %><br /><br />
+                        Complaints Center (TBD)<br /><br />
+                        <%= link_to t(:payments_center), admin_payment_methods_url %><br /><br />
+                        Fraud Watch (TBD)<br /><br />
+                        Error Logs<br /><br />
+                        Website<br /><br />
+                        Comments and Feedback<br /><br />
+                        Notifications (TBD)
+                      </div>
+		
+                  </div>
+              </div>
+              <% end -%>
+              <div id="right-admin-column-content-container">
+                <div>
+                  <div id="right-admin-column-content">
+                    <% if @fullsize -%>
+                    <h3><%= link_to 'Back to Admin Home', admin_url -%></h3>
+                    <% end -%>
+                    <div id="search-bar-admin-content" style="float:none; font-size:120%">
+                        <%= yield(:sidebar) %>
+                    </div>
+                    <%= content_for?(:content) ? yield(:content) : yield %>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render :partial => 'shared/footer' %>
+</body>
+
+</html>

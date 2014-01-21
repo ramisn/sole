@@ -1,0 +1,55 @@
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<% if !@title.blank? %>
+  <title>Soletron - <%= @title %></title>
+<%  else %>
+  <title><%= "Soletron #{t('administration')}: " %>
+  <%= t(controller.controller_name, :default => controller.controller_name.titleize) %></title>
+<% end %>
+
+<%= javascript_tag do %>
+  ajax_urls = <%== {
+    :product_search_json       => admin_products_url(:format => 'json'),
+    :product_search_basic_json => admin_products_url(:format => 'json', :json_format => 'basic', :limit => 10),
+    :user_search_basic_json    => admin_users_url(:format => 'json', :json_format => 'basic', :limit => 10)
+  }.to_json %>;
+
+  strings = <%==
+    [:no_results, :type_to_search, :searching].
+    inject({}){|memo, item| {item => t(item) }}.to_json
+  %>
+<% end %>
+
+<%== meta_data_tags %>
+<%= stylesheet_link_tag 'admin/all' %>
+
+<%#  stylesheet_link_tag '' %>
+<%# stylesheet_tags %>
+<%= csrf_meta_tag %>
+
+<%# stylesheet_link_tag ['admin-reset', 'grids', 'admin-typography', 'admin-forms', 'admin-tables', 'admin', 'autocomplete', 'token-input'].map{|css_name| '/stylesheets/admin/' + css_name}, :cache => 'admin/admin-all' %>
+<%# stylesheet_link_tag '/javascripts/jquery.alerts/jquery.alerts.css', '/javascripts/jquery.alerts/jquery.alerts.spree.css', 'datepicker.css' %>
+
+<% if @jquery_16 -%>
+  <%= javascript_include_tag 'admin.16' %>
+  <%# javascript_include_tag 'slider-installation/js/jquery-1.6.2.min.js', 'rails', 'jquery-ui', 'jquery.suggest.js', 'jquery.tokeninput.js', 'jquery.delayedobserver.js', 'jquery.alerts/jquery.alerts.js', 'jquery.autocomplete.min.js', :cache => 'admin/jquery-with-plugins' %>
+<% else -%>
+  <%= javascript_include_tag 'admin.14' %>
+  <%# javascript_include_tag 'jquery-1.4.2.min.js', 'rails', 'jquery-ui', 'jquery.suggest.js', 'jquery.tokeninput.js', 'jquery.delayedobserver.js', 'jquery.alerts/jquery.alerts.js', 'jquery.autocomplete.min.js', :cache => 'admin/jquery-with-plugins' %>
+<% end -%>
+
+<%= javascript_include_tag('jquery.template.js') unless controller.controller_name == "overview" %>
+<% unless I18n.locale.to_s[0..1] == 'en' %>
+  <%= javascript_include_tag ['jquery.validate/localization/messages_', I18n.locale.to_s[0..1], '.js'].join %>
+<% end %>
+<%= javascript_tag do %>
+  jQuery.alerts.dialogClass = 'spree';
+  <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+<% end %>
+<%= javascript_include_tag "/datepicker/lang/#{I18n.locale.to_s[0..1]}.js" %>
+<%#= javascript_include_tag 'admin', 'nested-attribute', 'zone', 'calculator', 'gateway', 'datepicker.js', "/datepicker/lang/#{I18n.locale.to_s[0..1]}.js" %>
+<script type="text/javascript">
+//<![CDATA[
+$ = jQuery;
+//]]>
+</script>
+<%= yield :head %>

@@ -1,0 +1,18 @@
+<%=
+CSV.generate do |csv|
+  csv << [
+          t('order_date'), 
+          t('order_#'), 
+          t('#_items'), 
+          t('total_shipping')
+         ]
+  @shipping_charges.each do |shipping_charge|
+    csv << [
+            shipping_charge.order.completed_at.strftime("%-m/%-d/%Y"),
+            shipping_charge.order.number,
+            shipping_charge.order.line_items.sum(:quantity),
+            shipping_charge.amount
+           ]
+  end
+end
+%>

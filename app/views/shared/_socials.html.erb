@@ -1,0 +1,14 @@
+<%= render :partial => "sidebar" %>
+
+<% if !current_user || !current_user.user_authentications %>
+  <h2><%= t(:sign_in_through_one_of_these_services) %>:</h2>
+<% end %>
+<% Spree::AuthenticationMethod.where(:environment => (::Rails.env.production? or ::Rails.env.staging? ? 'production' : ::Rails.env)).each do |user| %>
+  <%- img = File.exist?(::Rails.root+"public/assets/social/#{user.preferred_provider}_64.png") ? "social/#{user.preferred_provider}_64.png" : "social/spree_64.png" -%>
+  <% if controller.controller_name == 'user_sessions' -%>
+    <%= link_to(image_tag(img, :size => "64x64", :alt => "#{user.preferred_provider}"), authenticate_url('facebook'), :class => "#{user.preferred_provider}", :title => "Sign in with #{user.preferred_provider}") if user.active %>
+  <% else -%>
+    <%= link_to(image_tag(img, :size => "64x64", :alt => "#{user.preferred_provider}"), '#', :class => "login_popup #{user.preferred_provider}", :title => "Sign in with #{user.preferred_provider}") if user.active %>
+  <% end -%>
+  <%# link_to(image_tag(img, :size => "64x64", :alt => "#{user.preferred_provider}"), '#', :class => "login_popup #{user.preferred_provider}", :title => "Sign in with #{user.preferred_provider}") if user.active %>
+<% end %>

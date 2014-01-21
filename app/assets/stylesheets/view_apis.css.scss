@@ -1,0 +1,659 @@
+
+body {
+//  background: image-url('body-background.jpg') repeat;
+/*font-family: Tahoma, Sans-Serif !important;*/
+
+}
+
+#float-middle-container-settings {
+  width:1000px;
+  margin:0px auto 0px;
+  position:relative;
+}
+#float-middle-settings {
+  position:absolute;
+  top:-64px;
+  right:72px;
+
+}
+
+.settings-dropdown, #settings-dropdown, #settings-dropdown {
+  display: none;
+  position: relative;
+  top:62px;
+  right:11px;
+  z-index: 999998;
+  clear: left;
+/*float: right;*/
+  width: 300px;
+/*height:200px;*/
+  margin:0px;
+  padding: 12px;
+  background-color:#FFF;
+  border-radius: 5px 0px 5px 5px; -moz-border-radius: 5px 0px 5px 5px; -khtml-border-radius: 5px 0px 5px 5px; -webkit-border-radius: 5px 0px 5px 5px;
+}
+#settings-icon {
+  z-index: 999999;
+}
+
+
+#settings-dropdown-content-container.non-store-owner, #settings-dropdown-content-container.non-store-owner #settings-dropdown-content, #settings-dropdown-content-container.non-store-owner #settings-dropdown-content a, #settings-dropdown-content-container.non-store-owner #settings-dropdown-soletron-stores, #settings-dropdown-content-container.non-store-owner #settings-dropdown-soletron-stores .store-list, .non-store-owner, #settings-dropdown.non-store-owner, #settings-dropdown.non-store-owner {
+  width:130px !important;
+}
+
+#settings-dropdown-pointer {
+  display:block;
+  width:160px;
+  height:80px;
+  overflow:auto;
+  margin:0px;
+  padding:0px;
+  background-image: image-url('settings-dropdown-triangle.png');
+}
+#settings-dropdown-content-container {
+  width:300px;
+  display:block;
+/*margin:-10px 0px 0px 0px;*/
+  position:relative;
+  top:0px;
+  right:-1px;
+  padding:0px;
+  background-color:#FFF;
+/*border:#999 1px solid;*/
+  border:1px FFF solid;
+  border-top:none;
+  border-radius: 4px 0px 4px 4px; -moz-border-radius: 4px 0px 4px 4px; -khtml-border-radius: 4px 0px 4px 4px; -webkit-border-radius: 4px 0px 4px 4px;
+}
+#settings-dropdown-content {
+  width:300px;
+  display:block;
+  position:relative;
+  top:0px;
+  left:0px;
+/*margin:10px;*/
+/*padding-top:10px;*/
+/*padding-bottom:10px;*/
+  font-weight:bold;
+}
+#settings-dropdown-content h2 {
+  font-size:12px;
+  margin:0px;
+  padding:0px;
+}
+#settings-dropdown-content h2 a {
+  font-size:12px;
+  margin:0px;
+  padding:0px;
+  color:#5FBB30;
+  letter-spacing:0px;
+}
+#settings-dropdown-content h2 a:hover {
+  text-decoration:underline;
+}
+#settings-dropdown-content a {
+  font-size:12px;
+  margin:0px;
+  padding:0px;
+  color:#5FBB30;
+  display:block;
+  width:280px;
+}
+#settings-dropdown-content a:hover {
+  text-decoration:underline;
+}
+#settings-dropdown-soletron-stores {
+  padding-top:10px;
+  padding-bottom:10px;
+  border-top:1px #CCC dashed;
+  border-bottom:1px #CCC dashed;
+  margin:10px 0px 10px 0px;
+  width:300px;
+  display:block;
+  font-size:10px;
+  color:#333;
+}
+#settings-dropdown-soletron-stores .store-list {
+  height:60px;
+  width:280px;
+  position:relative;
+  top:0px;
+  left:0px;
+  padding:0px;
+  display:block;
+  margin:0px;
+}
+#settings-dropdown-soletron-stores .store-list:hover {
+  background-color:#aedc96;
+  text-decoration:underline;
+}
+#settings-dropdown-soletron-stores .store-list span {
+  font-size:12px;
+  width:200px;
+  overflow:hidden;
+  position:absolute;
+  top:25px;
+  left:65px;
+}
+#settings-dropdown-soletron-stores .store-list img {
+  height:50px;
+  width:50px;
+  position:absolute;
+  top:5px;
+  left:5px;
+}
+#settings-dropdown-soletron-stores .soletron-store-option {
+  width:280px;
+  display:block;
+/*height:54px;*/
+  overflow:hidden;
+  margin:5px 0px 0px 10px;
+}
+#settings-dropdown-soletron-stores .soletron-store-option tr td {
+  height:50px;
+  margin:0px;
+  color:#5FBB30;
+}
+#settings-dropdown-soletron-stores .soletron-store-option img {
+  width:50px;
+  height:50px;
+}
+/* Signin Dialog Modifications */
+
+#signin-container form {
+  float:left;
+}
+#signin-container div {
+  float:left;
+}
+#fb_connect_widget-3 {
+  float:left;
+  height:100px;
+  margin-top:0px;
+  margin-bottom:0px;
+  padding-top:0px;
+  padding-bottom:0px;
+}
+
+.signin-container, #signin-container {
+  display: none;
+  position: relative;
+  top:-15px;
+  right:60px;
+  z-index: 999999;
+  clear: left;
+/*float: right;*/
+/*width: 375px;*/
+  margin: 12px 0 -1000px 0px;
+/*background: #444;*/
+  padding: 0px;
+}
+#signup-container {
+  display: none;
+  position: relative;
+  z-index: 999999;
+  clear: left;
+  float: right;
+  width: 700px;
+  margin: 12px 0 -1000px 0px;
+/*background: #444;*/
+  padding: 0px;
+}
+
+.signin-container h2, .signin-container h4 {
+  text-align: center;
+}
+
+#signin-container p, #signup-container p {
+  font-size: 1.2em;
+}
+
+#signin-container p a, #signup-container p a {
+  color: #5fbb30;
+}
+
+.signin-container .signin-container-inner {
+  float: left;
+  width: 348px;
+/*margin: 13px 0px 0px 11px;*/
+  color: #333;
+  background: #fff;
+/*border: 2px solid #b8b8b8;*/
+}
+
+
+#signin-container-inner, #signup-container-inner {
+  margin: 0;
+}
+
+#signup-container .signin-container-inner {
+  width: 660px;
+  position:relative;
+  top:0px;
+  left:0px;
+  border:#999 solid 2px;
+  border:none;
+  border-radius: 0px 0px 0px 0px; -moz-border-radius: 0px 0px 0px 0px; -khtml-border-radius: 0px 0px 0px 0px; -webkit-border-radius: 0px 0px 0px 0px;
+}
+#signup-container .signin-container-inner h2.header {
+  position:relative;
+  top:-20px;
+  left:0px;
+  background-color:#5FBB30;
+/*background-color:#000;*/
+  width:660px;
+  height:50px;
+  line-height:50px;
+  padding-left:0px;
+  color:#FFF;
+  margin-bottom:-20px;
+}
+#signup-container .signin-container-inner h2.header span {
+  padding-left:10px;
+  text-align:left;
+}
+#signup-container .signin-container-inner h2.header a {
+  position:absolute;
+  top:7px;
+  right:10px;
+
+}
+#signup-container .signin-container-inner .or-signin-span {
+  margin:0px;
+  background-color:#FFF;
+  margin:0px 0px 0px 2px;
+}
+#signup-container .signin-container-inner #signin-form{
+  width: 246px;
+  margin-left: 23px;
+}
+
+.signin-container-inner .widget-item-container a.fb_button {
+  clear: both;
+  position: relative;
+  float: left;
+  width: 246px;
+  height: 48px;
+  background: image-url('fb-login-button.jpg') no-repeat;
+  margin: 29px 0px 0px 50px;
+}
+
+#signup-container-inner .widget-item-container a.fb_button {
+  margin: 0px 0px 0px 50px;
+}
+
+#signup-container-inner .widget-item-container a.fb_button span {
+  visibility: hidden;
+}
+#signin-form .widget-item-container a.fb_button {
+  clear: both;
+  position: relative;
+  float: left;
+  width: 246px;
+  height: 48px;
+  background: image-url('fb-login-button.jpg') no-repeat;
+  margin: 29px 0px 0px 50px;
+}
+
+#signin-form .widget-item-container a.fb_button {
+  margin: 0px 0px 0px 50px;
+}
+
+#signin-form .widget-item-container a.fb_button span {
+  visibility: hidden;
+}
+
+.signin-container fieldset, fieldset {
+  border: none;
+  padding: 0;
+}
+
+.signin-container .no-neighbors {
+  clear: both;
+  width: 100%;
+}
+
+.signin-container fieldset.form-row {
+  clear: both;
+  margin-bottom: 10px;
+}
+
+.signin-container fieldset.form-item {
+  float: left;
+  margin-right: 20px;
+}
+
+.signin-container fieldset.form-item input {
+  border:1px inset #EEE !important;
+  background-color:#e5e5e5 !important;
+  border-radius:0px !important;
+}
+
+.signin-container fieldset.form-item.last {
+  margin-right: 0px;
+}
+
+#signin-form input.textbox.signin {
+  height: 20px;
+  margin: 0px;
+  border: solid 1px #c4c4c4;
+  border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px;
+}
+
+#signin-form input:focus#navbar_username,
+#signin-form input:focus#navbar_password{
+  border: solid 1px #5FBB30;
+}
+#signin-footer {
+  padding-bottom: 10px;
+}
+
+#signin-footer a#forgot-pw-link {
+  margin: -17px 40px 0px 0px;
+}
+
+#signin-link a {
+  background: image-url('top-login-button.jpg') no-repeat;
+}
+
+#signin-container-inner .widget-item-container a.fb_button {
+  background: image-url('fb-login-button.jpg') no-repeat;
+}
+
+#signin-form .loginbutton {
+/*background: image-url('sign-in-login-button.jpg') no-repeat;*/
+}
+
+#header-topnav {
+  height: 16px;
+  padding: 8px 0px 11px 0px;
+  font-size: .8em;
+  color: white;
+  margin: 0px 20px 0px 20px;
+}
+
+#header-topnav a {
+  color: white;
+  font-style: normal;
+  text-decoration: none;
+}
+
+#header-topnav .soletron-store-option a {
+  color: #5FBB30;
+}
+#header-topnav a:hover {
+  color: #5fbb30;
+}
+
+#header-topnav-left {
+  float: left;
+}
+#icon-number-wrapper-messages:hover {
+  background-image : image-url('messages_hover.png');
+}
+#icon-number-wrapper-messages a{
+  width:30px;
+  height:25px;
+  display:block;
+  position:absolute;
+  left:0px;
+  top:0px;
+  display:none;/*---V2 feature ---*/
+}
+#icon-number-wrapper-messages {
+  width:30px;
+  height:25px;
+  overflow:hidden;
+/*display:block;---V2 feature ---*/
+  display:none;/*---V2 feature ---*/
+  float:left;
+  margin: -5px 0px 0px 0px;
+  position:relative;
+  background-image  : image-url('messages.png');
+  background-repeat : no-repeat;
+  background-position:bottom left;
+}
+#icon-number-wrapper-messages span {
+  position:absolute;
+  top:0px;
+  left:12px;
+  height:12px;
+  width:18px;
+  font-size:10px;
+  line-height:12px;
+  text-align:center;
+  color:#000;
+  background-image : image-url('icon-number-bg.png');
+  display:none;/*---V2 feature ---*/
+}
+#icon-number-wrapper-status a{
+  width:30px;
+  height:25px;
+  display:block;
+  position:absolute;
+  left:0px;
+  top:0px;
+}
+#icon-number-wrapper-status:hover {
+/*background-image:image-url('status_hover.png');*/
+}
+#icon-number-wrapper-status {
+  width:30px;
+  height:25px;
+  overflow:hidden;
+  display:block;
+  float:left;
+  margin: -5px 0px 0px 0px;
+  position:relative;
+/*background-image:image-url('status.png');*/
+  background-repeat:no-repeat;
+  background-position:bottom left;
+}
+#icon-number-wrapper-status span {
+  position:absolute;
+  top:0px;
+  left:0px;
+  height:25px;
+  width:30px;
+  font-size:16px;
+  line-height:25px;
+  text-align:center;
+  color:#FFF;
+  font-weight:bold;
+  background-color:#5db92e;
+  border-radius: 3px 3px 3px 3px; -moz-border-radius: 3px 3px 3px 3px; -khtml-border-radius: 3px 3px 3px 3px; -webkit-border-radius: 3px 3px 3px 3px;
+}
+
+#static-icon-wrapper {
+  height:26px;
+  padding-left:5px;
+  padding-right:5px;
+  float:left;
+  margin:-5px 0px 0px 10px;
+  background-image:image-url('static-icon-wrapper-bg.png');
+  background-position:top left;
+  background-repeat:no-repeat;
+  overflow:hidden;
+  border-radius: 5px 5px 5px 5px; -moz-border-radius: 5px 5px 5px 5px; -khtml-border-radius: 5px 5px 5px 5px; -webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.static-icon {
+  margin:1px 1px 1px 1px;
+  width:25px;
+  height:24px;
+  display:inline-block;
+}
+
+#mic-icon {
+  background-image:image-url('mic-icon.png');
+}
+#head-icon {
+  background-image:image-url('head-icon.png');
+}
+#thumb-icon {
+  background-image:image-url('thumb-icon.png');
+}
+#hanger-icon {
+  background-image:image-url('hanger-icon.png');
+}
+#basket-icon {
+  background-image:image-url('basket-icon.png');
+}
+#settings-icon {
+/*width:83px;
+  height:22px;*/
+  width:auto;
+  height:auto;
+  line-height:22px;
+  font-weight:500;
+/*background-image:image-url('n-fb_arrow_dropdown_btn_bg.png');
+  background-repeat:no-repeat;
+  overflow:hidden;
+  display:block;*/
+  background-image:image-url('uber-down-arrow.png');
+  background-repeat:no-repeat;
+  background-position: right 3px;
+  display:inline-block;
+  font-size:12px;
+  position:relative;
+  right:7px;
+  padding: 2px 20px;
+  border-radius: 5px 5px 0px 0px; -moz-border-radius: 5px 5px 0px 0px; -khtml-border-radius: 5px 5px 0px 0px; -webkit-border-radius: 5px 5px 0px 0px;
+  border:none;
+  z-index:5;
+}
+#settings-icon img{
+  height:15px;
+  width:15px;
+  position:relative;
+  top:2px;
+  margin-right:3px;
+}
+
+#header-topnav-right {
+  margin-top:-3px;
+  float: right;
+  width:600px;
+  text-align:right;
+  line-height:22px;
+  font-weight:500 !important;
+}
+
+#header-topnav-right a {
+  float: right;
+  margin:0px 0px 0px 10px;
+  padding-left:6px;
+  text-align:left;
+  line-height:20px;
+  font-weight:500 !important;
+}
+#nav-welcome-text { float:none; margin: 0px; padding: 0 0 0 5px;
+}
+#nav-welcome-text a { float:right; margin: 1px 0px 0px -1px;
+}
+#nav-welcome-text img { float:right; margin: 2px 0px 0px 1px;
+}
+
+#login_link {
+  width:71px;
+  height:22px;
+  line-height:22px;
+  font-weight:500;
+  background-image: assets_url('fb_dropdown_btn_bg.png');
+  background-repeat:no-repeat;
+  overflow:hidden;
+  display:block;
+  font-size:12px;
+  margin:0px !important;
+}
+#register_link {
+  width:60px;
+  height:22px;
+  line-height:22px;
+  font-weight:500;
+  background-image: assets_url('n-fb_dropdown_btn_bg.png');
+  background-repeat:no-repeat;
+  overflow:hidden;
+  display:block;
+  font-size:12px;
+}
+
+
+#secondary-navigation ul li {
+  position: relative;
+}
+
+.clear {
+  clear: both;
+  height: 0;
+  overflow: hidden;
+}
+
+.empty:hover {
+  background-image:image-url('cart-icon.png');
+}
+.empty a{
+  width:40px;
+  height:25px;
+  display:block;
+}
+.empty  {
+  width:40px;
+  height:24px;
+  overflow:hidden;
+  display:block;
+  margin: 0px 0px 0px 0px;
+  position:relative;
+  background-image:image-url('cart-icon.png');
+  background-repeat:no-repeat;
+  background-position:bottom left;
+}
+.empty span {
+  position:absolute;
+  top:8px;
+  left:22px;
+  height:12px;
+  width:18px;
+  font-size:10px;
+  line-height:12px;
+  text-align:center;
+  color:#000;
+  background-image:image-url('icon-number-bg.png');
+}
+
+.full {
+  background-image:image-url('cart-full_x32.png');
+}
+
+/* catch up with homepage changes */
+#header-topnav a {
+/*color: #000;*/
+  font-size: 11px;
+  text-transform: uppercase;
+  line-height: 23px;
+  font-weight:bold !important;
+}
+#header-topnav a:hover {
+/*color:#333;*/
+}
+
+#register_link {
+  background-image: image-url('n-fb_dropdown_btn_bg.png');
+  font-weight:500;
+}
+#login_link {
+  background-image: image-url('fb_dropdown_btn_bg.png');
+  font-weight:500;
+}
+#header-container {
+  position:relative;
+}
+#countdown {
+  position:absolute;
+  left:8px;
+  top:9px;
+}
+#countdown a {
+  color:#FFF;
+  font-weight:bold;
+}
+

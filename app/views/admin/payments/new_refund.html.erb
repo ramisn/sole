@@ -1,0 +1,10 @@
+<p><%= link_to t("refunds_owed"), refunds_payable_admin_payments_path %> | <%= link_to t("refunds_paid"), refunds_paid_admin_payments_path %></p>
+
+<%= form_for @payment, :url => create_refund_admin_order_payments_path(@order) do |refund_form| %>
+  <%= render '/spree/shared/error_messages', :target => @payment %>
+  <h1>Did you issue a refund for <%= number_to_currency(@order.outstanding_balance*-1) %>?</h1>
+  <p>Number: <%= @order.number %></p>
+  <p>Processed at: <%= @order.completed_at %></p>
+  <p>Make sure to go to <%= link_to 'Authorize.net', 'https://authorize.net' %> and issue the refund from there.</p>
+  <%= refund_form.submit "Mark as Refunded", :confirm => "Are you sure you went to Authorize.net, issued a refund, and want to list the refund as paid?" %>
+<% end -%>

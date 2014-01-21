@@ -1,0 +1,53 @@
+
+<% 
+
+
+Product.viewable.find_each do |product|
+	if !(product.nil? || product.store.nil? || asset = Asset.where(:viewable_id => product.id, :position => 1).first.nil? || Variant.where(:product_id => product.id, :is_master => true).first.nil?) 
+		asset = Asset.where(:viewable_id => product.id, :position => 1).first
+		
+		#select(:products, product.id, size_options[:sizes], {:include_blank => true}).find_each do |color|
+	
+		Variant.where(:product_id => product.id, :is_master => true).find_each do |variant|
+			
+			#option_values_variants.where(:variant_id => variant.id).find_each do |option_values_variant|
+			
+				#option_value = option_value.where(:id => option_values_variant.variant_id).first
+%>
+
+<entry>
+		<!-- The following attributes are always required -->
+		<title><%= product.name %></title>
+		<link href="http://shop.soletron.com/products/<%= product.permalink %>"/>
+		<summary><%= product.description %></summary>
+		<g:id><%= variant.sku %></g:id>
+		<g:condition>new</g:condition>
+		<g:price><%= variant.price %> USD</g:price>
+		<g:availability><% if variant.count_on_hand >= 1 %>in stock<% else %>out of stock<% end %></g:availability>
+		<g:image_link>http://s3.amazonaws.com/SpreeHeroku/assets/products/<%= asset.id %>/large/<%= asset.attachment_file_name %></g:image_link>
+		
+		<g:shipping_weight><%= variant.weight %> lb</g:shipping_weight>
+		
+		<g:shipping>
+			<g:country>US</g:country>
+			<g:service>Standard</g:service>
+			<g:price>14.95 USD</g:price>
+		</g:shipping>
+		
+		
+		<g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Jeans</g:google_product_category>
+		<g:gender>Female</g:gender>
+		<g:age_group>Adult</g:age_group>
+		<g:color>Navy</g:color>
+		<g:size><%# option_value %></g:size>
+		
+	</entry>
+
+<%
+			#end
+		end
+	end
+end
+
+
+%>

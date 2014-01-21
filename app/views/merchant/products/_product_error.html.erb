@@ -1,0 +1,23 @@
+  <!--p><%= t(:there_were_problems_with_the_following_fields) %>:</p-->
+   <div id="flash_messages">
+   <% 
+    if product.variants.present?
+      variants_count = product.variants.collect{|variant| variant.sku}.uniq.length
+    else
+      variants_count = 0
+    end
+    count = 0
+   %>
+   <% product.errors.each do |key, msg| %>
+     <% if key.to_s == "variants" %>
+      <% if count < variants_count %>
+        <% count += 1 %>
+        <div class="flash error"><%= "Sku #{msg}" %></div>
+      <% end %>
+     <% elsif key.to_s == "product_department" %>
+      <div class="flash error"><%= "Sex #{msg}" %></div>
+     <% else %>
+      <div class="flash error"><%= "#{key} #{msg}" %></div>
+     <% end %>
+   <% end %>
+   </div>

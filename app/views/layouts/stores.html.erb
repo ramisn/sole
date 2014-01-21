@@ -1,0 +1,11 @@
+<%= render :partial => "/layouts/profile", :locals => {
+  :name   => @store.name_from_taxon,
+  :avatar  => store_profile_picture_url(@store),
+  :member => @store,
+  :paths  => {
+    :about      => main_app.about_store_path(@store), 
+    :collection => main_app.store_path(@store),
+    :feed       => main_app.store_feed_path(@store)
+  }
+}%>
+

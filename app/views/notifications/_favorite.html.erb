@@ -1,0 +1,3 @@
+<% if !favorite.product.nil? %>
+	<%= link_to favorite.user.display_name, entity_profile_path(favorite.user) %> added <%= link_to favorite.product.name, product_path(favorite.product) %> as a favorite item.
+<% end %>

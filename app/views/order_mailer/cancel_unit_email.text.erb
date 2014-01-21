@@ -1,0 +1,16 @@
+Dear Customer,
+
+Some items in your order have been CANCELED.  Please retain this cancellation information for your records.
+
+============================================================
+Order Summary [CANCELED]
+============================================================
+
+[Item #<%= @variant.sku %>] <%= @variant.product.name if @variant.product %> <%= variant_options(@variant) %> | 1 @ <%= number_to_currency @variant.price %> = <%= number_to_currency(@variant.price) %>
+
+============================================================
+Subtotal: <%= number_to_currency @order.item_total %>
+<% @order.adjustments.each do |adjustment| %>
+<%= "#{adjustment.label}: #{number_to_currency adjustment.amount}"%>
+<% end %>
+Order Total: <%= number_to_currency @order.total %>

@@ -1,0 +1,40 @@
+<div id="profile-about">
+    <div>
+      <h2 class="profile">About <%= @user.display_name %></h2>
+      
+      <dl>
+        <dt>Member Since</dt>
+        <dd><%= member_since(@user) %></dd>
+     
+        <dt>Age</dt>
+        <dd><%= @user.age %></dd>
+     
+        <dt>Gender</dt>
+        <dd><%= @user.gender %></dd>
+
+        <dt>Location</dt>
+        <dd><%= @user.current_city %></dd>
+      
+        <% @user.user_authentications.each do |user_auth| -%>
+          <dt><%= user_auth.provider.capitalize %></dt>
+          <dd><%= link_to user_auth.nickname, member_social_networking_url(user_auth) %></dd>
+        <% end -%>
+      
+        <dt>Favorite Brands</dt>
+        <dd><%= @user.favorite_brands %></dd>
+      
+        <dt>Favorite Sneakers</dt>
+        <dd><%= @user.favorite_sneakers %></dd>
+        
+        <dt>Favorite Shops</dt>
+        <dd><%= @user.favorite_street_shops %></dd>
+        
+        <dt>About</dt>
+        <dd><%= @user.about %></dd>
+      </dl>
+      
+     
+
+    </div>
+  </div>
+</div>

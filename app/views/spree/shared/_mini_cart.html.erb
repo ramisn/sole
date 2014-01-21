@@ -1,0 +1,28 @@
+<% if defined?(current_order) && current_order %>  
+  <dl id="tab-cart-dropdown" class="drop-down">
+    <% current_order.line_items.each_with_index do |line_item, index| %>
+      <dt class="line-item <%= index == 0 ? "first-item" : "" %>">
+        <div class="product-image box box-small">
+          <% if line_item.variant.images.length == 0 %>
+            <%= mini_image(line_item.variant.product) %>
+          <% else %>
+            <%= image_tag line_item.variant.images.first.attachment.url(:mini)   %>
+          <% end %>
+        </div>
+        <div class="info box box-small">
+          <div class="product-name"><%= link_to line_item.variant.product.name, spree.product_path(line_item.variant.product) %></div>
+          <div class="item-quantity">Quantity: <%= line_item.quantity %></div>
+        </div>
+        <div class="item-price box box-small">
+          <%= product_price(line_item) %>
+        </div>
+        <div stype="clear:both; width: 100%"></div>
+      </dt>
+    <% end %>
+    <dt class="cart-footer">
+      <span class="continue-shopping">&lt; <%= link_to "Continue shopping", spree.products_path, :class => "normal-link" %></span>
+      <%= link_to("Checkout", spree.checkout_path,
+          :class => 'simpleButton green checkout-button normal-link', :title => "Checkout using your credit card") %>
+    </dt>
+  </dl>
+<% end %>

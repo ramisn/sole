@@ -1,0 +1,7 @@
+    <%= field_container :store, :brands do %>
+      <%= label :brands, :list, t(:brands)%><span class="required space-right">*</span>
+      <%= select("brand", "id", Brand.all.collect {|b| [ b.name, b.name ] }, { :include_blank => true }) %>
+      <a href="javascript:void(0)" onclick="$('input#store_brands_list').val($('select#brand_id').val() + ', ' + $('input#store_brands_list').val());" style="margin:0px 15px">Add Brand >></a>
+      <%= text_field :store, :brands_list, :class => 'title' %><span style="margin-left:5px">Comma-Separated list of Brands</span>
+      <%= error_message_on :brands, :list %>
+    <% end %>

@@ -1,0 +1,9 @@
+<% @body_id = 'users' %>
+<h2 class="tab-header">Edit a Product you've uploaded</h2>
+
+  <%= form_for(@product, :html => { :multipart => true }) do |f| %>
+    <%= render 'form', :f => f %>
+    <p>
+    <%= f.submit "Save Product", :class => "simpleButton green" %>
+    </p>
+  <% end -%>

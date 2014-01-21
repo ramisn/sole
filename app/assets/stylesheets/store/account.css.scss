@@ -1,0 +1,167 @@
+#account-header {
+  float: left;
+  clear: both;
+  width: 100%;
+  position: relative;
+}
+#account-body {
+	margin:60px 20px 20px 20px;
+	width:940px;
+	position:relative;
+	
+}
+#account-body, #account-header {
+  padding: 0 0px;
+}
+
+h1#account-title {
+  display: block;
+  float: left;
+  margin-right: 40px;
+  margin-top: 0;
+}
+
+ul#account-nav {
+  float: right;
+  margin: 0;
+  padding: 0;
+  margin-right: 0px;
+}
+
+li.account-nav-item {
+  float: right;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a.account-nav-link {
+  padding: 10px 20px;
+  display: block;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  text-decoration: none;
+}
+
+a.account-nav-link:hover {
+  background-color: #ddd;
+  border: 1px solid #ccc;
+}
+
+
+
+#account-body #account-sidebar {
+  float: left;
+  width: 200px;
+  margin-right: 20px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+  padding: 10px;
+}
+
+#account-body #account-sidebar h3 {
+  margin-top: 0;
+}
+
+#account-body #account-content {
+
+	width:760px;
+	margin-left:200px;
+	margin-bottom:20px;
+	min-height:300px;
+  /*float: left;
+  width: 680px;
+  display: block;*/
+}
+
+#account-content .account-summary-row {
+  display: block;
+  float: left;
+  width: 100%;
+  clear: both;
+}
+
+#account-content .account-summary-row .account-summary-column {
+  display: block;
+  float: left;
+  margin-right: 20px;
+  width: 210px;
+  font-size: 0.9em;
+}
+
+#account-content .account-summary-row .account-summary-column.end {
+  margin-right: 0;
+}
+
+#account-content .account-summary-row .account-summary-column ul {
+  margin: 0;
+  padding: 0;
+}
+
+#account-content .account-summary-row .account-summary-column ul li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: 10px;
+}
+
+
+
+.account {
+  position        : relative;
+  padding         : 30px 0 0 0;
+  
+  .column {
+    position      : relative;
+    float         : left;
+    width         : 50%;
+  }
+  
+  dl {
+    position      : relative;
+    padding       : 10px 0 10px 0;
+  }
+  
+  dt {
+    font-weight   : bold;
+  }
+  
+  dd {
+    padding       : 2px 0;
+    line-height   : 1em;
+  }
+  
+
+}
+
+#profile-edit {
+  position      : relative;
+  width         : 720px !important;
+  margin        : 0 0 0 0;
+  
+  h2 {
+    padding       : 0;
+  }  
+  
+  fieldset {
+    background    : none;
+    padding       : 0;
+    margin        : 0 0 15px 0;
+  }
+  
+  input[type='text'], textarea {
+    width       : 708px;
+  }
+  
+  input[type="submit"] {
+    display     : block;
+    width       : 100%;
+  }
+  
+  select {
+    padding: 4px;
+    background: #EEEEEE;
+    width: 215px;
+  }
+}
+

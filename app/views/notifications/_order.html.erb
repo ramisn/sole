@@ -1,0 +1,12 @@
+<% if !order.line_items.first.variant.nil? %>
+<% other_items = if order.line_items.count == 2 
+  1
+else
+  order.line_items.count - 1
+end -%>
+<%= link_to(order.user.display_name, entity_profile_path(order.user)) if order.user %> purchased 
+<%= link_to order.line_items.first.variant.product.name, product_path(order.line_items.first.variant.product) %>
+  <% if other_items > 0 -%>
+  and <%= link_to (other_items > 1 ? "#{other_items} other items" : "1 other item"), purchases_member_collection_path(order.user) %>.
+<% end -%>
+<% end %>

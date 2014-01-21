@@ -1,0 +1,120 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div id="profile-edit">
+  <h2>Company Info</h2>
+
+  <% @manager = @store.managers.find_by_user_id(current_user) -%>
+  
+  <% if @manager and @manager.facebook_manager? -%>
+    <%= form_for([:merchant, @store], :url => main_app.update_profile_merchant_store_path(@store), :html => { :method => :put, :multipart => true }) do |facebook_form| %>
+      <%= hidden_field_tag "from_facebook[name]", 1 %>
+      <%= hidden_field_tag "from_facebook[username]", 1 %>
+      <%= hidden_field_tag "from_facebook[founded]", 1 %>
+      <%= hidden_field_tag "from_facebook[location]", 1 %>
+      <%= hidden_field_tag "from_facebook[email]", 1 %>
+      <%= hidden_field_tag "from_facebook[company_overview]", 1 %>
+      <%= hidden_field_tag "from_facebook[mission]", 1 %>
+      <%= hidden_field_tag "from_facebook[description]", 1 %>
+      <%= hidden_field_tag "from_facebook[product_types]", 1 %>
+      <%= hidden_field_tag "from_facebook[about]", 1 %>
+      <%= facebook_form.submit "Update My Store Profile with Its Facebook Page Data", :class => "simpleButton green", :style => "width:410px;margin: 0 0 10px 0"%>
+    <% end -%>
+  <% end -%>
+
+  <%= form_for([:merchant, @store], :url => main_app.update_profile_merchant_store_path(@store), :html => { :method => :put, :multipart => true }) do |store_form| %>
+  
+    <%= render :partial => '/spree/shared/error_messages', :locals => {:target => @store} %>
+    <div class="yui-gc">
+      <div class="yui-u first">
+    
+        <div id="store-permalink">
+          <p>Your Store's address on soletron.com: <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=permalink", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=permalink')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></p>
+          <div id="store-permalink-url">
+            <span id="id_permalink_root"><%= "#{root_url}stores/" %></span>
+            <span id="id_permalink_view"><%= @store.username %></span>
+            <%= text_field_tag :permalink, @store.username %>
+      
+            <a href="javascript:void(0)" class="edit">Edit...</a>
+            <a href="javascript:void(0)"  onclick="$('span#id_permalink_edit').hide();$('input#permalink').val('<%= "#{@store.username}" %>');$('span#id_permalink_view').show();" class="cancel">Cancel</a>
+       
+          </div>
+        </div>
+
+        <% @facebook_auth = @store.get_facebook_auth(current_user) %>
+
+        <fieldset id="store-form-fieldset-name">
+          <%= label_tag 'taxon[name]', content_tag(:span, t("company_name")) + content_tag(:span, "*", :class => 'required') %>
+          <%= text_field_tag 'taxon[name]', (@store.taxon.name), :class => 'fullwidth title'  %>
+        </fieldset>
+
+        <fieldset id="store-form-fieldset-founded">  
+          <%= store_form.label :founded, t("founded")%> 
+          <%= store_form.text_field :founded, :class => 'fullwidth title' %>
+          <%= store_form.error_message_on :founded %>
+        </fieldset>
+    
+        <fieldset id="store-form-fieldset-city">
+          <%= store_form.label :location, t("City/Town")%>
+          <%= store_form.text_field :location, :class => 'fullwidth title' %>
+          <%= store_form.error_message_on :location %>
+        </fieldset>
+    
+        <fieldset id="store-form-fieldset-state">  
+          <%= store_form.label :location, t("State")%>
+          <%= store_form.select :state, options_from_collection_for_select(@states, :name, :name, @store.state), :prompt => "", :class => 'fullwidth title' %>
+        </fieldset>
+
+        <fieldset id="store-form-fieldset-email">
+          <%= store_form.label :email, t("email")%> 
+          <%= store_form.text_field :email, :class => 'fullwidth title' %>
+          <%= store_form.error_message_on :email %>
+        </fieldset>
+    
+        <fieldset id="store-form-fieldset-company-overview">    
+          <%= store_form.label :company_overview, t("company_overview") %> 
+          <%= store_form.text_area :company_overview, {:cols => 60, :rows => 4, :class => 'fullwidth'}  %>
+          <%= store_form.error_message_on :company_overview %>
+        </fieldset>
+    
+        <fieldset id="store-form-fieldset-mission">
+          <%= store_form.label :mission, t("mission")%> 
+          <%= store_form.text_area :mission, {:cols => 60, :rows => 4, :class => 'fullwidth'}  %>
+          <%= store_form.error_message_on :mission %>
+        </fieldset>  
+    
+        <fieldset id="store-form-fieldset-product-types"> 
+          <%= store_form.label :product_types, t("product_types")%> 
+          <%= store_form.text_area :product_types, {:cols => 60, :rows => 4, :class => 'fullwidth'}  %>
+          <%= store_form.error_message_on :product_types %>
+        </fieldset>
+    
+        <fieldset id="store-form-team-members">
+          <%= store_form.label :team_members, t("team_members")%>
+          <%= store_form.text_area :team_members, {:cols => 60, :rows => 4, :class => 'fullwidth'}  %>
+          <%= store_form.error_message_on :team_members %>
+        </fieldset>      
+
+
+        <h4><%= t(:store_policies) %></h4>
+  
+        <fieldset id="store-form-fieldset-customer-support-email">
+          <%= store_form.label :customer_support, t(:customer_service), :style => "width: 100%" %>
+          <%= store_form.text_field :customer_support, :class => 'fullwidth' %>
+        </fieldset>
+    
+        <fieldset id="store-form-fieldset-customer-support-phone">
+          <%= store_form.label :customer_support_phone, t(:customer_service_phone), :style => "width: 100%" %>
+          <%= store_form.text_field :customer_support_phone, :class => 'fullwidth' %>
+        </fieldset>
+
+        <%= store_form.submit "Update the Store", :class => "simpleButton green" %>
+      </div>
+  
+      <div>
+        <% Spree::Variant.additional_fields.select{|af| af[:only].nil? || af[:only].include?(:product) }.each do |field| %>
+          <%= render :partial => "admin/shared/additional_field", :locals => {:field => field, :f => f} %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

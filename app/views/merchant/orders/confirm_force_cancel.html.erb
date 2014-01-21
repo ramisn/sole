@@ -1,0 +1,23 @@
+<h1>Confirm Forced Cancellation of Order <%= @orders_store.order.number %> for <%= @orders_store.store.display_name %></h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders_store.inventory_units.each do |inventory_unit| -%>
+      <tr>
+        <td><%= inventory_unit.variant.product.name if inventory_unit.variant and inventory_unit.variant.product %></td>
+        <td><%= variant_options(inventory_unit.variant) unless inventory_unit.variant.nil? or inventory_unit.variant.option_values.empty? %></td>
+        <td><%= inventory_unit.line_item.price %></td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<%= form_tag force_cancel_merchant_store_order_path(@store, @order), :method => :put do %>
+  <%= submit_tag "Force Cancel Order", :confirm => "Are you sure you want to force cancel the store's entire order?" %>
+<% end -%>

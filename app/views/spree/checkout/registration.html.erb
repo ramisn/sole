@@ -1,0 +1,176 @@
+<!-- TODO: Verify and Cleanup, not used anymore  -->
+<% @body_id = 'registration' %>
+<div id="registration-container" style="left: 0; top: 0; width: 980px;">
+  <h2 class="header" style="margin: 0; width: 980px;"><span><%= t(:secure_checkout) %></span><!--<a href="/cart"><img src="/assets/registration-x.png" border="0" /></a>--></h2>
+  <div id="registration-container-inner">
+    <%= render "/spree/shared/error_messages", :target => @user %>
+    <%= render :partial => 'shared/flash_messages' %>
+    <table class="registration-table">
+      <tr>
+        <td valign="top" class="registration-td"><h2><%= t(:member_login) %></h2>
+          <div id="signin-form">
+            <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget" style="margin:0px 20px 0px 0px;">
+              <div style="margin:0px;">
+                <fb:login-button perms="email" size="small">
+                  <% if controller.controller_name == 'user_sessions' -%>
+                    <%= link_to content_tag(:span, 'Login', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "fb_button fb_button_small" %>
+                  <% else -%>
+                    <%= link_to content_tag(:span, 'Login', :class => "fb_button_text"), '#', :class => "facebook login_popup fb_button fb_button_small" %>
+                  <% end -%>
+                </fb:login-button>
+              </div>
+            </div>
+            <div class="or">
+              or
+            </div>
+            <% if Rails.env == "development" %>
+              <% form_url = user_session_path %>
+            <% else %>
+              <% form_url = user_session_path(:only_path => false, :protocol => 'https') %>
+            <% end %>
+            <%= form_for(:user, :url => form_url) do |f| %>
+              <%= f.label(:login, "Username or Email") %>
+              <br/>
+              <%= f.text_field(:login, { :class => "textbox default-value", :id => "navbar_username", :size => "10", :accesskey => "u", :tabindex => "101", :value => ""}) %>
+              <%= f.label :password, t("password") %>
+              <br/>
+              <%= f.password_field 'password', { :class => "textbox", :tabindex => "102", :id => "navbar_password", :size => "10" } %>
+              <div id="remember" class="remember">
+                <br/>
+                <%= f.check_box :remember_me, {:value => "1", :id => "cb_cookieuser_navbar", :class => "cb_cookieuser_navbar", :accesskey => "c", :tabindex => "103", :checked => "checked"} %>
+                <%= f.label :remember_me, t('remember_me'), :for => "cb_cookieuser_navbar" %>
+                <br/>
+                <br/>
+                <%= link_to t(:forgot_password), spree.new_user_password_path, { :title => t(:forgot_password), :id => "forgot-pw-link"} %>
+              </div>
+              <%= submit_tag "login & CHECKOUT", { :class => 'fancyButton green registerButton', :tabindex => "103", :title => t(:login_title), :accesskey => "l" } %>
+            <% end %>
+          </div>
+          <!-- #signin-form -->
+        </td>
+        <td valign="top" class="registration-td">
+          <div id="signup-containerx" class="signin-containerx">
+            <div style="padding:0px 0px 0px 20px;">
+              <h2><%= t(:create_an_account) %></h2>
+              <div id="signup-container-inner" class="signin-container-inner">
+                <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget" style="margin:0px 20px 0px 0px;">
+                  <div style="margin:0px;">
+                    <fb:login-button perms="email" size="small">
+                      <% if controller.controller_name == 'user_sessions' -%>
+                      <%= link_to content_tag(:span, 'Login', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "fb_button fb_button_small" %>
+                      <% else -%>
+                      <%= link_to content_tag(:span, 'Login', :class => "fb_button_text"), '#', :class => "facebook login_popup fb_button fb_button_small" %>
+                      <% end -%>
+                    </fb:login-button>
+                  </div>
+                </div>
+                <div class="or">
+                  or
+                </div>
+                <div id="signin-form">
+                  <% if Rails.env == "development" %>
+                  <% form_url = spree.user_registration_path(Spree::User.new) %>
+                  <% else %>
+                  <% form_url = spree.user_registration_path(Spree::User.new, {:only_path => false, :protocol => 'https'}) %>
+                  <% end %>
+                  <%= form_for(:user, :url => form_url) do |f| %>
+                  <fieldset class="form-item">
+                    <%= f.label :username, t(:create_your_username) + "" %><br />
+                    <%= f.text_field :username, {:class => 'signin textbox default-value', :size => "30", :style => "width:250px" }  %>
+                  </fieldset>
+                  <fieldset class="form-item last">
+                    <%= f.label :email, t(:enter_email) + "" %>
+                    <br/>
+                    <%= f.text_field :email, {:class => 'signin textbox default-value', :size => "30", :style => "width:250px" } %>
+                  </fieldset>
+                  <fieldset class="form-item">
+                    <%= label_tag :email_confirmation, t(:retype_email) + "" %>
+                    <br/>
+                    <%= text_field_tag :email_confirmation, '', {:class => 'signin textbox default-value', :size => "30", :style => "width:250px" } %>
+                  </fieldset>
+                  <fieldset class="form-item">
+                    <%= f.label :password, t(:create_password) %>
+                    <br/>
+                    <%= f.password_field :password, {:class => 'signin textbox default-value', :size => "30", :style => "width:250px" } %>
+                  </fieldset>
+                  <fieldset class="form-item last">
+                    <%= f.label :password_confirmation, t(:retype) %>
+                    <br/>
+                    <%= f.password_field :password_confirmation, {:class => 'signin textbox default-value', :size => "30", :style => "width:250px" } %>
+                  </fieldset>
+                  <fieldset id="month" class="form-item">
+                      <%= f.label :birthday, t(:dob) %>
+                      <span class="note" style="margin-left:20px"><a href="/redirects?q=FAQlookup&varname=age" target="_blank" onMouseover="ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=age')}' ,'#000', 500)" onMouseout="hideddrivetip()" class="why-ask" style="color:#5FBB30;">Why do we ask?</a><%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=age", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=age')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></span><br/>
+                    <%= f.date_select :birthday, :start_year => Time.now.year, :end_year => 1905, :order => [:month, :day, :year], :prompt => { :day => 'Day', :month => 'Month', :year => 'Year' } %>
+                  </fieldset>
+                  <fieldset class="form-row" style="margin:0px; position:relative; top:-20px;">
+                    <table style="margin:0px;">
+                      <tr>
+                        <td style="text-align:left; width:250px; margin:0px;" class="description">
+                          <br/>
+                          By signing up you confirm that you have read and agreed to <%= link_to "Soletron's Terms of Use", "/redirects?q=terms", :style => "color:#5FBB30;", :target => "_blank" %>
+                        </td>
+                      </tr>
+                    </table>
+                  </fieldset>
+                  <!--
+                  <table style="margin-top:0px; position:relative; top:-20px;">
+                    <tr>
+                      <td style="text-align:left; margin-top:0px;" valign="middle"><%# f.check_box :remember_me, {:value => "1", :id => "cb_cookieuser_navbar", :class => "cb_cookieuser_navbar", :accesskey => "c", :tabindex => "103", :checked => "checked"} %>
+                        <%# f.label :remember_me, t('remember_me'), :for => "cb_cookieuser_navbar" %>
+                      </td>
+                    </tr>
+                  </table>
+                  <table style="position:relative; top:-10px; left:-5px; margin-bottom:10px;">
+                    <tr>
+                      <td valign="top" style="margin:0px; width:10px; overflow:hidden;"><input name="receive_emails" type="checkbox" /></td>
+                      <td style="width:240px; margin-bottom:0px;"><label for="receive_emails" class="description">Yes, I would like to receive exclusive offers and information on new products.</label></td>
+                    </tr>
+                  </table>
+                  -->
+                  <%= submit_tag 'SIGNUP & CHECKOUT', { :class => 'fancyButton green registerButton', :tabindex => "104", :title => t(:signup_title), :accesskey => "s" } %>
+                  <% end %>
+                </div>
+              </div>
+              <!-- #signup-container-inner -->
+            </div>
+          </div>
+          <!-- #signup-containerx --><!--</div>-->
+        </td>
+        <td valign="top" class="registration-td">
+          <div style="padding:0px 0px 0px 20px; width:246px;">
+            <% if Spree::Config[:allow_guest_checkout] %>
+            <div id="guest_checkout">
+              <%= render "/spree/shared/error_messages", :target => @order %>
+              <h2><%= t(:skip_registration) %></h2>
+              <p>
+                You are not required to sign-in and may checkout as a guest. Please provide a valid email address - your purchase and shipment confirmations will be sent to this address.
+              </p>
+              <%= form_for @order, :url => update_checkout_registration_path, :html => { :method => :put, :id => "checkout_form_registration"} do |f| %>
+              <p>
+                <%= f.label :email, t("email") %>
+                <br/>
+                <%= f.text_field :email, :class => 'title', :style => "width:246px;" %>
+              </p>
+              <p>
+                <%= label_tag :email_confirmation, t("retype email") %>
+                <br/>
+                <%= text_field_tag :email_confirmation, '', {:class => 'title', :style => "width:246px;"} %>
+              </p>
+              <p>
+              </p>
+              <p>
+                <%= submit_tag 'CHECKOUT AS GUEST', { :class => 'fancyButton green registerButton', :style => "", :tabindex => "105", :title => t(:signup_title), :accesskey => "G" } %>
+              </p>
+              <% end %>
+            </div>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<p id="registration-text">
+  Soletron checkout is safe and secure.  Information you submit is encrypted and sent over a secure server.
+</p>

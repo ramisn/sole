@@ -1,0 +1,24 @@
+<p>
+  <label><%= t("filename") %></label>
+  <%= f.file_field :attachment %>
+</p>
+
+<p>
+  <label><%= "Alt Text" %></label>
+  <span class="alt_input_message"><em>Providing alt text will help more people find your profile on search engines.</em></span>
+  <br/>
+  <%= f.text_area :alt, :rows => 2 %>
+</p>
+
+<% if current_user.facebook_auth -%>
+  <p>
+    <%= check_box_tag :facebook_picture %>
+  
+    <%= label_tag :facebook_picture do %>
+      <%= image_tag("/assets/social/facebook_32.png", :height => 15) %>
+      Use Facebook picture instead
+    <% end -%>
+  
+    <%= image_tag(facebook_picture_url(current_user.facebook_auth.nickname)) %>
+  </p>
+<% end -%>

@@ -1,0 +1,189 @@
+<% @body_id = 'stores-account' %>
+
+<%= render :partial => '/spree/admin/shared/product_sub_menu' %>
+
+<div id="new_image_container">
+  <div id="float-middle-container">
+    <div id="float-middle">
+      <div id="signup-container" class="signin-container" style="display: none; right:140px;">
+        <div id="signup-container-inner" class="signin-container-inner" style="border:1px solid black">
+          <h3 style="padding-left:40px;padding-top:15px"><%= t("new_image") %></h3>
+          <% @store = Store.find(params[:store_id]) %>
+          <% @product = Product.find_by_permalink(params[:product_id]) %>
+          <%= form_for([:merchant, @store, @product, Image.new], :html => { :multipart => true }) do |form| %>
+            <table class="basic-table">
+              <%= render :partial => "form", :locals => { :f => form } %>
+            </table>
+ <table style="width:auto; margin:40px auto"><tr><td valign="middle" style="vertical-align:middle">             
+  <%= button t("update"), nil, 'submit', {:style => "float:none", :class => "fancyButton green leftFloat noMargin" } %>
+  </td><td valign="middle" style="vertical-align:middle">   
+              <%= t('or') %> <%= link_to t("cancel"), "#", { :id => "cancel_link", :onclick => "toggleNewPanel(null, false); return false;" } %>
+</td></tr></table>
+<% end %>
+
+
+          <script type="text/javascript">
+            jQuery('#cancel_link').click(function (event) {
+              jQuery('#new_image_link').show();
+              jQuery('#images').html('');
+            });
+
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="new-product-container">
+    <div id="header" style="margin-bottom:65px">
+      <table width="880" style="margin:0px 20px; display:block; width:880px;">
+        <tr>
+          <td align="center">
+            <%= image_tag("product-images.png", :alt => "Add Images", :style => "margin:0px 160px") %>
+          </td>
+        </tr>
+        <tr>
+          <td width="400">
+            <span style="line-height:24px;">
+              <strong><%= @product.name %></strong>
+            </span>
+            <br />
+            <strong>Provide up to four images for each of your SKUs</strong><br /><br />
+
+            <span style="display:inline; font-size:14px;">The optimal size for your image is at least 600 pixels wide, and we recommend using square aspect ratios (600x600). Images should not exceed 1000 pixels square.</span>
+
+
+            <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ", :style => "position:relative; top:3px;"), "/redirects?q=FAQlookup&varname=images", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=images')}' ,'#000', 860)", :onMouseout => "hideddrivetip()") %><%# link_to(image_tag("/assets/faq.png", :size => "30x30", :alt => "FAQ", :title => "FAQ", :style => "display:inline-block;" ), "/redirects?q=FAQlookup&varname=images", :target => "_blank", :style => "position:relative; top:10px; display:inline-block;") %>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+   
+    <%= form_for @product, :url => publish_merchant_store_product_url(@store, @product) do |f| %>
+    <div id="new-image-box">
+        <table class="noborder" id="images_table">
+          <tr>
+            <th></th>
+            <th><%= t(:img_preview) %></th>
+            <% if !@product.root_product.featured_image_id.nil? %>
+              <th><%= t(:featured_img) %></th>
+            <% end %>
+            <th><%= t(:alt_text) %></th>
+            <th></th>
+          </tr>
+      <% colspan = @product.root_product.featured_image_id.nil? ? "5" : "4" %>
+      <% colors = @product.get_siblings %>
+      <% colors.each do |color_product| %>
+          <tr>
+            <td colspan="<%= colspan %>"><br /><br />
+              <h3>SKU: <%= color_product.variants[0].sku unless color_product.variants.count == 0 %></h3>
+              <h3><%= color_product.colors %></h3>
+            </td>
+          </tr>
+          <% first = true %>
+          <% color_product.images.each do |image| %>
+            <tr id="<%= dom_id(image) %>">
+              <td style="width:45px" valign="middle" align="center" height="100">
+                <div style="margin:30px 0px 0px 0px; text-align:center;">
+                  <% if first %>
+                    Primary Image
+                    <% first = false %>
+                  <% else %>
+                    Alternate View
+                  <% end %>
+                </div>
+              </td>
+              <td>
+                <%= link_to(image_tag(image.attachment.url(:small)), image.attachment.url(:product)) %>
+              </td>
+              <% if !@product.root_product.featured_image_id.nil? %>
+                <td>
+                  <% puts "***** image id #{image.id} is featured? #{image.featured}" %>
+                  <%= radio_button_tag(:featured, image.id, image.featured, { :style => "width: 20px; margin: 30px 0 10px 40px" } ) %>
+                </td>
+              <% end %>
+              <td valign="middle" align="center">
+                <div style="margin:30px 0 0; text-align:center;width:350px">
+                <%= image.alt %>
+                </div>
+              </td>
+              <td class="actions">
+                <div style="margin:30px 0 0; text-align:center;">
+                  <%= link_to_with_icon('edit', t("edit"), edit_merchant_store_product_image_url(@store, color_product, image), { :class => 'edit', :id => 'edit_link' }) %>
+                  <br />
+                  <%= link_to_delete image, {:url => merchant_store_product_image_url(@store, color_product, image)}, {:id => 'delete_link'} %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+
+          <tr>
+            <td colspan="<%= colspan %>">
+              <div style="padding-bottom: 20px; height:10px">
+                <a id="new_image_link" href="#" onclick="toggleNewPanel('<%= color_product.permalink %>', true); return false;">
+                  <%= image_tag("/assets/admin/icons/add.png", :style => "position: relative; top: 3px;") %> Add an Image
+                </a>
+              </div>
+            </td>
+          </tr>
+      <% end %>
+        </table>
+    </div>
+
+   <table style="width:auto; margin:40px auto"><tr><td valign="middle" style="vertical-align:middle">
+        <%= button_link_to "<< " + t(:previous), merchant_store_product_variants_url(@store, @product), {:title => "Back to Size and SKU", :class => "fancyButton blue leftFloat noMargin" } %>
+        </td><td valign="middle" style="vertical-align:middle">
+        <%= button_link_to image_tag("/assets/admin/icons/new-window.png", :style => "display:inline; padding-right:3px; position:relative; top:0px; height:10px;") + "Preview", preview_product_url(@product), {:title => "Preview Product Listing in the Marketplace", :class => "fancyButton blue leftFloat noMargin", :onclick => "window.open('#{preview_product_url(@product)}', '_preview'); return false;"} %>
+        </td><td valign="middle" style="vertical-align:middle">
+        <%= button t(:finish), nil, nil, {:title => t(:product_complete), :class => "fancyButton green wide leftFloat noMargin"} %>
+        </td><td valign="middle" style="vertical-align:middle">
+        <%= t("or") %> <%= link_to t("actions.cancel"), merchant_store_url(params[:store_id]) %>
+        </td></tr></table>
+   
+    <% end %>
+    
+    <!--<div id="images" style="padding-top: 55px"></div>
+    <br/>-->
+</div>
+
+<%= javascript_tag do %>
+function toggleNewPanel(product, show)
+{
+  var new_product_container = $("div#new_image_container");
+  if (show)
+  {
+    $("form#new_image").attr("action", "/merchant/store/<%= params[:store_id] %>/products/" + product + "/images")
+    $("*#new_image_link").hide()
+    $("*#edit_link").hide()
+    $("*#delete_link").hide()
+    $('div#screen-shadow').fadeIn();
+
+    $("div#signup-container, new_product_container").show();
+    var new_offset = $("div#signup-container, new_product_container").offset()
+    var destination = new_offset.top;
+    $(document).scrollTop(destination);
+  }
+  else
+  {
+    $("div#signup-container, new_product_container").hide();
+    $("*#new_image_link").show()
+    $("*#edit_link").show()
+    $("*#delete_link").show()
+    $('div#screen-shadow').fadeOut();
+  }
+}
+
+<% end %>

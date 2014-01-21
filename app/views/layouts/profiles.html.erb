@@ -1,0 +1,61 @@
+<!-- #TODO : Don't think this is used anymore. Pls check and remove if correct -->
+
+<% content_for :head do -%>
+  <%= stylesheet_link_tag 'profile' %>
+
+<% end -%>
+
+<% content_for :content do -%>
+  <div id="sidenav-container">
+    <%= yield :left_sidebar_top %>
+
+
+    <h4 class="widget-title"><span>spread the love</span></h4>
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style ">
+      <ul class="uiShare">
+
+        <li><a class="addthis_button_facebook item"><img src="/images/tiny_icon_facebook.png" border="0" /><span class="buffered" id="social_buffer_override">Share on facebook</span></a></li>
+        <li><a class="addthis_button_twitter item"><img src="/images/tiny_icon_twitter.png" border="0" /><span class="buffered" id="social_buffer_override">Tweet this page</span></a></li>
+        <li><a class="addthis_button_compact item"><img src="/images/tiny_icon_share.png" border="0" /><span class="buffered" id="social_buffer_override">Share page</span></a></li>
+        <li><a href="<%= entity_atom_feed_path(entity) %>" class="item"><span class="imgWrap"><img src="/images/tiny_icon_rss.png" border="0" /><span class="buffered" id="social_buffer_override">Subscribe to feed</span></a></li>
+        <!--<li><a href="#" class="item"><span class="imgWrap"><img src="/images/tiny_icon_people.png" border="0" /><span class="buffered" id="social_buffer_override">Invite more friends</span></a></li> -->
+
+        <!--<li><a class="addthis_counter addthis_bubble_style" id="social_buffer_override"></a></li>-->
+      </ul>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+    <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4d672cc77703a4b9"></script>
+    <!-- AddThis Button END -->
+  </div>
+
+  <div style="width:740px;float:left;">
+
+
+    <%= yield :top_banner %>
+
+    <div id="profileRightColumn">
+
+    <% if @store %>
+      <div class="ftrt"><span class="ml"><%= link_to t(:store_policies), main_app.policies_store_path(@store), :class => "simpleButton whiteTeal" %></span></div>
+    <% end -%>
+    <% if @store and @store.managers.find_by_user_id(current_user) -%>
+      <div class="ftrt"><span><%= link_to 'manage store', main_app.merchant_store_path(@store), :class => "simpleButton whiteTeal" %></span></div>
+    <% end -%>
+      <div class="clearBoth">&nbsp;</div>
+
+      <%= yield :right_sidebar %>
+
+
+
+    </div>
+    <div id="page-container" class="<%= content_for?(:right_sidebar) ? '' : 'full-page' %>">
+
+      <%= content_for?(:page_container) ? yield(:page_container) : yield %>
+    </div> 
+
+  </div>
+  <div class="clear"></div>
+<% end -%>
+
+<%= render :file => '/spree/layouts/spree_application'%>

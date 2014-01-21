@@ -1,0 +1,61 @@
+###
+###  COPY THIS TO DATABASE.YML AND MAKE ANY CHANGES NEEDED.
+###
+
+
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+#
+# Install the MySQL driver:
+#   gem install mysql2
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: shopdev_development
+  pool: 5
+  #username: shopdev_user
+  #password: H9345H9H208TH2
+  username: root
+  password: 
+  host: localhost
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: shopdev_test
+  pool: 5
+  #username: shopdev_user
+  #password: H9345H9H208TH2
+  username: root
+  password: 
+  host: localhost
+
+staging:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: shopdev_production
+  pool: 5
+  username: shopdev_user
+  password: H9345H9H208TH2
+  host: localhost
+
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: shopdev_production
+  pool: 5
+  username: shopdev_user
+  password: H9345H9H208TH2
+  host: localhost
+
+

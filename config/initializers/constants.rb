@@ -1,0 +1,1 @@
+S3_CONFIG = YAML.load_file("#{::Rails.root}/config/aws_s3.yml")[Rails.env]

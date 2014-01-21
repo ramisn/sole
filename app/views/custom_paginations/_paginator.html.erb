@@ -1,0 +1,21 @@
+<%# The container tag
+  - available local variables
+    current_page:  a page object for the currently displayed page
+    num_pages:     total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+    paginator:     the paginator that renders the pagination tags inside
+-%>
+<nav class="pagination">
+  <%= render(:partial => "custom_paginations/first_page", :locals => {:options => options}) %>
+  <%= render(:partial => "custom_paginations/prev_page", :locals => {:options => options}) %>
+  <% options[:pages].each do |page| -%>
+    <% if page <= options[:left] || options[:num_pages] - page < options[:right] || (options[:current_page] - page).abs <= options[:window] -%>
+      <%= render :partial => "custom_paginations/page", :locals => {:options => options.merge(:page => page)} %>
+    <% else -%>
+      <%= render :partial => "custom_paginations/gap", :locals => {:options => options} %>
+    <% end -%>
+  <% end -%>
+  <%= render(:partial => "custom_paginations/next_page", :locals => {:options => options}) %>
+  <%= render(:partial => "custom_paginations/last_page", :locals => {:options => options}) %>
+</nav>

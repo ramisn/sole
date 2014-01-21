@@ -1,0 +1,36 @@
+<h1><%= t("refunds_owed") %></h1>
+<p><%= link_to t("refunds_paid"), refunds_paid_admin_payments_path %></p>
+
+<% if @orders.count > 0 -%>
+<table class="index" id='listing_orders'>
+  <thead>
+    <tr data-hook="admin_orders_index_headers">
+      <th><%= t("activerecord.attributes.order.completed_at") %></th>
+      <th><%= t("order") %></th>
+      <th><%= t("total") %></th>
+      <th><%= t("paid") %></th>
+      <th><%= t("owed") %></th>
+      <th><%= t("customer") %></th>
+      <th data-hook="admin_orders_index_header_actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @orders.each do |order| %>
+    <tr data-hook="admin_orders_index_rows">
+      <td><%= order.completed_at.to_date %></td>
+      <td><%= link_to order.number, admin_order_path(order) %></td>
+      <td><%= number_to_currency order.total %></td>
+      <td><%= number_to_currency order.payment_total %></td>
+      <td><%= number_to_currency(order.payment_total - order.total) %></td>
+      <td><%= order.email %></td>
+      <td class='actions' data-hook="admin_orders_index_row_actions">
+        <%= link_to 'Mark as Refunded', new_refund_admin_order_payments_path(order), :title => "admin_edit_#{dom_id(order)}" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate(@orders, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+<% else -%>
+<p>There are currently no orders that need refunds</p>
+<% end -%>

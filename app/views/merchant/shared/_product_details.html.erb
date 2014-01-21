@@ -1,0 +1,467 @@
+<%
+  types = []
+  categories = []
+  @product_type.each do |product_type|
+    if product_type.name == "Miscellaneous"
+      types << {:id => product_type.id, :name => "Art/Toys/Electronics"}
+    else
+      types << {:id => product_type.id, :name => product_type.name}
+    end
+    product_type.children.each do |child|
+      if product_type.name != "Miscellaneous" || child.name != "Accessories"
+        categories << {:id => child.id, :name => child.name, :parent_id => child.parent_id}
+      end
+    end
+  end
+  
+  url = @product.persisted? ? main_app.merchant_store_product_path(@store, @product) : main_app.merchant_store_products_path
+%>
+
+<%= form_for([:merchant, @store, @product], :url => url,  :html => { :multipart => true, :id => "spree_product_form"}) do |f| %>
+  
+  <%= hidden_field_tag :store_id, params[:store_id] %>
+
+  
+  <div class="section" id="product-form-product-details">
+    <h4>Product Details</h4>
+    
+    <fieldset id="product-form-item-description">
+      <h5><%= t('Item Description') %> <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=item", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=item')}' ,'#000', 840)", :onMouseout => "hideddrivetip()") %></h5>
+      
+      <p class="required">
+        <%= f.label :name, "Product Title" %> 
+        <%= f.text_field :name, :class => 'title'  %>
+        <%= f.error_message_on :name %>
+      </p>
+
+      <p class="required inline">
+        <%= f.label :product_type, "Product Type" %>
+        <%= collection_select(:taxon, :product_type_id, types.map(&:values), :first, :last, {:include_blank => true, :selected => @selected["product_type"]}, :class => "#{(@product.present? && @product.errors[:product_type].present? ? "field_with_errors" : "")} product-type") %>
+        <%= f.error_message_on :product_type %>
+      </p>
+
+      <p class="required inline">
+        <%= f.label :product_category, "Product Category" %>
+        <%= collection_select(:taxon, :product_category_id, @product_category[@cat_index].children, :id, :name, {:include_blank => true, :selected => @selected["product_category"]}, :val => @selected["product_category"], :class => "#{(@product.present? && @product.errors[:product_category].present? ? "field_with_errors" : "")} product-category") %>
+        <%= f.error_message_on :product_category %>
+      </p>
+      
+      <p class="required inline">
+        <%= label :taxon, :brand_id, "Brand" %>
+        <%= collection_select(:taxon, :brand_id, @brands, :id, :name, {:include_blank => true, :selected => @selected["brand"]}, :class => "#{@product.present? && @product.errors[:brand_id].present? ? "field_with_errors" : ""} product-brand") %>
+        <%= f.error_message_on :brand_id %>
+      </p>
+      
+      <p class="note">Can't find what you're looking for? <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=type_needed", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=type_needed')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></p>
+      <% if @editing %>
+        <span id="product_type_warning" style="">Warning: Changing the Product Type from '<%= Spree::Taxon.find(@selected["product_type"]).name %>' to '<span id="new_product_name"></span>' will cause all the SKU and Size information for this product to be reset. <a href="#" style="color:#3B5998" onclick='$("this").parent().hide(); resetSelects(); return false;'>Undo.</a></span>
+      <% end %>
+      
+      <p class="required">
+        <%= f.label :description, "Description" %>
+        <%= f.text_area :description, {:cols => 60, :rows => 4} %>
+        <%= f.error_message_on :description %>
+      </p>
+
+      <p class="required radios">
+        <%= f.label(:sex, "Sex", {:id => "sex_radials"}) %>
+        <% @departments.each do |dept| %>
+          <%= radio_button_tag(:department, dept[:id], (dept[:id] == @selected["department"]) ) %>
+          <%= content_tag(:span, dept[:name], :id => "department_" + dept[:id].to_s + "label") %>
+        <% end %>
+        <%= f.error_message_on :product_department %>
+      </p>
+      
+    </fieldset>
+    
+    <fieldset id="product-form-metadata">
+      
+       <h5><%= t(:keyword_metadata, :default => "Keywords / Metadata") %> <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=metadata", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=metadata')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></h5>
+
+      <p>
+        <%= f.label :meta_keywords, t(:provide_your_keywords, :default => "Provide Your Own Keywords (separate keywords with a comma)") %>
+        <%= f.text_field :meta_keywords, :class => "wide-input" %>
+      </p>
+      <p>
+        <%= label :meta, :auto_keywords, "Automatic Keywords" %><span class="required space-right"></span>
+        <%= text_field :meta, :auto_keywords, :class => "wide-input auto-keywords", :disabled => 1 %>
+        
+      </p>
+      <span class="align-with-input">Keywords are indicators that help shoppers search for and find your products more easily.</span>
+    </fieldset>
+    
+    <fieldset id="product-form-price-availability">
+      
+      <h5><%= t(:price_availability) %>  <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=listing_shipping", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=listing_shipping')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></h5>
+
+      <p class="required">
+        <!--%= f.label :available_on, t(:date_available) %-->
+        <!--%= f.text_field :available_on, :class => 'datepicker' %-->
+        <%= f.error_message_on :available_on %>
+      </p>
+
+      <p class="required">
+        <%= f.label :price, 'Retail Price ($)' %>
+        
+        <%= f.text_field :price, {:value => number_with_delimiter(number_with_precision(@product.price, :precision => 2)) } %>
+        <span class="note" style="position:relative; left:-2px;">Price should not include shipping charges, Soletron reimburses those costs.</span>
+        
+        <%= f.error_message_on :price %>
+      </p>
+
+      <p >
+        <%= f.label :sale_price, t('Sale Price ($)') %>
+
+        <%- if @product.sale_price.nil? || @product.sale_price.zero? -%>
+          <%= f.text_field :sale_price, {:value => ''} -%>
+        <%- else -%>
+          <%= f.text_field :sale_price, {:value => number_with_delimiter(number_with_precision(@product.sale_price, :precision => 2)) } -%>
+        <%- end -%>
+
+        <span class="note" style="position:relative; left:-2px;">Leave blank, unless your item is ON SALE.</span>
+
+        <%= f.error_message_on :sale_price %>
+      </p>
+      
+    </fieldset>
+    
+    <fieldset id="product-form-custom-product">
+      <h5><%= t('Custom Products') %> <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=listing_custom", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=listing_custom')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %></h5>
+
+      <p class="radios">
+        <%= f.label :custom, t(:customized) %>
+        <%= radio_button_tag(:custom, true, @selected["custom"]) %>
+        <%= t(:yes) %>
+        <%= radio_button_tag(:custom, false, !@selected["custom"]) %>
+        <%= t(:no) %>
+        <span class="note">Examples of custom products include hand-painted sneakers and hats.</span>
+      </p>
+
+    </fieldset>
+    
+  </div>
+  
+  <div class="section" id="product-form-sku-info"> 
+    <h4>Sku Info</h4>
+    
+    <%
+      #variants = @product.present? && @product.variants.present? ? @product.variants : nil
+      variants = @products.present? ? @products.map(&:variants) : @product.present? ? @product.persisted? ? @product.get_siblings.map(&:variants) : [@product.variants] : []
+      variants = [] if variants.flatten.empty? || variants.flatten.compact.empty?
+    %>
+    <%= render :partial => "/merchant/variants/form", :locals => {:variants_array => variants} %>
+    
+    <div class="options">
+      <span class="align-with-input-2">
+        <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=listing_sku", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=listing_sku')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %>
+      </span>
+      <button type="submit" class="simpleButton red" id="add-sku" >
+        Add Another SKU/Color...
+      </button>
+    </div>
+  </div>
+  
+  <% if variants.blank? %>
+  <div class="section" id="product-form-images">
+    <h4>Images</h4>
+    <strong>Provide up to four images for each of your SKUs.</strong>
+    <p>The optimal size for each of your images is at least 600 pixels wide, and we recommend using square aspect ratios (600x600). Images should not exceed 1000 pixels square.</p>
+    <fieldset class="image-uploads" id="image-uploads-0" data-index="0">
+      <h5>SKU #<span class="sku-id"></span></h5>
+      <% 4.times.each do |t| %>
+      <div class="upload-section image <%= t == 3 ? "" : "inline" %>">
+        <div class="uploading-file">
+          &nbsp;
+        </div>
+        <div class="uploading-icon" style="display:none;">
+          <img src="/assets/spinner.gif" alt="uploading" />
+        </div>
+        <div class="uploaded-files"></div>
+        <div class="list-elements" style="display:none;"></div>
+      </div>
+      <% end %>
+    </fieldset>
+  </div>
+  <% else %>
+    <%
+      #variants_groups = variants.inject({}) {|result, variant| key = "#{variant.sku}#{variant.primary_color}#{variant.secondary_color}"; result[key] ||= []; result[key] << variant; result}
+    %>
+    <div class="section" id="product-form-images">
+      <h4>Images</h4>
+      <strong>Provide up to four images for each of your SKUs.</strong>
+      <p>The optimal size for each of your images is at least 600 pixels wide, and we recommend using square aspect ratios (600x600). Images should not exceed 1000 pixels square.</p>
+      <% variants.each_with_index do |variants_array, index| %>
+        <% 
+          variant = variants_array.find{|v| v.errors.present?}
+          variant ||= variants_array.first
+        %>
+        <fieldset class="image-uploads" id="image-uploads-<%= index %>" data-index="<%= index %>" variant_id="<%= variant.id %>">
+          <h5>SKU #<span class="sku-id"><%= variant.sku %></span></h5>
+          <% variant.images.each_with_index do |image, i| %>
+            <div class="upload-section image <%= i == 3 ? "" : "inline" %>">
+              <div class="uploading-file">
+                &nbsp;
+              </div>
+              <div class="uploading-icon" style="display:none;">
+                <img src="/assets/spinner.gif" alt="uploading" />
+              </div>
+              <div class="uploaded-files">
+                <div class="uploaded-image">
+                  <img src="<%= image.attachment.url(:product) %>" variant_id="<%= variant.id %>" class="image_<%= image.id %>" />
+                  <input type="hidden" value="<%= image.id %>" name="variant_data[<%= index %>][images][]" />
+                  <a href="#" class="delete-uploaded-image">Delete</a>
+                </div>
+              </div>
+              <div class="list-elements" style="display:none;"></div>
+            </div>
+          <% end if variant.images.present? %>
+          <% 
+            remains = 4 - variant.images.length
+            if remains > 0
+              remains.times.each do |t|
+          %>
+            <div class="upload-section image <%= t == remains - 1 ? "" : "inline" %>">
+              <div class="uploading-file">
+                &nbsp;
+              </div>
+              <div class="uploading-icon" style="display:none;">
+                <img src="/assets/spinner.gif" alt="uploading" />
+              </div>
+              <div class="uploaded-files">
+              </div>
+              <div class="list-elements" style="display:none;"></div>
+            </div>
+          <% 
+              end
+            end 
+          %>
+        </fieldset>
+      <% end if variants.present? %>
+    </div>      
+  <% end %>
+
+  <div id="product-form-actions">
+    <%= link_to t("actions.cancel"), main_app.merchant_store_url(params[:store_id]) %>
+    <%= f.submit "Finish", :class => "simpleButton green create-product" %>
+    <!--%= f.submit "Preview", :class => "simpleButton green preview-product", :name => "preview" %-->
+  </div>
+
+<% end -%>
+
+<div class="uploaded-image-template" style="display:none;">
+  <div class="uploaded-image" style="display:inline-block;">
+    <img src="" />
+    <input type="hidden" value="" />
+    <a href="#" class="delete-uploaded-image">Delete</a>
+  </div>
+</div>
+
+<script type="text/javascript">
+  ProductTypes = <%= types.to_json.html_safe %>;
+  ProductCategories = <%= categories.to_json.html_safe %>;
+  <%
+    prototypes = []
+    Spree::Prototype.all.each do |prototype|
+      prototype_hash = {:id => prototype.id, :name => prototype.name, :taxon_id => prototype.taxon_id}
+      option_type = prototype.option_types.where(:presentation => "Size").first
+      if option_type.present?
+        prototype_hash[:sizes] = option_type.option_values.map{|ov| {:id => ov.id, :presentation => ov.presentation}}
+      end
+      option_type = prototype.option_types.where(:presentation => "Primary Color").first
+      if option_type.present?
+        prototype_hash[:primary_colors] = option_type.option_values.map{|ov| {:id => ov.id, :presentation => ov.presentation}}
+      end
+      option_type = prototype.option_types.where(:presentation => "Secondary Color").first
+      if option_type.present?
+        prototype_hash[:secondary_colors] = option_type.option_values.map{|ov| {:id => ov.id, :presentation => ov.presentation}}
+      end
+      
+      if prototype_hash[:sizes] || prototype_hash[:primary_colors] || prototype_hash[:secondary_colors]
+        prototypes << prototype_hash
+      end
+    end
+    
+  %>
+  Prototypes = <%= prototypes.to_json.html_safe %>;
+  
+  
+  function updateProductCategorySelect(parent_id) {
+    var html_options = "<option value=''></option>";
+    $(ProductCategories).each(function(index, category) {
+      if (category.parent_id == parent_id) {
+        html_options += "<option value='" + category.id + "'>" + category.name + "</option>";
+      }
+    });
+    $("select.product-category").html(html_options);
+  }
+  function updateProductSizeSelect(type_id, force) {
+    var html_options = "<option value=''></option>";
+    var hasValue = false;
+    $(Prototypes).each(function(index, prototype) {
+      if (prototype.taxon_id == type_id) {
+        $(prototype.sizes).each(function(i, size) {
+          html_options += "<option value='" + size.id + "'>" + size.presentation + "</option>";          
+          hasValue = true;
+        });
+      }
+    });
+    if (hasValue) {
+      $("select.product-size").html(html_options);
+      $("select.product-size").parents(".inline").show();
+    } else if (force) {
+      $("select.product-size").parents(".inline").hide();
+    }
+  }
+  function updateProductPrimaryColorSelect(type_id, force) {
+    var html_options = "<option value=''></option>";
+    var hasValue = false;
+    $(Prototypes).each(function(index, prototype) {
+      if (prototype.taxon_id == type_id) {
+        $(prototype.primary_colors).each(function(i, color) {
+          html_options += "<option value='" + color.id + "'>" + color.presentation + "</option>";          
+          hasValue = true;
+        });
+      }
+    });
+    if (hasValue || force) {
+      $("select.primary-color").html(html_options);
+    }
+  }
+  function updateProductSecondaryColorSelect(type_id, force) {
+    var html_options = "<option value=''></option>";
+    var hasValue = false;
+    $(Prototypes).each(function(index, prototype) {
+      if (prototype.taxon_id == type_id) {
+        $(prototype.secondary_colors).each(function(i, color) {
+          html_options += "<option value='" + color.id + "'>" + color.presentation + "</option>";          
+          hasValue = true;
+        });
+      }
+    });
+    if (hasValue || force) {
+      $("select.secondary-color").html(html_options);
+    }
+  }
+  
+  function productTypeHasItems(type) {
+    var val = $("select.product-type").val();
+    var hasValue = false;
+    $(Prototypes).each(function(index, prototype) {
+      if (prototype.taxon_id == val && prototype[type] && prototype[type].length > 0) {
+        hasValue = true;
+      }
+    });
+    return hasValue;
+  }
+
+  function resetSelects() {
+    var product_type = <%= @selected["product_type"] %>;
+    $("select.product-type").val(product_type);
+    updateProductCategorySelect(product_type, true);
+    updateProductSizeSelect(product_type, true);
+    updateProductSizeSelect(<%= @selected["product_category"] %>, false);
+    updateProductPrimaryColorSelect(product_type, true);
+    updateProductSecondaryColorSelect(product_type, true);
+    $("select.product-category, select.product-size, select.primary-color, select.secondary-color").each(function(index, element) {
+      var val = $(element).attr("val");
+      if (val) {
+        $(element).val(val);
+      }
+    });    
+  }
+
+  resetSelects();
+  
+  $(".product-type").change(function() {
+    var val = $(this).val();
+    updateProductCategorySelect(val, true);
+    updateProductSizeSelect(val, true);
+    updateProductPrimaryColorSelect(val, true);
+    updateProductSecondaryColorSelect(val, true);
+    $("select.product-category").val("");
+    $("select.product-size").val("");
+    $("select.product-primary-color").val("");
+    $("select.product-secondary-color").val("");
+  });
+  
+  $(".product-category").change(function() {
+    var val = $(this).val();
+    updateProductSizeSelect(val, !productTypeHasItems("sizes"));
+    updateProductPrimaryColorSelect(val, !productTypeHasItems("primary_colors"));
+    updateProductSecondaryColorSelect(val, !productTypeHasItems("secondary_colors"));
+  });
+
+  $(".image-uploads .uploading-file").each(function(index, element) {
+    createUploadFormFor(element, $(element).parents(".upload-section"));
+  });
+  
+  $(".delete-uploaded-image").live("click", function(event) {
+    event.preventDefault();
+    var $this = $(this);
+    if (!confirm("Are you sure to delete this image?")) {
+      return;
+    }
+    $this.parents(".uploaded-image").hide();
+    $this.parents(".upload-section").find(".uploading-icon").show();
+    var id = $this.parents(".uploaded-image").find("input").val();
+    $.ajax({
+      url: "/merchant/products/delete_images",
+      type: "delete",
+      data: {image_ids: id},
+      success: function() {
+        $this.parents(".upload-section").find(".uploading-file").show();
+        $this.parents(".upload-section").find(".uploading-icon").hide();
+        $this.parents(".uploaded-image").remove();
+      }, 
+      error: function() {
+        $this.parents(".uploaded-image").show();
+        $this.parents(".upload-section").find(".uploading-icon").hide();
+      }
+    });
+  });
+  $(".create-product").click(function(event) {
+    $(this).parents("form").attr("action", "<%= url %>");
+    $(this).parents("form").removeAttr("target");    
+  });
+  $(".preview-product").click(function(event) {
+    event.preventDefault();
+    var $this = $(this);
+    $("#filter-spinner-new").show();
+    $.ajax({
+      url: "<%= main_app.preview_merchant_store_products_path(@store) %>",
+      type: $this.parents("form").attr("method"),
+      data: $this.parents("form").serialize(),
+      success: function(data) {
+        $("#filter-spinner-new").hide();
+        $this.parents("form").attr("action", "<%= main_app.preview_merchant_store_products_path(@store) %>");
+        $this.parents("form").attr("target", "_blank");
+        $this.parents("form").submit();
+      },
+      error: function(response, status, text) {
+        $("#filter-spinner-new").hide();
+        alert(response.responseText);
+      }
+    });
+  });
+  
+  $("input.title, select.product-type, select.product-category, select.product-brand").change(function() {
+    var keywords = ["Soletron", "Sneakerheads", "Urban Apparel", "Urban Fashion", "Street Wear"];
+    $("input.title, select.product-type, select.product-category, select.product-brand").each(function(index, element) {
+      var val = $(element).val();
+      if (val && $.trim(val)) {
+        var text = "";
+        if ($(element).hasClass("title")) {
+          text = val;
+        } else {
+          text = $("option[value='" + val + "']").html();
+        }
+        
+        if ($.trim(text)) {
+          keywords.push($.trim(text));
+        }
+      }
+    });
+    $(".auto-keywords").val(keywords.join(", "));
+  });
+  $("input.title").change();
+</script>

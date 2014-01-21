@@ -1,0 +1,146 @@
+<% @body_id = 'stores-account' %>
+<%= link_to image_tag("/assets/pdf.gif", :style => ["width:65px;height:65px;"]), {:controller => "/admin/orders", :action => "generate_pdf", :id => @order.number, :format => ""} %>
+
+<table>
+  <tr>
+    <td>
+      <div>
+        <%= link_to 'Back to Orders', admin_orders_path(@store) %>
+      </div>
+
+      <h2><%= t(:order) + ' ' + @order.number %></h2>
+      <div>
+        <%= t(:order_date) %>: <%= (!@order.completed_at.blank? ? @order.completed_at : @order.created_at).strftime("%m/%d/%Y %I:%M %p") %>
+      </div>
+
+      <% if current_user.admin? -%>
+        <p id="cancel-entire-order"><%= link_to 'Force Cancel Entire Order', confirm_force_cancel_admin_order_path(@order.number) %></p>
+      <% end -%>
+      <div>
+        <%= t(:status) %>: <%= @order.state %>  	
+        <div>
+          <%= t(:email) %>: <%= @order.user and !@order.user.anonymous? ? @order.user.email : @order.email %><br/>
+          <%= t(:username) %>: <%= @order.user.username if @order.user %><br/>
+          <%= t(:customer_phone) %>: <%= @order.bill_address.phone if @order.bill_address %><br/>
+          <%= t(:product_sales) %>: <%= number_to_currency(@order.item_total) %><br/>
+          <%= t(:coupons) %>: <%= number_to_currency(@order.coupon_total) %><br/>
+          <%= t(:shipping) %>: <%= number_to_currency(@order.ship_total) %><br/>
+          <%= t(:tax) %>: <%= number_to_currency(@order.tax_total) %><br/>
+          <%= t(:total) %>: <%= number_to_currency(@order.total) %><br/>
+        </div>
+    </td>
+    <td>
+      <div style="width:400px;">
+        <% if @order.ship_address %>
+          <div class='adr'>
+            <h4><%= t("ship_address") %></h4>
+            <%= render :partial => 'admin/shared/address', :locals => {:address => @order.ship_address} %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <h3>Stores in Order</h3>
+        <ul>
+          <% @order.orders_stores.each do |orders_store| -%>
+            <li><%= link_to orders_store.store.name_from_taxon, edit_merchant_store_order_path(orders_store.store, @order)%> | <%= link_to "Force Cancel Merchant's portion of order", confirm_force_cancel_merchant_store_order_path(orders_store.store, @order) %></li>
+          <% end -%>
+        </ul>
+      </div>
+      <div>
+        <h3>Shipping Notes</h3>
+        <%= @order.special_instructions %>
+      </div>
+
+    </td>
+<%#*<td>%>
+    <!--<div>
+<%# if @order.bill_address %>
+            <div class='adr'>
+              <h4><%# t("bill_address") %></h4>
+<%# render :partial => 'admin/shared/address', :locals => {:address => @order.bill_address} %>
+      </div>
+<%# end %>-->
+<%#*</div>%>
+
+<%#*</td>%>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <% if @order.inventory_units.blank? %>
+        <p>
+          <%= t(:no_inventory_units) %>
+        </p>
+      <% else %>
+        <table class="index" style="width:100%;">
+          <tr>
+            <th><%= t('merchant') %></th>
+            <th><%= t('sku') %></th>
+            <th><%= t('item_title') %></th>
+            <th><%= t('product_type') %></th>
+            <th><%= t('category') %></th>
+            <th><%= t('description') %></th>
+            <th><%= t('status') %></th>
+            <th><%= t('ship_date') %></th>
+            <th><%= t('tracking_number')%></th>
+            <th><%= t('carrier') %></th>
+            <th></th>
+          </tr>
+          <% @order.inventory_units.each do |inventory_unit| %>
+            <tr>
+              <td>
+                <% store = inventory_unit.variant ? inventory_unit.variant.product.store : nil-%>
+                <% if store -%>
+                  <%= link_to store.name_from_taxon, main_app.merchant_store_orders_path(store) %>
+                <% end -%>
+              </td>
+              <td valign="top">
+                <%= inventory_unit.variant.sku if inventory_unit.variant %>
+              </td>
+              <td>
+                <%=inventory_unit.variant.product.name if inventory_unit.variant and inventory_unit.variant.product %>
+              </td>
+              <td>
+                <%= inventory_unit.variant.product.get_type if inventory_unit.variant and inventory_unit.variant.product %>
+              </td>
+              <td>
+                <%= inventory_unit.variant.product.category_taxon.name if inventory_unit.variant and inventory_unit.variant.product %>
+              </td>
+              <td>			
+                <%= raw "(" + variant_options(inventory_unit.variant) + ")" unless inventory_unit.variant.nil? or inventory_unit.variant.option_values.empty? %>
+              </td>
+              <td>
+                <%= t(inventory_unit.state) %>
+              </td>
+              <% if inventory_unit.backordered? %>
+                <td colspan='3'><%= t('not_included_in_this_shipment') %></td>
+              <% elsif inventory_unit.shipped? %>
+                <%= puts "**** inventory unit shipment: #{inventory_unit.shipment.id}"  %>
+                <td><%= inventory_unit.shipment.shipped_at.strftime("%m/%d/%Y") if inventory_unit.shipment.shipped_at %></td>
+                <td><%= inventory_unit.shipment.tracking %></td>
+                <td><%= inventory_unit.shipment.vendor_shipping_method %>
+                <% else %>
+                <td colspan="3"></td>
+              <% end %>
+              <td>
+                <% if store %>
+                  <% if inventory_unit.shipped? and current_user.admin? -%>
+                    <%= link_to 'force cancel', confirm_force_cancel_merchant_store_inventory_unit_path(store, inventory_unit) %>
+                  <% elsif !inventory_unit.canceled? -%>
+                    <%= link_to 'cancel', confirm_cancel_merchant_store_inventory_unit_path(store, inventory_unit) %>
+                  <% end -%>
+                <% end -%>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      <% end # inventory_units.blank? %>
+    </td>
+  </tr>
+</table>
+
+<div>
+  <%= link_to 'Back to Orders', admin_orders_path(@store) %>
+</div>
+</div>
+
+

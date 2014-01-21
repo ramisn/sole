@@ -1,0 +1,7 @@
+{
+  "flash": {
+    <% @messages.each do |key, value| -%>
+      "<%= key %>": "<%= raw(escape_javascript(key == :facebook ? link_to('Your Facebook session has ended. Click here to refresh your session and complete this action.', '#', :class => "facebook login_popup") : value)) %>"
+    <% end -%>
+  }
+}

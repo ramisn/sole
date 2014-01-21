@@ -1,0 +1,19 @@
+<h4 class="widget-title"><span><%= title %></span></h4>
+<div>
+  <ul class="follow">
+    <% entities.each do |entity| %>
+      <% if entity -%>
+        <li><%= link_to image_tag(profile_picture_url(entity, :size => :small), :width => 33, :height => 33, :alt => entity.display_name, :title => entity.display_name), 
+        case entity
+        when Spree::User
+          main_app.member_path(entity)
+        when Store
+          main_app.store_path(entity)
+        else
+          "#"
+        end %></li>
+      <% end -%>
+    <% end if entities -%>
+  </ul>
+  <p class="clearBoth viewAll"><a href="<%= view_all %>">View all (<%= total_number %>)</a></p>
+</div>

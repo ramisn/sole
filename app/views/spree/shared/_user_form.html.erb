@@ -1,0 +1,52 @@
+
+<% if show_username %>
+  
+  <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget" style="padding: 0 0 20px 0">
+    <div>
+      <fb:login-button perms="email" size="small" >
+        <%= link_to content_tag(:span, 'Login Facebook', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "signup-social-button", :id => "signup-facebook" %>
+      </fb:login-button>
+      <%= link_to content_tag(:span, 'Login Twitter', :class => "fb_button_text"), '#TODO', :class => "signup-social-button", :id => "signup-twitter" %>
+    </div>
+  </div>
+  
+  <p class="required">
+    <%= f.label :username, t(:create_your_username) %>
+    <%= f.text_field :username, :class => 'title', :disabled => !current_user.nil?  %>
+  </p>
+<% end %>
+
+<p class="required">
+  <%= f.label :email, t(:enter_email) %>
+  <%= f.text_field :email, :class => 'title'  %>
+</p>
+
+<div id="password-credentials">
+  <p class="edit_user required">
+    <%= f.label :password, t(:create_password) %>
+    <%= f.password_field :password, :class => 'title'  %>
+  </p>
+
+  <p class="edit_user required">
+    <%= f.label :password_confirmation, t(:retype) %>
+    <%= f.password_field :password_confirmation, :class => 'title' %>
+  </p>
+</div>
+
+<% if show_username %>
+  <p class="edit_user">
+    <%= f.check_box :receive_emails, {:value => "0", :id => 'id_receive_emails_signup'} %>
+    <%= f.label :receive_emails, t('Yes, I would like to receive exclusive offers and information on new products.'), :for => "id_receive_emails", :style => "display:inline-block;font-weight:normal;" %>
+  </p>
+<% end %>
+
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    obj = $('input#id_receive_emails_signup');
+    obj.val(obj.attr("checked") ? 1 : 0);
+    obj.click(function(){
+        $(this).val($(this).attr("checked") ? 1 : 0);
+    });
+  });
+<% end %>

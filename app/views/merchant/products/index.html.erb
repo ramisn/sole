@@ -1,0 +1,116 @@
+<% @body_id = 'store_products' %>
+
+<div class="admin-panel-group-container-container">
+
+<%= render :partial => '/spree/admin/shared/product_sub_menu' %>
+<h1>Your sales listings</h1>
+<p>Each listing below may represent multiple color variations of a single item or model. To view or edit an item, click "Edit" and then click through to the end of the upload process once you are finished. </p>
+
+  <div class="box">
+    <h2><%= t(:search) %></h2>
+    <%= form_for [:merchant, @store, @search], :url => main_app.merchant_store_products_path, :html => {:class => "search"} do |f| %>
+        <%= f.label :name_contains, t("product_name:") %>
+        <%= f.text_field :name_contains, :size => 40, :style => "margin-right:15px" %>
+        <%= f.check_box :deleted_at_is_null, {:checked => params[:search][:deleted_at_is_null].blank?}, "", "1" %><%= f.label :deleted_at_is_null, t("show_deleted"), :class => "inline" %>
+        <button type="submit" class="simpleButton green rightFLoat" style="margin:0px; display:inline">Search</button>
+    <% end %>
+  </div>
+
+  <table class="index" id='listing_products' style="width:940px; position:relative; left:-20px;">
+    <thead>
+    <tr>
+      <!-- BUGBUG - aslepak: ':default_order => :desc' doesn't work -->
+      <th valign="bottom"><%= sort_link @search, :featured_image_id, t("featured"), :default_order => :desc, :use_route => "main_app" %></th>
+      <th valign="bottom"><%= sort_link @search, :name, t("name"), {:use_route => "main_app"}, {:title => 'admin_products_listing_name_title'} %></th>
+      <th valign="bottom"><%= sort_link @search, :created_at, t("date added"), :default_order => :desc, :use_route => "main_app" %></th>
+      <th valign="bottom"><%= sort_link @search, :available_on, t("available on"), :default_order => :desc, :use_route => "main_app" %></th>
+      <th valign="bottom"><%= t("product type") %></th>
+      <th valign="bottom"><%= t("product category") %></th>
+      <th valign="bottom"><%= sort_link @search, :price, t("price"), :use_route => "main_app" %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+  <% @collection.each do |product| %>
+    <% style = ""
+      if product.deleted?
+        style = "color:red"
+      elsif !product.published?
+        style = "color:blue"
+      end %>
+    <tr style="<%= style %>" id="<%= dom_id product %>">
+      <td style="text-align:center">
+        <%= link_to_feature(product, :url => main_app.feature_merchant_store_product_url(@store, product)) %>
+      </td>
+      <td class="product-name">
+        <% if product.deleted? || !product.published? || product.is_a?(UserProduct) %>
+            <%= product.name %>
+        <% else %>
+            <%= link_to product.name, spree.product_url(product), :title => "View Product in the Soletron Marketplace" %>
+        <% end %>
+      </td>
+      <td><%= product.created_at.to_date %></td>
+      <td><%= available_date(product.available_on) %></td>
+      <td><%= product.get_type %></td>
+      <td><%= product.get_category %></td>
+      <td><%= number_to_currency(product.price) %></td>
+      <td class="actions">
+        <%= link_to_edit_url main_app.edit_merchant_store_product_path(@store, product), :class => 'edit' unless product.deleted?  %>
+        <%= link_to_delete(product, :url => main_app.merchant_store_product_url(@store, product)) unless product.deleted?  %>
+      </td>
+    </tr>
+  <% end %>
+    </tbody>
+  </table>
+  <!--%= paginate(@products, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %-->
+  <div id="bottom-pagination">
+    <%= custom_paginate(@collection) %>
+  </div>
+
+
+<div class="note-box" style="width:860px;float:left">Your featured items are the first row of items that a customer sees when visiting your store. You can list up to four featured items by pressing the star button next to a listing above.<%= link_to(image_tag("/images/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=listing_featured", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :style => "display:inline-block;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=listing_featured')}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %><%# link_to(image_tag("/images/faq.png", :size => "30x30", :alt => "FAQ", :title => "FAQ", :class => "color-question faq"), "/redirects?q=FAQlookup&varname=listing_featured", :target => "_blank", :style => "position:relative; top:10px;") %></div>
+
+</div>
+
+<%= javascript_tag do %>
+String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) == str;
+};
+
+var urls = [];
+urls["featured"] = "/assets/green_star.gif";
+urls["unfeatured"] = "/assets/gray_star.gif";
+var titles = [];
+titles["featured"] = "<%= t(:remove_featured) %>";
+titles["unfeatured"] = "<%= t(:add_featured) %>"
+
+function featured(img)
+{
+  return (img.attr("src").startsWith(urls["featured"]));
+}
+function changeStar(img_id)
+{
+  try
+  {
+    img = $("img#" + img_id);
+    if (featured(img))
+    {
+      img.attr("src", urls["unfeatured"]);
+      img.attr("alt", "Not Featured");
+      img.attr("title", titles["unfeatured"]);
+    }
+    else
+    {
+      img.attr("src", urls["featured"]);
+      img.attr("alt", "Featured Item");
+      img.attr("title", titles["featured"]);
+    }
+  }
+  catch (e)
+  {
+    alert("an error has occurred: " + e.description);
+  }
+}
+<% end %>
+
+

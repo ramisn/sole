@@ -1,0 +1,7 @@
+<fieldset id="product_field">
+  <legend><%= t(:product_for_promotion) %></legend>
+  <p>
+    <%= f.label :product %> - <span class="tip">Leave this blank to have it apply to all items in your store</span><br />
+    <%= f.select :product, options_from_collection_for_select(@store.taxon.products.not_deleted.where('products.product_id IS NULL'), 'id', 'name', @promotion.product ? @promotion.product.id : nil), :include_blank => true %>
+  </p>
+</fieldset>

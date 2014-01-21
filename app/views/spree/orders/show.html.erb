@@ -1,0 +1,67 @@
+
+
+
+<div id="order">
+
+<%#*<h1>%>
+  <%#= accurate_title %>
+  <%#= link_to image_tag("/images/pdf.gif", :style => ["width:65px;height:65px;"]), {:controller => "/orders", :action => "generate_pdf", :id => @order.number, :format => ""} %>
+<%#*</h1>%>
+
+  <% if params.has_key? :checkout_complete %>
+  	<h3><%= t('thank_you_for_your_order') %></h3>
+  <% end %>
+  <%= render :partial => 'spree/shared/order_details', :locals => {:order => @order} %>
+  <p>
+    <!--<%= link_to t('back_to_store'), main_app.root_path %>
+    <% unless params.has_key? :checkout_complete %>
+    	| <%= link_to t('my_account'), account_path if current_user%>
+    <% end %>-->
+  </p>
+</div>
+
+<% if @order.complete? and Rails.env.production? and ENV['SERVER'] == 'shop' %>
+  <% # ... Temporary HACK %>
+  <% require Rails.root.join('lib/curebit') %>
+  <%= javascript_include_tag Curebit::register_purchase_url(@order) %>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-21659901-1']);
+  _gaq.push(['_setDomainName', '.soletron.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_addTrans',
+    '<%= @order.number %>',           // order ID - required
+    '<%= @order.orders_stores.collect {|os| os.store.display_name }.join(", ") %>',  // affiliation or store name
+    '<%= @order.total %>',          // total - required
+    '<%= @order.tax_total %>',           // tax
+    '<%= @order.ship_total %>',              // shipping
+    '<%= @order.ship_address.city %>',       // city
+    '<%= @order.ship_address.state.name %>',     // state or province
+    '<%= @order.ship_address.country.name %>'             // country
+  ]);
+
+  //loop through for each product of the order
+  <% @order.line_items.each do |line_item| -%>
+  _gaq.push(['_addItem',
+    '<%= @order.number %>',           // order ID - required
+    '<%= line_item.variant.id %>',           // SKU/code - required
+    '<%= "#{line_item.variant.product.store.display_name} - #{line_item.variant.product.name}"  %>',        // product name
+    '<%= "#{line_item.variant.product.category_taxon.name}, #{line_item.variant.product.colors}, #{ line_item.variant.size_options[0].presentation if line_item.variant.get_size}" %>',   // category or variation
+    '<%= line_item.price %>',          // unit price - required
+    '<%= line_item.quantity %>'               // quantity - required
+  ]);
+  <% end -%>
+  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<% end -%>
+

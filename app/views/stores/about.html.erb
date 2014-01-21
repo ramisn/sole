@@ -1,0 +1,35 @@
+<div id="profile-about" class="text-page">
+    <div>
+      <h2 class="profile">About <%= @store.name_from_taxon %></h2>
+      
+      <dl>
+        <dt>Member Since</dt>
+        <dd><%= member_since(@store) %></dd>
+     
+        <dt>Company Overview</dt>
+        <dd><%= @store.company_overview %></dd>
+     
+        <dt>Founded</dt>
+        <dd><%= @store.founded %></dd>
+      
+        <dt>Mission</dt>
+        <dd><%= @store.mission %></dd>
+      
+        <dt>Location</dt>
+        <dd><%= @store.location %></dd>
+      
+        <dt>Products</dt>
+        <dd><%= @store.product_types %></dd>
+      
+        <dt>Meet the Team</dt>
+        <dd><%= @store.team_members %></dd>
+      
+        <dt>What We're About</dt>
+        <dd><%= @store.about %></dd>
+      </dl>
+      
+      <%= link_to t(:store_policies_long), main_app.policies_store_path(@store) %>
+
+    </div>
+  </div>
+</div>

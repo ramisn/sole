@@ -1,0 +1,86 @@
+<% 
+if !defined?(hide_comments)
+  hide_comments = false
+end
+item_data = feed_item_data(feed_item)
+%>
+
+<% if feed_item.feedable && !(item_data[:entity_to_display]).nil?-%>
+
+  <li  id="feed_item-<%= feed_item.id %>" class="postWrapper feed_item <%= feed_item.feedable.class.name.downcase %>">
+    
+    <% if !item_data[:line_item] && !feed_item.feedable.is_a?(Comment)  -%>
+      <div class="memberAvi">
+        <%= link_to image_tag(profile_picture_url(item_data[:entity_to_display], :size => :small), :width => 50, :height => 50, :alt => 'avatar'), entity_profile_path(item_data[:entity_to_display]) %>
+        <% if @acting_as and @acting_as != item_data[:entity_to_display] and !@acting_as.is_following?(item_data[:entity_to_display]) -%>
+          <%= link_to 'Follow', follow_entity_path(item_data[:entity_to_display]), :method => :post, :class => "create-follow" %>
+        <% end -%>
+      </div>
+      
+    <% end -%>
+    
+    
+    <div class="memberContent">
+      <div class="arrow">&nbsp;</div>
+
+        
+      <% if item_data[:can_delete] -%>
+        <!--%= link_to 'x', main_app.feed_item_path(feed_item), :method => :delete, 'data-confirm' => "Are you sure you want to delete the feed item?", :class => 'closeBtn' %-->
+      <% end -%>
+        
+      <% if feed_item.feedable.is_a?(Comment) -%>
+
+        <span class="timeStamp">posted <%= time_ago_in_words(feed_item.created_at) %> ago in response to <%= link_to feed_type_display(feed_item.feedable.feed_item), main_app.feed_item_path(feed_item.feedable.feed_item) %></span>
+        <div class="memberName">
+          <%= link_to item_data[:entity_to_display].display_name, entity_profile_path(item_data[:entity_to_display]) %>
+          <% if @acting_as and @acting_as != item_data[:entity_to_display] and !@acting_as.is_following?(item_data[:entity_to_display]) -%>
+            <%= link_to 'Follow', follow_entity_path(item_data[:entity_to_display]), :method => :post, :class => "create-follow" %>
+          <% end -%>
+           - 
+          "<%= link_to feed_item.feedable.message[0,60]+(feed_item.feedable.message.length > 60 ? '...' : ''), main_app.feed_item_path(feed_item)%>"
+        </div>
+        
+        <div class="clearBoth"></div>
+      <% else -%>
+
+        <%= link_to item_data[:entity_to_display].display_name, entity_profile_path(item_data[:entity_to_display]), :class => "username" %>
+        <span class="timeStamp">posted <%= time_ago_in_words(feed_item.feedable.created_at) %> ago</span>
+
+        <div class="data">
+          <%= item_data[:data_to_display] %>
+        </div>
+
+        <% if !hide_comments -%>
+          <div class="comments">
+            <% if feed_item.count_comments > 0 -%>
+              <% if feed_item.count_comments > 2 -%>
+                <%= link_to("View #{feed_comments_count(feed_item)}", main_app.feed_item_path(feed_item)) %>
+              <% end -%>
+              <% (feed_item.feedable.is_a?(Shoutout) ? feed_item.self_and_sibling_comments : feed_item.comments).limit(2).order('created_at DESC').reverse.each do |comment| -%>
+                <%= render :partial => 'feed_items/inline_comment', :locals => {:comment => comment} %>
+              <% end -%>
+            <% end -%>
+          </div>
+        
+          <% if @acting_as -%> 
+            <div class="comment-form" id="<%= feed_item.id %>-new-comment">
+                <!-- #TODO : 3.1Break. Replace dummy form-->
+                 <%#= form_for [:feed_item, Comment.new], :url => main_app.feed_item_comments_path do |comment_form| %>
+                    <%#= comment_form.text_field :message, :class => "mc_email_form" %>
+                    <%#= comment_form.submit 'COMMENT', :class => 'simpleButton small green' %>
+                  <%# end -%>
+                
+              <form>
+                <label>Add your comment</label>
+                <input type="text" />
+                <input type="submit" value="COMMENT" class="simpleButton small green">
+              </form>
+            </div>
+          <% end -%>
+        <% end -%>
+        
+        
+      <% end -%>
+    </div>
+  </li>
+<% end -%>

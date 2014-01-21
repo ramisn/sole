@@ -1,0 +1,10 @@
+<h1>Confirm Forced Cancellation of Shipped Item</h1>
+
+<p>Order Number: <%= @order.number %></p>
+<p>Name: <%= @inventory_unit.variant.product.name if @inventory_unit.variant and @inventory_unit.variant.product %></p>
+<p>Options: <%= raw "(" + variant_options(@inventory_unit.variant) + ")" unless @inventory_unit.variant.nil? or @inventory_unit.variant.option_values.empty? %></p>
+<p>Price: <%= number_to_currency @inventory_unit.line_item.price %></p>
+
+<%= form_tag force_cancel_merchant_store_inventory_unit_path(@store, @inventory_unit), :method => :put do %>
+  <%= submit_tag "Force Cancel Item", :confirm => "Are you sure you want to force cancel the item?" %>
+<% end -%>

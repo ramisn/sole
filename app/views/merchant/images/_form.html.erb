@@ -1,0 +1,21 @@
+<p class="required">
+  <span style="display:block;marign: 0 0 10px 0;width:600px">The optimal size for your image is at least 600 pixels wide. Please ensure that the image file name contains your brand name and the name of the item. Please remove any spaces in the file name with dashes. For example "my brand sunglasses.jpg" becomes "my-brand-sunglasses.jpg".</span>
+
+  <%= f.label :attachment, t("filename") %>
+  <%= f.file_field :attachment %>
+</p>
+<% if @product.has_variants? %>
+  <%= hidden_field_tag :viewable_id, "All" %>
+<% else %>
+  <%= hidden_field_tag :product_id, @product.id %>
+<% end %>
+<p>
+  <%= f.label :alt, t("alt_text") %>
+  <%= f.text_area :alt, :rows => "3" %>
+</p>
+<% unless @product.is_a?(UserProduct) %>
+<p>
+  <%= label :meta, :auto_keywords, "Automatic Keywords" %>
+  <%= text_field :meta, :auto_keywords, :class => "wide-input", :size => 40, :disabled => 1, :value => default_meta_data(@product, true, true) %>
+</p>
+<% end %>

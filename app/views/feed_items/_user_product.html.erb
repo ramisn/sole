@@ -1,0 +1,10 @@
+<%= product_feed_item_title(feed_item) %>
+<div class="mtm">
+  <%= render :partial => "feed_items/product_images", 
+            :locals => {:products => [feed_item.feedable]+feed_item.consolidated_feed_items.limit(2).inject([]) {|array, item| array << item.consolidated; array}}%>
+</div>
+
+<div class="options">
+  <%= link_to "See all uploaded items", uploaded_member_collection_path(feed_item.feedable.user) %>
+  <%= link_to "Comment", "#comments", :class => "show-comments" %>
+</div>

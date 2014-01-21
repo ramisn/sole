@@ -1,0 +1,8 @@
+<div>
+  <!--<img src="/assets/fpo-profile-tabs.jpg" width="488" height="44" alt="replace these" />-->
+  <ul class="profile-feed-links">
+    <li class="profile-feed-link-item"><%= entity_feedback_link(@parent, :done) %></li>
+    <!--<li class="profile-feed-link-item"><%= link_to "Product Reviews", '#', :class => "profile-feed-link #{@selected == :network ? 'selected' : ''}", :style => "color:#FFF; width: 150px;" %></li>-->
+    <li class="profile-feed-link-item"><%= entity_feedback_link(@parent, :needed) %></li>
+  </ul>
+</div>

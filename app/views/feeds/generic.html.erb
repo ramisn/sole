@@ -1,0 +1,91 @@
+
+<div id="profile-feed">
+  
+  <dl id="profile-feed-tabs">
+    <dt>Sort by Activity:</dt>
+    <dd class="profile-feed-tab"><%= link_to "#{get_display_name(@parent)}", entity_feed_path(@parent, :me), :class => "profile-feed-link #{@selected == :me ? 'selected' : ''}" %></dd>
+    <dd class="profile-feed-tab"><%= link_to "#{get_display_name(@parent)} Friends'",  entity_feed_path(@parent, :network), :class => "profile-feed-link #{@selected == :network ? 'selected' : ''}" %></dd>
+    <dd class="profile-feed-tab"><%= link_to "Everyone on Soletron",  entity_feed_path(@parent, :all), :class => "profile-feed-link #{@selected == :all ? 'selected' : ''}" %></dd>
+  </dl>
+  
+</div>
+
+<div id="feed-item-list-container">
+  <ul id="feed-item-list" class="memberFeed">
+    <%= render :partial => "/feed_items/item", :collection => @feed_items, :as => :feed_item %>
+  </ul>
+</div>
+
+<div id="view-more-items" >
+  <% if @view_more -%>
+    <%= link_to 'View More Activity', '', :page => 1, :id => "view-more-link", :class => "simpleButton green" %>
+  <% end -%>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    
+  $(".comment-form form#new_comment").live('submit', function(event) {  
+    $.ajax({
+      url: $(event.target).attr('action'),
+      data: $(event.target).serialize(),
+      success: function(data){  
+        if (data.redirect) {
+          window.location.replace(data.redirect);
+        } else {
+          var item = $(event.target).parents('.feed_item')[0];
+          var comments = $(item).find('.comments')[0];
+          $(comments).append(data);
+          $(event.target).children('#comment_message').attr('value','')
+        }
+      },
+      dataType: 'html',
+      type: 'POST'
+    });
+    return false;
+  }); 
+  
+  $('.show-comments').live('click', function(event) {
+    var item = $(event.target).parents('.feed_item')[0];
+    $(item).find('.comment-form').show();
+    $(item).find('.comments').show();
+    return false;
+  });
+  
+  $('#view-more-link').live('click', function(event) {
+    var page = $('#view-more-link').attr('page');
+    $.ajax({
+      url: '<%= entity_feed_path(@parent, @selected) %>?page='+parseInt(page), 
+      type: 'get', 
+      dataType: 'html',
+      success: function(data, textStatus, jqXHR) {
+        $('#feed-item-list').append(data);
+        if (data.replace(/\s/g,'') == '') {
+          $('#view-more-link').hide();
+        } else {
+          $('#view-more-link').attr('page', parseInt(page)+1);
+        }
+        reset_click_functions();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+      }
+    });
+    return false;
+  });
+  
+  $('#shoutout_content').live('click', function(event) {
+    if ($(event.target).attr('value') == 'SHOUT SOMETHING OUT') {
+      $(event.target).attr('value', '');
+    }
+  });
+  
+  $('#new_shoutout').live('submit', function(event) {
+    value = $.trim($($(event.target).find('#shoutout_content')[0]).attr('value'))
+    if (value == '' || value == 'SHOUT SOMETHING OUT') {
+      return false;
+    }
+  });
+});
+
+</script>

@@ -1,0 +1,21 @@
+<% if products.size > 0 -%>
+<ul class="feed-item-products">
+  <% products.each_with_index do |product, i| -%>
+    <% if !product.nil? %>
+      <% link = product.is_a?(UserProduct) ? '' : product %>
+      
+
+        <% if i == 0 -%>
+          <%= render :partial => "/spree/products/product_listing.html", :locals => { :product => product, :featured => false, :klass => "image-#{i}", :large => true } %>
+          
+        <% else -%>
+          <li class="product-item image-<%= i %>">
+            <%= link_to small_image(product, :class => 'product', :width => 125), link  %>
+            <%= product_favorite_link(product) %>
+          </li>
+        <% end -%>
+ 
+    <% end -%>
+  <% end -%>
+</ul>
+<% end -%>

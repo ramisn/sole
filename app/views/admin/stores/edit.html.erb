@@ -1,0 +1,26 @@
+<fieldset>
+  <legend>Edit Store: <%= @store.display_name %></legend>
+  <%= form_for([:admin, @store]) do |f| %>
+    
+    <%= f.field_container :store_tier_id do %>
+      <%= f.label :store_tier_id, t(:store_tier)%>
+      <%= f.select(:store_tier_id, StoreTier.all.collect {|st| [ st.name, st.id ] }, { :include_blank => true }) %>
+      <%= f.error_message_on :store_tier %>
+    <% end -%>
+    
+    <%= f.field_container :usa_epay_customer_number do %>
+      <%= f.label :usa_epay_customer_number, t(:usa_epay_customer_number) %>
+      <%= f.text_field :usa_epay_customer_number %>
+      <%= f.error_message_on :usa_epay_customer_number %>
+    <% end -%>
+
+    <%= render :partial => 'brands' %>
+
+    <div style="width:320px; text-align:center; margin:auto;">
+      <p class="form-buttons">
+        <%= button t("update") %>
+        <%= t('or') %> <%= link_to t("cancel"), admin_stores_path, :id => "cancel_link" %>
+      </p>
+    </div>
+  <% end -%>
+</fieldset>

@@ -1,0 +1,2 @@
+module Merchant::StoreAdminHelper
+end

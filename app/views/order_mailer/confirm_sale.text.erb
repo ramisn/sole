@@ -1,0 +1,33 @@
+Congratulations, you just made a sale!
+
+Order number: <%= @order.number %>
+
+
+<%= @order.name %> placed an order with you today on SOLETRON!  To ensure a rewarding customer experience, please ship all ordered items at your earliest convenience.  You will have two days from the time of purchase to ship your item before it is considered past due.  If there is any reason why you cannot ship your item on time, please let your customer and Soletron know as soon as possible.
+
+To fulfill your order, please log in to your Soletron merchant account.
+
+Order date
+<%= @order.completed_at.strftime("%m/%d/%Y, %I:%M %p") %>
+
+Date when order is considered past due
+<%= (@order.completed_at + Spree::Config[:shipment_late].to_i.days).strftime("%m/%d/%Y") %> (purchase date + 3 days)
+
+Order summary
+
+<% for item in @items %>
+  [Item #<%=item.variant.sku if item.variant %>] <%=item.variant.product.name if item.variant and item.variant.product %> <%= variant_options(item.variant) if item.variant %> | <%=item.quantity%> @ <%= number_to_currency item.price %> = <%= number_to_currency(item.price * item.quantity) %>
+<% end %>
+
+Payment method
+<% @order.payments.each do |payment| %>
+	<%= payment.updated_at.strftime("%m/%d/%Y") %> <%= payment.source_type %>
+<% end %>
+
+Deliver method chosen
+<% @order.shipments.each do |shipment| %>
+   	<%= shipment.shipping_method.name if shipment.store_id == @items.first.store_id %>
+<% end %>
+
+Shipping address
+<%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.ship_address} %>

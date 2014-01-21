@@ -1,0 +1,40 @@
+<%# content_for :sidebar do -%>
+<!--<div id="notification-sidebar"></div>-->
+<%# end -%>
+<h2>Notifications</h2>
+<% if @notifications and @notifications.size > 0 -%>
+  <table id="notifications">
+  
+  <tr><td colspan="2" style="border-bottom:#CCC 1px dashed;">&nbsp;</td></tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+    <% @notifications.each do |notification| -%>
+    <tr><td class="notification <%= notification.viewed? ? 'viewed' : 'not_viewed' %>"><%= case notification.item
+      when Comment
+        render :partial => 'notifications/comment', :locals => {:comment => notification.item}
+      when Shoutout
+        render :partial => 'notifications/shoutout', :locals => {:shoutout => notification.item}
+      when Follow
+        render :partial => 'notifications/follow', :locals => {:follow => notification.item}
+      when Favorite
+        render :partial => 'notifications/favorite', :locals => {:favorite => notification.item}
+      when UserProduct
+        render :partial => 'notifications/user_product', :locals => {:user_product => notification.item}
+      when Spree::Product
+        render :partial => 'notifications/product', :locals => {:product => notification.item}
+      when Spree::Order
+        render :partial => 'notifications/order', :locals => {:order => notification.item}
+      else 
+        ""
+        end %></td>
+        <td class="timeStamp notification <%= notification.viewed? ? 'viewed' : 'not_viewed' %>"><%= time_ago_in_words(notification.created_at) %> ago</td>
+        </tr>
+        <tr><td colspan="2" style="border-bottom:#CCC 1px dashed;">&nbsp;</td></tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <!--<div class="clearBoth"></div>-->
+      
+    <% end -%>
+  </table>
+<% else -%>
+  <p>You have no notifications.</p>
+<% end -%>
+  

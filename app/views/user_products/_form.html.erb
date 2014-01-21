@@ -1,0 +1,48 @@
+<%= render "/spree/shared/error_messages", :target => @product %>
+
+      <%= f.field_container :name do %>
+        <p class="required">
+          <label><%= t("name") %></label>
+          <%= f.text_field :name, :class => 'fullwidth title'  %>
+        </p>
+      <% end %>
+      
+      <%= f.field_container :description do %>
+      <p class="required">
+        <label><%= t("description") %></label>
+        <%= f.text_field :description, :class => 'fullwidth title'  %>
+      </p>
+      <% end %>
+
+      <%= f.field_container :images do %>
+        <%= f.fields_for :images do |builder| %>
+          <%= render :partial => '/merchant/images/form', :locals => {:f => builder}%>
+        <% end -%>
+      <% end -%>
+      
+  <% @product.root_product.options.each do |option| %>
+    <p class="required">
+      <% selected = @product.master.nil? ? nil : @product.master.option_values.find_by_option_type_id(option.option_type) -%>
+    <% case option.option_type.presentation %>
+    <% when "Primary Color" %>
+
+        <%= label :variant_data.to_s + "[0]", option.option_type.presentation, "Primary Color", :id => "id" + option.option_type.name %>
+
+        <%= select(:variant_data.to_s + "[0]", option.option_type.presentation,
+          option.option_type.option_values.collect {|ov| [ ov.presentation, ov.id ] },
+          {:include_blank => true, :selected => (@product.master and selected ? selected.id : nil)}, {:id => "idsel_0_" + option.option_type.name})
+        %>
+
+    <% when "Secondary Color" %>
+   
+        <%= label :variant_data.to_s + "[0]", option.option_type.presentation, "Secondary Color", :id => "id" + option.option_type.name %>
+
+        <%= select(:variant_data.to_s + "[0]", option.option_type.presentation,
+          option.option_type.option_values.collect {|ov| [ ov.presentation, ov.id ] },
+          {:selected => (@product.master and selected ? selected.id : nil)}, {:id => "idsel_0_" + option.option_type.name})
+        %>
+
+    <% end %>
+    </p>
+  <% end %>
+

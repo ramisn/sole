@@ -1,0 +1,31 @@
+<h1><%= t("refunds_paid") %></h1>
+<p><%= link_to t("refunds_owed"), refunds_payable_admin_payments_path %></p>
+
+<% if @payments.count > 0 -%>
+<table class="index" id='listing_orders'>
+  <thead>
+    <tr data-hook="admin_orders_index_headers">
+      <th><%= t("Date") %></th>
+      <th><%= t("order_number") %></th>
+      <th><%= t("refund") %></th>
+      <th><%= t("sales_total") %></th>
+      <th><%= t("customer") %></th>
+      <th data-hook="admin_orders_index_header_actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @payments.each do |payment| %>
+    <tr data-hook="admin_orders_index_rows">
+      <td><%= payment.created_at %></td>
+      <td><%= link_to payment.order.number, admin_order_path(payment.order) %></td>
+      <td><%= number_to_currency payment.amount*-1 %></td>
+      <td><%= number_to_currency payment.order.total %></td>
+      <td><%= payment.order.email %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate(@payments, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+<% else -%>
+<p>There are no refunded payments</p>
+<% end -%>

@@ -1,0 +1,36 @@
+<% content_for :header do %>
+  <%= javascript_include_tag "https://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e8e0f8646eae991"  %>
+<% end %>
+
+<% content_for :sidebar do %>
+  <%= render '/spree/products/left_sidebar' %>
+<% end %>
+
+<div id="template-filter" style="display:none">
+  <a href="#" class="simpleButton green small"></a>
+</div>
+
+<div id="current-filters">
+  <% @filters.each do |filter| %>
+ 
+    <a href="#" class="simpleButton green small" data-key="<%= filter[:key] %>" data-value="<%= filter[:val] %>" title="Remove this filter"><%= filter[:key].capitalize %>: <%= filter[:val].capitalize %></a>
+  <% end -%>
+</div>
+
+<div id="collection" data-per="<%= session[:per] %>">
+  <%= render :partial => '/shared/filters', :locals => {
+    :taxon    => @taxon, 
+    :filters  => @default_product_groups
+  } %>
+  
+  <% if @products.hits.none? %>
+    <div class="no-products"><%= t(:no_products_found) %></div>
+  <% else -%>
+    <%= render "/spree/shared/products", 
+        :products => @products.results,
+        :taxon    => @taxon,  
+        :sort     => @sort, 
+        :title    => @collection_title %>
+
+  <% end -%>
+</div>

@@ -1,0 +1,30 @@
+<%# Expects:
+entity - the User or Taxon for the page
+follows_type - either :follower or :following
+title - the name of the page
+%>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag '/assets/store/directory' %>
+<% end %>
+
+<h1><%= title %></h1>
+
+<% 
+entity_relation_name = (follows_type == :following ? follows_type : follows_type.to_s.pluralize.to_sym)
+follows = entity.send(entity_relation_name).active.includes(follows_type => [:profile_image]).order('follows.following_type ASC') 
+follows_followers = Follow.followers_count(follows.inject([]) do |array, follow|
+  array << follow.send(follows_type)
+end) 
+-%>
+
+
+<ul class="follow-list small results">
+  <% follows.each_with_index do |follow, i| -%>
+    <% follow_entity = follow.send(follows_type) -%>
+    <% if follow_entity -%>
+      <%= render :partial => "/shared/directory_result", :locals => {:result => follow_entity, :column => i%4 }%>
+          
+    <% end -%>
+  <% end -%>
+</ul>

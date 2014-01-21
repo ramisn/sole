@@ -1,0 +1,10 @@
+<%= render :partial => "/layouts/profile", :locals => {
+  :name   => @user.display_name,
+  :avatar  => user_profile_picture_url(@user),
+  :member => @user,
+  :paths  => {
+    :about      => main_app.about_member_path(@user), 
+    :collection => main_app.member_collection_path(@user) ,
+    :feed       => main_app.member_path(@user)
+  }
+}%>

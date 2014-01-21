@@ -1,0 +1,40 @@
+<div id="new_store" style="padding-bottom: 10px"></div>
+
+<div class='toolbar'>
+  <ul class='actions'>
+    <li id="new_store_tier_link">
+      <%= button_link_to t(:new_store_tier), new_object_url, {:icon => 'add', :id => 'new_store_tier'} %>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+
+<h1><%= "#{t("actions.listing")} #{t("stores")}" %></h1>
+
+<div id="new_store"></div>
+
+<% if @store_tiers.count > 0 -%>
+  <table class="index" id='store_tiers'>
+    <tr>
+      <th><%= t("name") %></th>
+      <th><%= t('Discount')%></th>
+      <th></th>
+    </tr>
+    <% @store_tiers.each do |store_tier| %>
+      <tr id="<%= dom_id store_tier %>">
+        <td width="350px" class='user_email'><%= store_tier.name %></td>
+        <% puts "store tier: name #{store_tier.name}, discount #{store_tier.discount}"%>
+        <td width="50px" class='user_email'><%= store_tier.discount %></td>
+        <td class="actions">
+          <%= link_to_with_icon 'edit', 'Edit', edit_admin_store_tier_url(store_tier), :class => 'edit' %>
+          &nbsp;
+          <%# link_to 'Delete', store_tier %>
+          <%= button_to 'Delete', admin_store_tier_path(store_tier), :method => :delete, :confirm => "Are you sure you want to delete #{store_tier.name}?"  %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= paginate(@store_tiers, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+<% else -%>
+<p>There are currently no store tiers.</p>
+<% end -%>

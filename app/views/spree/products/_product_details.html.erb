@@ -1,0 +1,203 @@
+<% 
+  @body_id  = 'product-details' 
+  taxon     = @taxon 
+%>
+
+<div id="product-details">
+  
+  <div id="product-images">
+   
+    <div id="main-image">
+      <%
+        meta_keywords = @product.get_meta_keywords(false, true)
+        meta_description = @product.get_meta_description(false, true)
+        meta_description ||= meta_keywords
+      %>
+      <%= show_image(@product, false, :large_square, {:longdesc => @product.images.empty? ? nil : @product.images.first.attachment.url}) %>
+    </div>
+    
+    <a class="enlarge simpleButton green small" href="#">Click to enlarge</a>
+    
+    <div id="alt-image-container">
+      <div id="thumbnails">
+        <%  @selected_variant = @product.variants[0] if @selected_variant.nil? %>
+        <% if @product.images.size > 1 %>
+          <%= render 'spree/products/thumbnails', :product => @product %>
+        <% elsif @product.images.size == 1 %>
+          <ul id="product-thumbnails" class="thumbnails">
+            <li><%= mini_image(@product) %></li>
+          </ul>
+        <% end %>
+      </div>
+      
+    </div>
+    
+  </div>
+ 
+  <div id="product-info">
+    <% if @product.store.present? %>
+    <h2 class="item-header"><%= link_to @product.store.name_from_taxon, main_app.store_path(@product.store) %></h2>
+    <% end %>
+    <% if accurate_title.split(accurate_title.split(" ").last).first.present? %>
+      <h6><%= accurate_title.split(accurate_title.split(" ").last).first.downcase.capitalize %></h6>
+    <% end %>
+    <div id="product-price">
+      <% if @product.sale? -%>
+        <span class="original"><%= product_price(@product, :uniform_price => false) %></span>
+      <% end %>
+      <%= product_price(@product) %>
+    </div>
+     
+    <%= form_for :order, :url => populate_orders_url, :html => {:class => "add-to-cart-form"} do |f| %>
+    
+      <% if @product.has_size? %>
+        <%= hidden_field_tag "products[#{@product.id}]", @product.id, :id => "order_product_id" %>
+      <% else -%>
+        <%= hidden_field_tag "products[#{@product.id}]", @product.variants[0].id, :id => "order_product_id" unless @product.variants.empty? %>
+      <% end -%>
+      
+      <%= hidden_field_tag 'quantity', 0, :id => "order_product_quantity" %>
+      <%= submit_tag 'Add to Cart', :class => "simpleButton green submit-product-to-cart" %>
+      
+      <% if current_user && @product.persisted? %>    
+        
+        <label><em>OR</em>Save for later by adding to your favorites list</label>
+        <%= link_to_favorite(@product)  %>
+       
+      <% end %>
+      
+    <% end -%>
+ 
+      <div id="product-specs">
+
+        <dl id="product-colors-current">
+          <dt>Color</dt>
+          <%= accurate_title.split(" ").last %>
+        </dl>
+
+        <% variants = size_select(@product) %>
+
+        <% if @product.has_size? %>
+
+          <dl id="product-sizes">
+            <dt>Sizes</dt>
+            <dd>
+            <% @product.variants.each_with_index do |variant, i| %>
+
+              <% unless variant.size_options.empty? %>
+                
+                <% if variant.count_on_hand > 0  %>
+                  <a href="#" data-product-id="<%= variant.id %>" data-quantity="<%= [variant.count_on_hand, 5].min %>" ><%= variant.size_options[0].presentation  %></a>
+                <% else %>
+                  <span data-quantity="0" class="disabled"><%= variant.size_options[0].presentation  %></span>
+                <% end %>
+
+              <% end -%>
+
+            <% end -%>
+            </dd>
+          </dl>
+
+          <dl id="product-quantity">
+            <dt>Quantity</dt>
+            <select></select>
+          </dl>
+
+        <% else -%>
+
+          <dl id="product-quantity">
+            <dt>Quantity</dt>
+
+            <select>
+              <% [@product.variants[0].count_on_hand, 5].min.times do |time| %>
+                <option value="<%= time %>"><%= time %></option>
+              <% end -%>
+            </select>
+          </dl>
+
+        <% end -%>
+
+
+
+        <dl id="product-colors">
+          <dt>More Colors</dt>
+
+          <% @product.get_siblings.each do |variant| %>
+            <% colors    = variant.colors_hash %>
+
+            <% if !colors[:primary].nil? %>
+              <dd class="<%= colors[:primary].name %>">
+                <a href="<%= (action == :preview) ? spree.preview_product_url(variant) : spree.product_url(variant) %>" title="<%= "Alternate colors: " + accurate_title(variant) %>" >
+                  <% unless colors[:secondary].nil? %>
+                    <span class="secondary <%= colors[:secondary].name %>" ></span>
+                  <% end -%>
+                </a>
+              </dd>
+            <% end -%>
+          <% end -%>
+        </dl>
+
+      </div>
+
+      <% unless action == :preview %>
+
+        <div id="product-share" class="addthis_toolbox addthis_default_style">
+          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          <a class="addthis_button_tweet"></a>
+          <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+          <a class="addthis_button_pinterest" pi:pinit:size="medium" pi:pinit:layout="horizontal"></a>
+          <a class="addthis_counter addthis_pill_style"></a>
+        </div>
+      <% end %>
+
+      <% unless @product.store.nil?  %>
+        <%= link_to "Go to the #{@product.store.name} store", main_app.store_path(@product.store), :class => 'follow-name-link follow-link' %>
+      <% end %>
+
+      <% unless @product.store_taxon.nil? || !current_user %>
+        <%= link_to "Follow #{@product.store.name} for updates", follow_entity_path(@product.store_taxon.store), :method => :post, :id => "click-to-follow", :class => 'follow-link' %>
+      <% end %>
+
+      <p><%= truncate(product_description(@product), :length => 400, :omission => link_to("Read More", "#TODO", :class => "read-more")) rescue t(:product_has_no_description) %></p>
+      <%#= render 'cart_form' %>
+
+    </div>
+    
+    
+    <% if @product.suggested.any? && @product.persisted? %>
+      <%= render :partial => "/spree/products/section", :locals => {
+        :section_id     => 'frequently-bought-together',
+        :section_title  => 'Frequently bought together',
+        :products       => @product.suggested(5)
+      }%>
+    <% end -%>
+
+    <% if @product.featured.any? && @product.persisted? %>
+      <%= render :partial => "/spree/products/section", :locals => {
+        :section_id     => 'other-items-from-same-seller',
+        :section_title  => "Other items from #{@product.store.name}",
+        :products       => @product.featured(5)
+      }%>
+    <% end -%>
+
+    <div id="product-description" class="section">
+      <h4>PRODUCT DETAILS</h4>
+      <%= product_description(@product) rescue t("product_has_no_description") %>
+    </div>
+
+    <% if @product.meta_keywords.present? %>
+      <div id="product-tags" class="section">
+        <h4>TAGS OTHER PEOPLE ASSOCIATED WITH THIS PRODUCT</h4>
+        <% @product.meta_keywords.to_s.split(',').compact.uniq.each do |tag| %>
+          <%= link_to(tag, products_url(:keywords => tag) , :class => 'tag simpleButton green') if tag.present? %>
+        <% end -%>
+      </div>
+    <% end %>
+
+    <div id="product-sponsored-links" class="section">
+      <h4>SPONSORED LINKS</h4>
+      <p>To come with affiliates</p>
+    </div>
+  
+</div>
+<%= puts "DONE"%>

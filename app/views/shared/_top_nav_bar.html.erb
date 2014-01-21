@@ -1,0 +1,144 @@
+<div id="header-nav-main">
+  <ul>
+    <li id="tab-home"><%= logo %></li>
+    
+  	<li id="tab-products" class="current-menu-item">
+      <%= link_to 'SHOP', spree.products_path %>
+  	</li>
+  	
+  	<li id="tab-sell" >
+      <%= link_to 'SALES', 'http://soletron.com/sell' %>
+  	</li>
+  	
+  	<li id="tab-brands">
+      <%= link_to 'BRANDS', main_app.brands_path  %>
+      <ul class="left-right-container">
+        <ul class="brands-dropdown">
+          <% 
+            stores = Store.all.to_a.sort{|a, b| a.display_name.downcase <=> b.display_name.downcase}
+            column_count = (stores.length.to_f / 3 ).ceil
+          %>
+          <% stores.each_with_index do |store, index| %>
+            <% if (index + 1) % column_count == 1 %>
+              <li>
+            <% end %>
+              <%= link_to store.display_name, entity_profile_path(store) %>
+            <% if (index + 1) % column_count == 0 %>
+            </li>
+            <% end %>
+          <% end %>
+            <% if stores.length % column_count != 0 %>
+              </li>
+            <% end %>
+          <li style="clear:both; width:100%;"></li>
+        </ul>
+        <%= link_to "View all brands", main_app.brands_path, :class => "view-all-brands simpleButton green" %>
+      </ul>
+  	</li>
+  	
+  	<li id="tab-blog" >
+      <%= link_to 'BLOG', 'https://www.soletron.com/blog.php' %>
+  	</li>
+  	
+  	<li id="tab-feed" >
+  	  
+  	  <% if current_user %>
+  	    <% number_notifications = @acting_as.notifications.not_viewed.count -%>
+  	    
+        <% if number_notifications > 0 %>
+          <div id="icon-number-wrapper-status">
+            <%= link_to content_tag(:span, number_notifications), main_app.notifications_path, :title => "Notifications" %>
+          </div>
+        <% end -%>
+      <% end %>
+      
+      <%= link_to 'FEED', main_app.notifications_path %>
+  	</li>
+  	
+  	<li id="tab-search" >      
+
+      <%= form_tag products_url, :id => 'search-form', :role => 'search', :method => :get do %>
+      
+        <%= hidden_field_tag :q, params[:q], :id => 'search-type', :value => '' %>
+        <%= text_field_tag :keywords, params[:keywords], :id => 'search-terms', :placeholder => 'SEARCH', :autocomplete => 'off' %>
+        <%= submit_tag 'search', :name => nil, :id => 'search-submit' %>
+      <% end %>
+      
+      <dl id="search-legend">
+        <dd data-type="product" url="<%= spree.products_url %>">Search for Items</dd>
+        <dd data-type="member" url="<%= main_app.search_members_path %>">Search for People</dd>
+        <dd data-type="store" url="<%= main_app.search_stores_path %>">Search for Brands</dd>
+        <dd data-type="blog" url="<%= main_app.redirects_path %>">Search the Blog</dd>
+      </dl>
+      
+  	</li>
+  	
+  	<li id="tab-cart">
+      <a href="<%= spree.cart_path %>" id="tab-cart-count"><%= defined?(current_order) ? get_count(current_order) : 0 %></a>
+      <ul class="left-right-container">
+        <% if defined?(current_order) && get_count(current_order) > 0 %>
+          <%= render :partial => "spree/shared/mini_cart" %>
+        <% end %>
+      </ul>
+  	</li>
+  	
+  	<% if current_user %>
+  	
+    	<li id="tab-account" class="last">
+    	  
+    	  <a href="">YOU</a> 
+    	  
+    	  <dl class="drop-down" id="tab-account-dropdown">
+    	    <dd><a href="<%= main_app.account_path %>" title="Account Settings">Account Settings</a></dd>
+    	    <dd><a href="<%= entity_feed_url(@acting_as, :all) %>" title="Solefeed">Solefeed</a></dd>
+    	    
+    	    <% if @acting_as.is_a?(Store) %>
+            <dd><%= link_to 'Collection', main_app.store_store_url(@acting_as), :title => "Collection" %></dd>
+          <% elsif @acting_as.is_a?(Spree::User) %>
+            <dd><%= link_to 'My Closet', main_app.member_collection_url(@acting_as), :title => "My Closet" %></dd>
+          <% end %>
+
+    	    <dd><a href="<%= main_app.followers_member_path(current_user) %>" title="People Following Me">People Following Me</a></dd>
+    	    <dd><a href="<%= main_app.following_member_path(current_user) %>" title="People I follow">People I Follow</a></dd>
+    	    <dd><a href="#TODO" title="Invite Friends">Invite Friends</a></dd>
+    	    <dt></dt>
+    	    
+      	    <% unless current_user.stores.empty? %>
+      	      <dd id="account-store">
+                 <span >Use Soletron as Your Store</span>
+                 <% current_user.stores.sort{|a, b| a.display_name.downcase <=> b.display_name.downcase}.each do |store| %>
+                 <div class="store-badge">
+                    <a href="<%= main_app.merchant_store_path(store)  %>" title="<%= store.display_name %>" class="avatar">
+                     <%= image_tag(profile_picture_url(store, :size => :mini), :height => '48px') %>
+                  </a>
+                   <%= link_to store.display_name, main_app.merchant_store_path(store), :class => "title"%>
+                 </div>
+                <% end -%>
+               </dd>
+         	    <dt></dt>
+         	    
+            <% end %>
+          
+    	    <% if current_user.has_role?("admin") %>
+             <dd><%= link_to t('admin_portal'), spree.admin_path %></dd>
+          <% end %>
+    	    <dd><a href="#TODO" title="Help">Help</a></dd>
+    	    <dd><a href="<%=  spree.destroy_user_session_url  %>" title="Sign Out">Sign Out</a></dd> 	    
+    	  </dl>
+    	  
+    	</li>
+    	
+    <% else -%>
+    
+      <li id="tab-checkin" class="last">
+    	  <%= link_to 'Sign In', spree.login_url, :id => 'login-link' %> 
+    	  <%= link_to 'Sign Up', spree.signup_url, :id => 'signup-link'  %>
+    	</li>
+    	
+    <% end -%>
+	</ul>
+</div>
+<% unless current_user %>
+  <%= render :partial => "/spree/users/inline_form" %> 
+  <%= render :partial => "/spree/user_sessions/new" %> 
+<% end -%>

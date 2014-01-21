@@ -1,0 +1,6 @@
+Hi <%= @user.display_name.strip %>,
+
+Your store, <%= @store.display_name %>, just had its product, <%= @product.name %>, favorited by <%= @favoriter.display_name %>.
+<%= entity_profile_url(@favoriter) %>
+
+The Soletron Team

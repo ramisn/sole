@@ -1,0 +1,15 @@
+<%= render "/spree/shared/error_messages", :target => @user %>
+<h2><%= t(:change_my_password) %></h2>
+
+<%= form_for @user, :url => user_password_path, :html => {:method => :put} do |f| %>
+  <p>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </p>
+  <%= f.hidden_field :reset_password_token %>
+  <%= f.submit t("update_password"), :class => "simpleButton green" %>
+<% end %>

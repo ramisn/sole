@@ -1,0 +1,18 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag '/assets/store/product' %>
+  <%= javascript_include_tag '/assets/store/product' %>
+  <%= javascript_include_tag "https://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e8e0f8646eae991"  %>
+  <meta content="<%= @product.get_meta_keywords(false, true) %>" name="keywords" />
+  <meta content="<%= @product.get_meta_description(false, true) %>" name="keywords" />
+<% end %>
+
+<%= render :partial => 'spree/products/product_details', :locals => {:action => @action} %>
+
+<% if @variant_id %>
+  <script type='text/javascript'>
+    var variant_id = "<%= @variant_id %>";
+    $(document).ready(function() {
+      Backbone.history.navigate('!show/' + variant_id, { trigger: false });
+    });
+  </script>
+<% end %>

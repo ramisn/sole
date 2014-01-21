@@ -1,0 +1,23 @@
+<h1>Items remaining to be canceled in the order</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders_store.remaining_to_ship.each do |inventory_unit| -%>
+      <tr>
+        <td><%= inventory_unit.variant.product.name if inventory_unit.variant and inventory_unit.variant.product %></td>
+        <td><%= variant_options(inventory_unit.variant) unless inventory_unit.variant.nil? or inventory_unit.variant.option_values.empty? %></td>
+        <td><%= inventory_unit.line_item.price %></td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<%= form_tag main_app.cancel_remaining_merchant_store_order_path(@store, @order), :method => :put do %>
+  <%= submit_tag "Cancel All Remaining Items", :confirm => "Are you sure you want to cancel the remaining items?" %>
+<% end -%>

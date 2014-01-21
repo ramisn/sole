@@ -1,0 +1,15 @@
+<% content_for :sidebar do %>
+  <%= render '/spree/shared/taxonomies' %>
+  <%= render '/spree/products/left_sidebar' %>
+<% end %>
+
+<div id="right">
+  <%= render :partial => '/shared/filters', :locals => {:taxon => @taxon} %>
+  
+  <% if @products.hits.none? %>
+    <span class="no-products"><%= t(:no_products_found) %></span>
+  <% else %>
+    <%= render "/spree/products/products", :products => @products, :taxon => @taxon,  :sort => @sort %>
+  <% end -%>
+    
+</div>

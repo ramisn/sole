@@ -1,0 +1,584 @@
+mc_root:
+  id: 1000
+  name: Categories
+  taxonomy: master_categories
+  permalink: categories
+  position: 0
+  lft: 1
+  rgt: 12
+mc_l1_n1:
+  id: 1002
+  name: Bags
+  taxonomy: master_categories
+  parent_id: 1000
+  position: 1
+  products: ror_tote, ror_bag
+  permalink: categories/bags
+  lft: 8
+  rgt: 9
+mc_l1_n2:
+  id: 1003
+  name: Mugs
+  taxonomy: master_categories
+  parent_id: 1000
+  position: 2
+  products: ror_mug, ror_stein
+  permalink: categories/mugs
+  lft: 10
+  rgt: 11
+clothing:
+  id: 1001
+  name: Clothing
+  taxonomy: master_categories
+  parent_id: 1000
+  #products: ror_baseball_jersey, ror_jr_spaghetti, ror_ringer
+  permalink: categories/clothing
+  lft: 2
+  rgt: 7
+shirts:
+  id: 2000
+  name: Shirts
+  taxonomy: master_categories
+  parent_id: 1001
+  position: 0
+  products: ror_jr_spaghetti
+  permalink: categories/clothing/shirts
+  lft: 3
+  rgt: 6
+t_shirts:
+  id: 3000
+  name: T-Shirts
+  taxonomy: master_categories
+  parent_id: 2000
+  products: ror_baseball_jersey, ror_ringer, apache_baseball_jersey, ruby_baseball_jersey
+  position: 0
+  permalink: categories/clothing/shirts/t-shirts
+  lft: 4
+  rgt: 5
+brand_root:
+  id: 20000
+  name: Brands
+  taxonomy: brand
+  permalink: brands
+  lft: 13
+  rgt: 20
+ruby:
+  name: Ruby
+  taxonomy: brand
+  parent_id: 20000
+  position: 0
+  products: ruby_baseball_jersey
+  permalink: brands/ruby
+  lft: 16
+  rgt: 17
+rails:
+  name: Ruby on Rails
+  taxonomy: brand
+  parent_id: 20000
+  position: 1
+  products: ror_baseball_jersey, ror_jr_spaghetti, ror_ringer, ror_stein, ror_bag, ror_tote, ror_mug
+  permalink: brands/ruby-on-rails
+  lft: 14
+  rgt: 15
+apache:
+  name: Apache
+  taxonomy: brand
+  parent_id: 20000
+  position: 2
+  products: apache_baseball_jersey
+  permalink: brands/apache
+  lft: 18
+  rgt: 19
+footwear:
+  id: 1004
+  name: Footwear
+  taxonomy: master_categories
+  parent_id: 1000
+  permalink: categories/footwear
+  position: 1
+  menu_item: 1
+  lft: 29
+  rgt: 32
+miscellaneous:
+  id: 1005
+  name: Miscellaneous
+  taxonomy: master_categories
+  parent_id: 1000
+  permalink: categories/misc
+  position: 2
+  lft: 30
+  rgt: 31
+tops:
+  id: 2001
+  name: Tops
+  taxonomy: master_categories
+  parent_id: 1001
+  permalink: categories/clothing/tops
+  position: 0
+  menu_item: 1
+  lft: 33
+  rgt: 38
+bottoms:
+  id: 2002
+  name: Bottoms
+  taxonomy: master_categories
+  parent_id: 1001
+  permalink: categories/clothing/bottoms
+  position: 1
+  menu_item: 1
+  lft: 34
+  rgt: 37
+hats:
+  id: 2003
+  name: Hats
+  taxonomy: master_categories
+  parent_id: 1001
+  permalink: categories/clothing/hats
+  position: 2
+  menu_item: 1
+  lft: 35
+  rgt: 36
+
+accessories:
+  id: 2004
+  name: Accessories
+  taxonomy: master_categories
+  parent_id: 1005
+  permalink: categories/misc/accessories
+  position: 0
+  menu_item: 1
+  lft: 39
+  rgt: 46
+art:
+  id: 2005
+  name: Art
+  taxonomy: master_categories
+  parent_id: 1005
+  permalink: categories/misc/art
+  position: 1
+  lft: 40
+  rgt: 45
+toys:
+  id: 2006
+  name: Toys
+  taxonomy: master_categories
+  parent_id: 1005
+  permalink: categories/misc/toys
+  position: 2
+  lft: 41
+  rgt: 44
+electronics:
+  id: 2007
+  name: Electronics
+  taxonomy: master_categories
+  parent_id: 1005
+  permalink: categories/misc/electronics
+  position: 3
+  menu_item: 1
+  lft: 42
+  rgt: 43
+
+sneakers:
+  id: 2008
+  name: Sneakers
+  taxonomy: master_categories
+  parent_id: 1004
+  permalink: categories/footwear/sneakers
+  position: 0
+  menu_item: 1
+  lft: 47
+  rgt: 56
+custom_sneakers:
+  id: 2009
+  name: Custom Sneakers
+  taxonomy: master_categories
+  parent_id: 1004
+  permalink: categories/footwear/custom_sneakers
+  position: 1
+  menu_item: 1
+  lft: 48
+  rgt: 55
+boots:
+  id: 2010
+  name: Boots
+  taxonomy: master_categories
+  parent_id: 1004
+  permalink: categories/footwear/boots
+  position: 2
+  menu_item: 1
+  lft: 49
+  rgt: 54
+sandals:
+  id: 2011
+  name: Sandals
+  taxonomy: master_categories
+  parent_id: 1004
+  permalink: categories/footwear/sandals
+  position: 3
+  menu_item: 1
+  lft: 50
+  rgt: 53
+slippers:
+  id: 2012
+  name: Slippers
+  taxonomy: master_categories
+  parent_id: 1004
+  permalink: categories/footwear/slippers
+  position: 4
+  menu_item: 1
+  lft: 51
+  rgt: 52
+
+tees:
+  id: 3001
+  name: Tees
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/tees
+  position: 0
+  menu_item: 1
+  lft: 57
+  rgt: 72
+long_sleeves:
+  id: 3002
+  name: Long Sleeves
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/long_sleeves
+  position: 1
+  menu_item: 1
+  lft: 58
+  rgt: 71
+button_ups:
+  id: 3003
+  name: Button Ups
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/button_ups
+  position: 2
+  menu_item: 1
+  lft: 59
+  rgt: 70
+polos:
+  id: 3004
+  name: Polos
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/polos
+  position: 3
+  menu_item: 1
+  lft: 60
+  rgt: 69
+hoodies:
+  id: 3005
+  name: Hoodies
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/hoodies
+  position: 4
+  menu_item: 1
+  lft: 61
+  rgt: 68
+sweaters:
+  id: 3006
+  name: Sweaters
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/sweaters
+  position: 5
+  menu_item: 1
+  lft: 62
+  rgt: 67
+jackets:
+  id: 3007
+  name: Jackets
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/jackets
+  position: 6
+  menu_item: 1
+  lft: 63
+  rgt: 66
+blazers:
+  id: 3008
+  name: Blazers
+  taxonomy: master_categories
+  parent_id: 2001
+  permalink: categories/clothing/tops/blazers
+  position: 7
+  menu_item: 1
+  lft: 64
+  rgt: 65
+
+pants:
+  id: 3009
+  name: Pants
+  taxonomy: master_categories
+  parent_id: 2002
+  permalink: categories/clothing/bottoms/pants
+  position: 0
+  menu_item: 1
+  lft: 66
+  rgt: 71
+shorts:
+  id: 3010
+  name: Shorts
+  taxonomy: master_categories
+  parent_id: 2002
+  permalink: categories/clothing/bottoms/shorts
+  position: 1
+  menu_item: 1
+  lft: 67
+  rgt: 70
+underwear:
+  id: 3011
+  name: Underwear
+  taxonomy: master_categories
+  parent_id: 2002
+  permalink: categories/clothing/bottoms/underwear
+  position: 2
+  menu_item: 1
+  lft: 68
+  rgt: 69
+
+fitted:
+  id: 3012
+  name: Fitted
+  taxonomy: master_categories
+  parent_id: 2003
+  permalink: categories/clothing/hats/fitted
+  position: 0
+  menu_item: 1
+  lft: 72
+  rgt: 81
+snapback:
+  id: 3013
+  name: Snapback
+  taxonomy: master_categories
+  parent_id: 2003
+  permalink: categories/clothing/hats/snapback
+  position: 1
+  menu_item: 1
+  lft: 73
+  rgt: 80
+stretch:
+  id: 3014
+  name: Stretch
+  taxonomy: master_categories
+  parent_id: 2003
+  permalink: categories/clothing/hats/stretch
+  position: 2
+  menu_item: 1
+  lft: 74
+  rgt: 79
+beanies:
+  id: 3015
+  name: Beanies
+  taxonomy: master_categories
+  parent_id: 2003
+  permalink: categories/clothing/hats/beanies
+  position: 3
+  menu_item: 1
+  lft: 75
+  rgt: 78
+custom_hats:
+  id: 3016
+  name: Custom hats
+  taxonomy: master_categories
+  parent_id: 2003
+  permalink: categories/clothing/hats/custom_hats
+  position: 4
+  menu_item: 1
+  lft: 76
+  rgt: 77
+
+watches:
+  id: 3017
+  name: Watches
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/watches
+  position: 0
+  menu_item: 1
+  lft: 82
+  rgt: 99
+sunglasses:
+  id: 3018
+  name: Sunglasses
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/sunglasses
+  position: 1
+  menu_item: 1
+  lft: 83
+  rgt: 98
+belts:
+  id: 3019
+  name: Belts
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/belts
+  position: 2
+  menu_item: 1
+  lft: 84
+  rgt: 97
+bags:
+  id: 3020
+  name: Bags
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/bags
+  position: 3
+  menu_item: 1
+  lft: 85
+  rgt: 96
+socks:
+  id: 3021
+  name: Socks
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/socks
+  position: 4
+  menu_item: 1
+  lft: 86
+  rgt: 95
+jewelry:
+  id: 3022
+  name: Jewelry
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/jewelry
+  position: 5
+  menu_item: 1
+  lft: 87
+  rgt: 94
+wallets:
+  id: 3023
+  name: Wallets
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/wallets
+  position: 6
+  menu_item: 1
+  lft: 88
+  rgt: 93
+scarves:
+  id: 3024
+  name: Scarves
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/scarves
+  position: 7
+  menu_item: 1
+  lft: 89
+  rgt: 92
+sneaker_products:
+  id: 3025
+  name: Sneaker Products
+  taxonomy: master_categories
+  parent_id: 2004
+  permalink: categories/misc/accessories/sneaker_products
+  position: 8
+  menu_item: 1
+  lft: 90
+  rgt: 91
+
+headphones:
+  id: 3026
+  name: Headphones
+  taxonomy: master_categories
+  parent_id: 2007
+  permalink: categories/misc/electronics/headphones
+  position: 0
+  menu_item: 1
+  lft: 100
+  rgt: 103
+cases:
+  id: 3027
+  name: Cases
+  taxonomy: master_categories
+  parent_id: 2007
+  permalink: categories/misc/electronics/cases
+  position: 1
+  menu_item: 1
+  lft: 101
+  rgt: 102
+departments_root:
+  id: 30000
+  name: Departments
+  taxonomy: department
+  permalink: departments
+  position: 0
+  menu_item: 1
+  lft: 104
+  rgt: 119
+mens:
+  id: 31001
+  name: Men's
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/mens
+  position: 0
+  menu_item: 1
+  lft: 105
+  rgt: 118
+womens:
+  id: 31002
+  name: Women's
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/womens
+  position: 1
+  menu_item: 1
+  lft: 106
+  rgt: 117
+children:
+  id: 31003
+  name: Children's
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/childrens
+  position: 2
+  menu_item: 1
+  lft: 107
+  rgt: 116
+custom_products:
+  id: 31004
+  name: Custom Products
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/custom_products
+  position: 3
+  menu_item: 1
+  lft: 108
+  rgt: 115
+onsale:
+  id: 31005
+  name: On Sale
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/on_sale
+  position: 4
+  menu_item: 1
+  lft: 109
+  rgt: 114
+new:
+  id: 31006
+  name: Newly Added
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/new
+  position: 5
+  menu_item: 1
+  lft: 110
+  rgt: 113
+featured:
+  id: 31007
+  name: Featured
+  taxonomy: department
+  parent_id: 30000
+  permalink: departments/featured
+  position: 6
+  menu_item: 1
+  lft: 111
+  rgt: 112

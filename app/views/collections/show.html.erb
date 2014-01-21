@@ -1,0 +1,46 @@
+<% @body_id = 'collections' %>
+
+<div id="profile-collection">
+  <% if @favorites.any? %>
+    <%= render :partial => "/spree/products/section", :locals => {
+      :section_id     => 'profile-favorites',
+      :section_title  => 'Favorites',
+      :products       => @favorites
+    }%>
+  <% end -%>
+
+  <% if @purchases.any? %>
+    <%= render :partial => "/spree/products/section", :locals => {
+      :section_id     => 'profile-purchases',
+      :section_title  => 'Purchases',
+      :products       => @purchases
+    }%>
+  <% end -%>
+
+  <% if @uploads.any? %>
+  
+    <%= render :partial => "/spree/products/section", :locals => {
+      :section_id     => 'profile-uploads',
+      :section_title  => 'Uploads',
+      :products       => @uploads
+    }%>
+    
+    <% if @acting_as and @acting_as == @user %>
+      <%= link_to "Upload Something You Own", main_app.new_user_product_path, :class => 'fancyButton green' %>
+    <% end -%>
+    
+  <% else -%>
+  
+    <% if @acting_as and @acting_as == @user %>
+    
+      <div class="section">
+        <h4>Uploads</h4>
+        <p>You haven't uploaded any products yet. <%= link_to "Upload Something You Own", main_app.new_user_product_path %></p>
+      </div>
+      
+    <% end -%>
+    
+  <% end -%>
+  
+  
+</div>

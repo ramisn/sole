@@ -1,0 +1,43 @@
+<tr class="<%= cycle('', 'alt') %>">
+  <td width="155" height="160" valign="top">
+    <% if variant.images.length == 0 %>
+      <%= small_image(variant.product) %>
+    <% else %>
+      <%= image_tag variant.images.first.attachment.url(:small)   %>
+    <% end %>
+  </td>
+  <td width="161" valign="top">
+    <h4 style="margin-top:0px;"><%= link_to variant.product.name, spree.product_path(variant.product) %></h4>
+    <%# variant_options variant %>
+    Color: <%= variant.product.colors  %><br />
+    <% if variant.get_size -%>
+    Size: <%= variant.size_options[0].presentation %><br/>
+    <% end -%>
+    <a href="#" class="company-name"><%= store_name_link(line_item.variant.product, false) %></a>
+  </td>
+  <td width="75" align="center" valign="top">
+    <%= product_price(line_item) %>
+  </td>
+  <td width="76" align="center" valign="top">
+    <%= item_form.select :quantity, options_for_select([1,2,3,4,5].first(line_item.variant.count_on_hand), line_item.quantity), {}, {:onchange =>"this.form.submit();"} %>
+  </td>
+  <td width="75" align="center" valign="top">
+    <strong><%= format_price(product_price(line_item, :format_as_currency => false) * line_item.quantity) unless line_item.quantity.nil? %></strong>
+  </td>
+  <td width="98" valign="top" class="action-links">
+  
+  	<% if current_user -%>
+  
+      <% if current_user and current_user == @acting_as and current_user.favorites.find_by_product_id(variant.product.id) -%>
+        <span class="simpleButton unfav" title="Remove from Favorites" > UNFAV</span>
+      <% else -%>
+        <a href="<%= main_app.product_favorite_path(variant.product.id) %>" class="simpleButton fav favorite" title="Add to Favorites">FAV</a>
+      <% end -%>
+  
+    <% end -%>
+    <%= link_to('remove', main_app.remove_item_path(line_item), :class => 'simpleButton whiteGreen', :style => "float:right; width:70px; text-align:center; margin-bottom:0px; margin-top:0px; font-size:9px; line-height:10px;") %>
+
+  </td>
+</tr>
+<%# TODO We need to add some logic here so that this doesn't come up under the last item.  %>
+<tr><td colspan="6" style="border-top:#CCC 1px dashed;">&nbsp;</td></tr>

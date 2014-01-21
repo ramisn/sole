@@ -1,0 +1,9 @@
+  
+  <h2><a href="<%= main_app.favorites_member_collection_path(@user) %>" title="View All Favorites" style="left:0px;">Favorites <span>view all</span></a></h2>
+  <%= render "/spree/shared/products", :products => @favorites, :taxon => @taxon, :sort => @sort %>
+  
+  <h2><a href="<%= main_app.purchases_member_collection_path(@user) %>" title="View All Purchases" style="left:0px;">Purchases <span>view all</span></a></h2>
+  <%= render "/spree/shared/products", :products => @purchases, :taxon => @taxon, :sort => @sort %>
+  
+  <h2><a href="<%= main_app.uploaded_member_collection_path(@user) %>" title="View All Uploads" style="left:0px;">Uploads <span>view all</span></a></h2>
+  <%= render "/spree/shared/products", :products => @uploads, :taxon => @taxon, :sort => @sort %>

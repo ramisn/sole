@@ -1,0 +1,15 @@
+<ul class="left-right-container">
+  <%= title %>
+  <ul class="left">
+    <ul><%= list %></ul>
+  </ul>
+  <ul class="right">
+    <li>
+    <%= link_to image_tag(ad[:src]), ad[:url] %>
+    <span class="title"><%= ad[:name] %></span>
+    <span class="description"><%= ad[:description] %></span>
+    <%= link_to "View", ad[:url], :class => "simpleButton small green" %>
+    </li>
+  </ul>
+
+</ul>

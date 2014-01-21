@@ -1,0 +1,36 @@
+size:
+  name: tshirt-size
+  presentation: Size
+  position: 1
+color:
+  name: tshirt-color
+  presentation: Color
+  position: 2
+color1:
+  name: color1
+  presentation: Primary Color
+  position: 3
+color2:
+  name: color2
+  presentation: Secondary Color
+  position: 4
+size_hats:
+  name: hats-size
+  presentation: Size
+  position: 5
+size_tops:
+  name: tops-size
+  presentation: Size
+  position: 6
+size_bottoms:
+  name: bottom-size
+  presentation: Size
+  position: 7
+size_shoes:
+  name: shoe-size
+  presentation: Size
+  position: 8
+size_socks:
+  name: sock-size
+  presentation: Size
+  position: 9

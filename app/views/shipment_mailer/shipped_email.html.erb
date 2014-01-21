@@ -1,0 +1,56 @@
+<table><tr><td colspan="2">
+
+
+			<h3>Your order has been shipped</h3>
+
+			<h3>Order number: <%= @order.number %></h3>
+
+			<p>Dear <%= @order.bill_address.full_name %>,</p>
+
+			<p>Thank you for shopping with SOLETRON. The following items from your order have shipped.</p>
+			<% if @order.shipments.not_shipped.size == 0 %> 
+				<p>This completes your order.</p>
+			<% else %>
+				<p>The remaining items in your order will ship soon, and you will receive a separate email when they do.</p>
+			<% end %>
+
+			<h4>Order Summary from <%= @shipment.store.name_from_taxon %> </h4>
+
+			<% for item in @shipment.line_items %>
+			  <p>[Item #<%=item.variant.sku %>] <%= link_to(item.variant.product.name, product_url(item.variant.product)) %> <%= variant_options(item.variant) %> | <%=item.quantity%></p>
+			<% end %>
+			
+</td></tr><tr><td>
+
+			<p>Track your order via <%= @shipment.vendor_shipping_method %></p>
+			<p>Tracking number: <%= @shipment.tracking %></p>
+
+</td><td>
+
+			<h4>Order date</h4>
+			<p><%= @order.completed_at.strftime('%m/%d/%Y %I:%M %p') %></p>
+
+</td></tr><tr><td>
+
+			<h4>Order summary</h4>
+
+			<p>Subtotal: <%= number_to_currency @order.item_total %></p>
+			<% @order.adjustments.each do |adjustment| %>
+				<p><%= adjustment.label %>: <%= number_to_currency adjustment.amount %></p>
+			<% end %>
+			<p>Total: <%= number_to_currency @order.total %></p>
+
+</td><td>
+
+			<h4>Shipping address</h4>
+			<p><%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.ship_address} %></p>
+
+			<h4>Billing address</h4>
+			<p><%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.bill_address} %></p>
+
+</td></tr><tr><td colspan="2">
+
+			<h4>Questions or comments?</h4>
+			<p>Please note that your order is being shipped from an outside warehouse (one that is not owned by Soletron). If you have any questions, please contact the <%= link_to 'seller', "mailto://#{@shipment.store.email}" %> directly. You can also send us an email at <%= link_to 'support@soletron.com', 'mailto://support@soletron.com' %>, and we’ll get back to you as soon as we can.</p>
+			<p><%= link_to 'Visit our FAQ', main_app.redirects_path(:q => "FAQshipping") %></p>
+</td></tr></table>

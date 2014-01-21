@@ -1,0 +1,12 @@
+<% if flash[:alert] %>
+  <div class="flash errors"><%= flash[:alert] %></div>
+<% end %>
+
+<% @body_id = 'login' %>
+<div id="existing-customer">
+  <h2><%= t("login_as_existing") %></h2>
+  <div>
+    <%= render :partial => 'shared/login' %>
+    <%= t("or") %> <%= link_to "Sign Up", spree.signup_path, :id => 'register_link_page' %> | <%= link_to t("forgot_password"), new_user_password_path %>
+  </div>
+</div>

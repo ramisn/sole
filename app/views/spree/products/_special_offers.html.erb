@@ -1,0 +1,24 @@
+<% unless @is_collection_page %>
+	<br />
+	<h4 class="widget-title"><span>Special Offers</span></h4>
+	<br />
+	<%= link_to image_tag("store/ads/Soletron_Comicbook.png", :border=>1, :style => "border:1px solid #5eba2f"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/products/soletron-comic-book' %>
+	<br />
+	<%= link_to image_tag("store/ads/Soletron_Earbuds.png", :border=>1, :style => "border:1px solid #5eba2f"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/products/soletron-x-jlab-earbuds' %>
+	<br />
+	<%= link_to image_tag("store/ads/dunkelvolk_banner.jpg", :border=>1, :style => "border:1px solid #5eba2f"), '/stores/33-Dunkelvolk' %>
+	<br />
+	<%= link_to image_tag("http://s3.amazonaws.com/SpreeHeroku/assets/products/1913/large/glowwhite1%20copy.jpg", :border=>1, :width => '190', :height => '160', :style => "border:1px solid #5eba2f"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/products/glow-in-the-dark-watch' %>
+	<br />
+	<%= link_to image_tag("store/ads/CB_10percent.png", :border=>1, :width => '190', :height => '160', :style => "border:1px solid #5eba2f"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/products/drop-boards-1' %>
+	<br />
+	<%= link_to image_tag("store/ads/nooka_stmp.png", :border=>1, :width => '190', :height => '160', :style => "border:1px solid #5eba2f"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/stores/29-Nooka' %>
+	<br />
+	<%= link_to image_tag("store/ads/U-Lace_Tall-Ad.png", :border=>1, :width => '190', :height => '432', :style => "border:1px solid #5eba2f", :alt => "U Lace Store", :title => "U Lace Store"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/stores/U-LaceCustomizingLaces', :title => "U Lace Store"%>
+	<br />
+	<%= link_to image_tag("store/ads/Storm_Tall-Ad.png", :border=>1, :width => '190', :height => '432', :style => "border:1px solid #5eba2f", :alt => "STORM of London Store", :title => "STORM of London Store"), 'http://soletron.com/track.php?page=shopSide&location=shopSidebarAd&url=shop.soletron.com/stores/stormoflondon', :title => "STORM of London Store" %>
+
+
+	<%= Net::HTTP.get('soletron.com', '/impressions.php?pageNameForTracking=shopSide') %>
+
+<% end %>

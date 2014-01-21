@@ -1,0 +1,23 @@
+<% @body_id = 'signup' %>
+
+<%= render "/spree/shared/error_messages", :target => @user %>
+
+<div id="new-customer">
+  <h2><%= t("Sign Up") %></h2>
+
+  <div>
+
+    <%= form_for(:user, :url => spree.user_registration_path(@user)) do |f| %>
+
+      <div>
+        <%= render '/spree/shared/user_form', :f => f, :show_username => true %>
+        <p><%= submit_tag 'Sign up!', { :class => 'simpleButton green', :title => t(:signup_title), :style => "margin-top:6px;" }%></p>
+      </div>
+
+    <% end %>
+        
+    <%= t("or") %> <%= link_to t("login_as_existing"), spree.login_path %>
+
+  </div>
+
+</div>

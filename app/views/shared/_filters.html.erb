@@ -1,0 +1,26 @@
+<div id="content-options">
+  
+  <select id="show-only" name="show_only">
+    <option value="all" <%= ('all' == params[:show_only]) ? 'selected=true' : '' %>>Show Only</option>
+    <option value="all" >All</option>
+    <% filters.each do |filter| %>
+      <option value="<%= filter.to_param %>" <%= (filter.to_param == params[:show_only]) ? 'selected=true' : '' %>>
+        <%= filter.name %>
+      </option>
+    <% end -%>
+    
+  </select>
+  
+  <select id="sorting" name="sort">
+    <option value="<%= sorting_options[0][1] %>" <%= (sorting_options[0][1]  == params[:sort]) ? 'selected=true' : '' %>>Sort</option>
+    <% sorting_options.each do |option| %>
+      <option value="<%= option[1] %>" ><%= option[0] %></option>
+    <% end -%>
+    
+  </select>
+  
+  <div id="per-page">
+    <a id="per-page-30" href="<%= url_for(:per => 30) %>" title="Display 30 items per page">30 items</a>
+    <a id="per-page-60" href="<%= url_for(:per => 60) %>" title="Display 60 items per page">60 items</a>
+  </div>
+</div>

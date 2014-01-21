@@ -1,0 +1,34 @@
+<% taxons_show = params[:controller] == 'taxons' && params[:action] == 'show' %>
+<% products_index = params[:controller] == 'products' && params[:action] == 'index' %>
+<% if @default_product_groups && (taxons_show || products_index) %>
+  <div id="item-filter" style="margin-top: 10px;">
+    <span class="indent"><span class="bold">Show only:</span>
+
+      <%#*<span>%>
+          <%#= radio_button_tag 'group[path]', url_for, params[:filter].blank?, { :filter => "" } %>
+          <%#= label_tag        'group[path]', 'Best Selling', :value => url_for %>          
+      <%#*</span>%>
+
+      <%# @default_product_groups.each do |group| %>
+        <%#- next if group.products.empty? -%>
+
+        <%# product_group_params = params.merge(:filter => group.to_param) %>
+        <%#= product_group_params %>        
+        <%#*<span>%>          
+          <%#= radio_button_tag "group[path]", url_for, params[:filter] == group.to_param, {:filter => group.to_param} %>
+          <%#= label_tag        "group[path]", group.name, :value => url_for %>
+        <%#*</span>%>
+      <%# end %>
+      <span>
+      <%= select_tag "filter", options_for_select([['Select Option','all'],['Featured','featured'],['On Sale','on-sale'],['All','all']]), {:onChange => "filter(this.value,this.value);", :id=> 'filter'} %>
+        
+      </span>
+      <span>
+        <%= select_tag "sort", options_for_select([['A-Z','a2z'],['Z-A','z2a'], ['Price L to H','l2h'], ['Price H to L','h2l'], ['Best Selling','best-selling'],['Newly Added','newly-added']], 'A-Z'), {:onChange => "filter(this.value);", :id=> 'secondary-sort'} %>
+      </span>
+
+    </span>
+  </div>
+
+  <%= render :partial => 'shared/filter_summary', :locals => {:taxon => taxon} %>
+<% end %>

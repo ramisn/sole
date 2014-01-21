@@ -1,0 +1,34 @@
+<div class="data-container">
+	<% estimated = @order.state == 'payment' ? '' : 'Est. ' %>
+	<h2>ORDER SUMMARY</h2>
+	<div style="border-top:#CCC 1px dashed; border-bottom:#CCC 1px dashed; margin:10px 0px 10px 0px; padding:10px 0px 10px 0px; width:180px;" >
+  <strong><%= @order.item_count %> item(s)</strong> <span><strong><%#= 3.1Break order_price(@order) is undefined  %></strong></span><br/>
+    <em><%= estimated %>Shipping <span><%= number_to_currency(@order.ship_total) %></span></em><br />
+	<%= link_to 'Shipping Policies', '#', :style => "font-style:italic; cursor:default;", :onMouseover => "ddrivetip( '#{Net::HTTP.get('soletron.com', '/faq_search.php?&varname=shipping_calculations')}' ,'#000', 500)", :onMouseout => "hideddrivetip()" %><br />
+	<em><%= estimated %>Sales Tax <span><%= number_to_currency(@order.tax_total) %></span></em><br />
+	<em><%= estimated %>Coupon Discount <span><%#= 3.1Break number_to_currency(@order.promotion_credits.sum(:amount)) %></span></em>
+  	</div>
+	<strong>Total</strong> <span><strong><%= number_to_currency(@order.total) %></strong></span>
+</div>
+<br />
+  <div class="data-container">
+    <% if !@order.bill_address.blank? %>
+	    <!--<div class='adr'>-->
+	      <h4 style="width:180px; border-bottom:1px #ccc dashed; padding:0px;">
+		  	<%= t("bill_address") %> <%= link_to 'edit', checkout_state_path('address'), :style => "float:right; font-size:12px;" %>
+		  </h4>
+	      <%= render :partial => 'admin/shared/address', :locals => {:address => @order.bill_address} %>
+	    <!--</div>-->
+    <% end %>
+  </div>
+  <div class="data-container">
+    <% if !@order.ship_address.blank? %>
+      <!--<div class='adr'>-->
+        <h4 style="width:180px; border-bottom:1px #ccc dashed; padding:0px;">
+			<%= t("ship_address") %> <%= link_to 'edit', checkout_state_path('address'), :style => "float:right; font-size:12px;" %>
+		</h4>
+      	<%= render :partial => 'admin/shared/address', :locals => {:address => @order.ship_address} %>
+      <!--</div>-->
+    <% end %>
+  </div>	
+

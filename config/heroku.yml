@@ -1,0 +1,6 @@
+apps:
+  staging: hollow-window-298
+
+domains:
+  staging:
+    - "hollow-window-298.heroku.com"

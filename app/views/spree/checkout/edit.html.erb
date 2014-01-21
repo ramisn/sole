@@ -1,0 +1,172 @@
+<% content_for :head do %>
+  <%= javascript_include_tag '/assets/store/checkout' %>
+  <%= javascript_include_tag states_path %>
+  
+  <%= stylesheet_link_tag '/assets/store/checkout' %>
+<% end %>
+
+<!-- #TODO : Single form needs to be plugged in, payment methods don't work as expected. -->
+
+<div id="checkout">
+  
+  <div id="checkout-summary">
+    <%= render :partial => '/spree/checkout/summary', :locals => {:order => @order} %>
+  </div>
+  <%# This is one-step checkout: instead of basing the form on @order.state we hard-wire 'confirm' in there %>
+  <%= form_for @order, :url => update_checkout_path('confirm'), :html => { :id => "checkout-form"} do |form| %>
+    
+    <h2 style="padding:37px 0 0 0">One-Step Credit Card Checkout</h2>
+    <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+    
+    <% if !current_user %>
+      <%= render :partial => 'login' %>
+    <% end -%>
+
+    <fieldset id='shipping' >
+      <h4><%= t("shipping_address")%></h4>
+      <small class="daytime-hours">We recommend using your work address if you're not home during the day.</small>
+      
+      <%= form.fields_for :ship_address do |ship_form| %>
+        <%= render :partial => "address_form", :locals => {:form => ship_form, :name => "shipping", parent_form: form } %>
+      <% end -%>
+    </fieldset>
+    
+    <fieldset id='billing' class="collapsed">
+      <h4><%= t("billing_address")%></h4>
+      <%= hidden_field_tag 'order[use_bill_address]', @order.use_bill_address %>
+      
+      
+      <%= check_box_tag :billing_same_as_shipping, "true", true %> 
+      <%= label_tag :billing_same_as_shipping, 'My billing address is the same as my shipping address', :style => "display:inline;font-weight:normal" %>
+      
+      
+      <%= form.fields_for :bill_address do |bill_form| %>    
+        <%= render :partial => "address_form", :locals => {:form => bill_form, :name => "billing"} %>
+      <% end %>
+    </fieldset>
+    
+    <!-- #TODO : Update Credit card info form data to reflect unique payment. payment form is currently undefined because of 3.1 Break -->
+    <fieldset id="payment" data-hook>
+      <h4>Credit Card Details</h4>
+      <%= form.fields_for :payment_method do |payment_form| %>
+        <table>
+          <tr>
+            <td id="cc-fname" class="field required">
+              <%= payment_form.label :firstname, t(:first_name) %>
+              <%= payment_form.text_field :firstname, :class => 'required' %>
+            </td>
+            <td id="cc-lname" class="field required">
+              <%= payment_form.label :lastname, t(:last_name) %>
+              <%= payment_form.text_field :lastname, :class => 'required' %>
+            </td>
+          </tr>
+
+          <tr style="margin:10px 0 0 0">
+            <td id="cc-number" class=" required" colspan="4">
+              <%= payment_form.label :cc_1, "Credit Card Number", :style => "padding:0" %>
+              <small>The 16 digits on the front of your card</small>
+                <%= payment_form.text_field :cc_1, maxlength: 4 %>
+                <%= payment_form.text_field :cc_2, maxlength: 4 %>
+                <%= payment_form.text_field :cc_3, maxlength: 4 %>
+                <%= payment_form.text_field :cc_4, maxlength: 4 %>
+              <span id="card_type" style="display:none;">
+                <span id="looks_like" ><%= t('card_type_is') %> <span id="type"></span></span>
+                <span id="unrecognized"><%= t('unrecognized_card_type') %></span>
+              </span>
+              <img src="assets/credit-card-icons.png">
+            </td>
+          </tr>
+            <td id="cc-cvc" class="required" colspan="4">
+             
+                <%= payment_form.label :verification_value, t('CVC or CVS'), :style => "padding:0"  %>
+                <small>The last 3 digits on the back of your card. AMEX: 4 digit code on front</small>
+                <%= payment_form.text_field :verification_value, :id => 'card_code', :class => 'required', :size => 8 %>
+                <img src="assets/credit-card-cvc.png">
+             
+            </td>
+          </tr>
+          </tr>
+            <td id="cc-expiration-date" class="required" colspan="4">
+             
+                <label for="" style="padding:0 0 5px 0"><%= t('Expiration Date') %></label>
+                
+                <label class="simple">Month</label>
+                <%= select_month(Date.today, :prefix => 'payment_form', :field_name => 'month', :use_month_numbers => true, :class => 'required') %>
+                <label class="simple">Year</label>
+                <%= select_year(Date.today, :prefix => 'payment_form', :field_name => 'year', :start_year => Date.today.year, :end_year => Date.today.year + 15, :class => 'required') %>
+              
+            </td>
+          </tr>
+        </table>
+      <% end %>
+    </fieldset>
+    
+    <!--
+    <% #TODO if Spree::Promotion.manual.count > 0 %>
+      <fieldset id='coupon'>
+        <h4>Coupon Code</h4>
+        <div>
+          <label>Enter your coupon code</label>
+          <%= form.text_field :coupon_code, :style => "width:375px"%>
+          <input type="submit" class="simpleButton grey" value="apply" style="padding:6px" />
+        </div>
+        <small style="padding:5px 0 0 0">Don't have one? <a id="signup-toggle" href="#">Sign up for an account</a> and we'll send you one for 5% off.</small>
+      </fieldset>
+    <% #end %>
+    -->
+
+    <!-- Commenting out for now.
+    <% unless current_user %>
+      <fieldset id='checkout-signup'>
+        <strong>Sign up for an account and get a discount code</strong>
+        <%= fields_for :new_user, Spree::User.new do |nu| %>
+        <table>
+          <tr>
+            <td class="field">
+              <%= nu.label :username, t(:create_your_username) %>
+              <%= nu.text_field :username  %>
+            </td>
+            <td class="field second">
+              <%= nu.label :email, t(:email) %>
+              <%= nu.text_field :email  %>
+            </td>
+          </tr>
+          <tr> 
+            <td class="field">
+              <%= nu.label :password, t(:password) %>
+              <%= nu.text_field :password  %>
+            </td>
+            <td class="field second">
+              <%= nu.label :password_confirmation, t(:confirm_password) %>
+              <%= nu.text_field :password_confirmation  %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <%= nu.submit "SUBMIT", :class => "simpleButton", :style => "text-align:right"%>
+            </td>
+          </tr>
+        </table>
+        <% end -%>
+      </fieldset>
+    
+    <% end -%>
+    -->
+    <%# Note: to support one-page check-out (without a delivery or confirmation page), we set up extra fields here %>
+    <%# setting the order state manually allows us to tell Spree that we're in the "confirm" step %>
+    <%# thus, when the order gets saved to the database, it will process the payments when the next step is invoked %>
+    <%# ... yes, the user is not allowed to select shipping method or confirm their purchase by design ... %>
+
+    <% @order.stores.each do |store| %>
+      <% shipping_method = Spree::ShippingMethod.first %>
+      <%= hidden_field_tag "store_#{store.id}", shipping_method[:id] %>
+    <% end %>
+
+    <%#= hidden_field_tag "order[payments_attributes][][payment_method_id]", @order.cc_payment_method.id %>
+    <input id="post-final" type="submit" value="COMPLETE CHECKOUT"/>
+    <small>This will complete your purchase</small>
+  <% end %>
+	
+</div>
+
+<%= render :partial => "seals" %>

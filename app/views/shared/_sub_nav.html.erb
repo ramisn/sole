@@ -1,0 +1,18 @@
+<div id="header-nav-sub">
+  <ul>
+    <li id="sub-tab-new">
+      <a href="<%= spree.products_url(:sort => 'most-recent') %>">NEW</a>
+    </li id="sub-tab-sale">
+    <li>
+      <a href="<%= spree.products_url(:show_only => 'on-sale') %>">SALE</a>
+    </li>
+    <%= menu_tab_r2l t("taxons.departments"), :label => "All Departments", :id => "sub-tab-departments" %>
+    <%= menu_tab_r2l t("taxons.footwear"), :id => 'sub-tab-footwear' %>
+    <%= menu_tab_r2l t("taxons.tops"), :id => 'sub-tab-tops' %>
+    <%= menu_tab_r2l t("taxons.bottoms"), :id => 'sub-tab-bottoms' %>
+    <%= menu_tab_r2l t("taxons.hats"), :id => 'sub-tab-hats' %>
+    <%= menu_tab_r2l t("taxons.accessories"), :id => 'sub-tab-accessories'  %>
+    <%= misc_tab %>
+  </ul>
+  <%#=  #TODO: Are we still using this? begin; Net::HTTP.get('soletron.com', '/impressions.php?pageNameForTracking=shopDrop'); rescue; end %>
+</div>

@@ -1,0 +1,8 @@
+<h1>Confirm Forced Cancellation of Entire Order</h1>
+
+<p>Order Number: <%= @order.number %></p>
+<p>Order Value: <%= @order.total %></p>
+<p>Number of Items: <%= @order.line_items.sum(:quantity) %></p>
+<%= form_tag force_cancel_admin_order_path(@order), :method => :put do %>
+  <%= submit_tag "Force Cancel Entire Order", :confirm => "Are you sure you want to force cancel the entire order?" %>
+<% end -%>

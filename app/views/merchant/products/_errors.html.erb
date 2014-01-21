@@ -1,0 +1,25 @@
+<% if @products.present? %>
+  <div id="errorExplanation" class="errorExplanation" data-hook>
+    <h2><%= t(:following_errors_prohibited_this_record_from_being_saved, :default => "The following errors prohibited this record from being saved") %>:</h2>
+    <% @products.each do |product| %>
+      <%
+        # Because when update product, variant error might not be present in product.errors
+        invalid_variant = product.variants.find{|v| v.errors.any?}
+        product.errors.add(:variant, "is invalid") unless product.errors[:variant].present? || invalid_variant.nil?
+      %>
+      <%= render(:partial => "merchant/products/product_error", :locals => {:product => product}) if product.errors.any? %>
+    <% end %>
+  </div>
+<% else %>
+  <% 
+    # Because when update product, variant error might not be present in product.errors
+    invalid_variant = @product.variants.find{|v| v.errors.any?}
+    @product.errors.add(:variant, "is invalid") unless @product.errors[:variant].present? || invalid_variant.nil?
+  %>
+  <% if @product && @product.errors.any? %>
+    <div id="errorExplanation" class="errorExplanation" data-hook>
+      <h2><%= t(:errors_prohibited_this_record_from_being_saved, :count => @product.errors.count) %>:</h2>
+      <%= render :partial => "merchant/products/product_error", :locals => {:product => @product} %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,39 @@
+<h3 class="profile"><%= get_display_name(@parent)%> Feedback</h3>
+
+<%= render 'header' %>
+<table id="feedback-table">
+  <thead>
+    <tr>
+      <th class="action">CUSTOMER</th>
+      <th class="date">Date</th>
+      <th class="order-number">Order #</th>
+      <th class="store-name">Store</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr><td colspan="4">&nbsp;</td></tr>
+    <% @feedbacks.each do |feedback| -%>
+      <tr>
+        <td>
+          <% if @parent.is_a?(Store) -%>
+            <p><%= link_to image_tag(profile_picture_url(feedback.order.user, :size => :small), :width => 40, :height => 40), entity_profile_path(feedback.order.user), :style => "margin:0px 4px 0px 0px; position:relative; top:0px;" %><span style="position:relative; top:-15px;"><%= link_to feedback.order.user.display_name, entity_profile_path(feedback.order.user) %></span></p>
+          <% else -%>
+            <p><%= link_to 'Leave Feedback', edit_feedback_path(feedback) %></p>
+          <% end -%>
+        </td>
+        <td><p><%= feedback.order.created_at.strftime('%b %e, %Y') %></p></td>
+        <td><p><%= feedback.order.number %></p></td>
+        <td><p><%= feedback.store.display_name %></p></td>
+      </tr>
+      
+      <tr><td colspan="4">&nbsp;</td></tr>
+      <tr><td colspan="4" style="border-top:#CCC 1px dashed;">&nbsp;</td></tr>
+    <% end -%>
+  </tbody>
+</table>
+
+<% if @feedbacks.nil? or @feedbacks.size == 0 -%>
+  <p>You have no feedback to leave on purchases right now.</p>
+<% end -%>
+
+<%= paginate @feedbacks %>

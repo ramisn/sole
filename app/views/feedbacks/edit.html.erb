@@ -1,0 +1,19 @@
+<p><%= link_to image_tag(profile_picture_url(@feedback.store, :size => :small)), entity_profile_path(@feedback.store) %></p>
+<p>Order: <%= @feedback.order.number %></p>
+<p>Ordered on: <%= @feedback.order.created_at.strftime('%b %e, %Y') %></p>
+
+<%= form_for @feedback, :url => feedback_path(@feedback) do |feedback_form| %>
+  <%= render '/spree/shared/error_messages', :target => @feedback %>
+  <%= feedback_form.label :message %><br/>
+  <%= feedback_form.text_area :message, :cols => 40, :rows => 5 %><br/>
+  <%= feedback_form.label :rating %><br/>
+  <span>Bad Products and Deliver</span>
+  <%= feedback_form.radio_button :rating, 1 %>
+  <%= feedback_form.radio_button :rating, 2 %>
+  <%= feedback_form.radio_button :rating, 3 %>
+  <%= feedback_form.radio_button :rating, 4 %>
+  <%= feedback_form.radio_button :rating, 5 %>
+  <span>Great Products and Delivery</span>
+  <br/>
+  <%= feedback_form.submit "Save Feedback" %>
+<% end -%>

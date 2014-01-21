@@ -1,0 +1,60 @@
+
+	
+	<fieldset id='shipping_method'>
+  <!--<legend><%= t("shipping_options") %></legend>-->
+  <% if @order.stores.length > 1 %>
+  	
+  <% end %>
+  <%= hidden_field_tag "order[shipping_method]", @order.shipping_method_id %>
+  <table id="cart-detail">
+ 
+    <tbody id="line_items">
+      <% @order.stores.each do |store| %>
+	    <% shipment = @order.shipments.by_store(store.id).not_shipped.first %>
+	  <tr>
+	    <td valign="top">
+	    	<%= image_tag(store_profile_picture_url(store, :size => :list)) %><br/>
+			Store: <%= store.name_from_taxon %>
+		</td>
+		<td valign="top">
+			<%= item_list(store) %>
+			<% if Spree::Config[:shipping_instructions] && @order.rate_hash.present? %>
+      			<p id="minstrs">
+        			<%= label_tag "instructions_#{store.id}", t("shipping_instructions") + ' (Optional note to seller)', :style => 'font-size:10px;' %><br />
+        			<%= text_area_tag "instructions_#{store.id}", shipment.instructions, :cols => 40, :rows => 4 %>
+      			</p>
+    		<% end %>
+		</td>
+		<td valign="top">
+  			<div class="inner">
+    			<div id="methods">
+      				<p class="field radios">
+        				<% @order.shipments.find_by_store_id(store).rate_hash.each do |shipping_method| %>
+          				<label>
+            				<%= radio_button_tag("store_#{store.id}", shipping_method[:id], shipping_method[:id] == shipment.shipping_method_id ) %>
+            				<span style="display: inline; width: 200px"><%= shipping_method[:name] %> <%= number_to_currency shipping_method[:cost] %></span>
+          				</label><br />
+        				<% end %>
+                <!--
+          				<label>
+                            <input id="store_21_expedited" name="store_21_disabled" type="radio" value="disabled" disabled>
+                            Expedited (up to 5 days)
+          				</label><br />
+                -->
+      				</p>
+    			</div>
+  			</div>
+		</td>
+        </tr>
+			<%# TODO We need to add some logic here so that this doesn't come up under the last item.  %>
+			<tr><td colspan="3" style="border-top:#CCC 1px dashed;">&nbsp;</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</fieldset>
+
+<div class="form-buttons" style="float:left;">
+  <%= link_to t("previous"), checkout_state_path('address'), :class => 'continue fancyButton grey leftFloat', :title => "" %>
+  <input type="submit" class="continue fancyButton green rightFloat" value="<%=t("save_and_continue") %>" />
+</div>

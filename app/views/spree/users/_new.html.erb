@@ -1,0 +1,62 @@
+<% if Rails.env == "development" %>
+  <% form_url = spree.user_registration_url(Spree::User.new) %>
+ 
+<% else %>
+  <% form_url = spree.user_registration_url(Spree::User.new, {:only_path => false, :protocol => 'https'}) %>
+<% end %>
+        
+<div id="signup-form">
+  <%= form_for(:user, :url => form_url) do |f| %>
+     <%= f.text_field :return_url, :value => request.fullpath, :type => "hidden" %>
+     <fieldset class="form-item">
+         <%= f.label :username, t(:create_your_username) + "" %>
+         <%= f.text_field :username, {:class => 'signin textbox default-value', :size => "35" }  %>
+     </fieldset>
+     <fieldset class="form-item last">
+         <%= f.label :email, t(:enter_email) + "" %>
+         <%= f.text_field :email, {:class => 'signin textbox default-value', :size => "35" }  %>
+     </fieldset>
+     <fieldset class="form-item">
+       <%= f.label :password, t(:create_password) %>
+       <%= f.password_field :password, {:class => 'signin textbox default-value', :size => "35" }  %>
+     </fieldset>
+     <fieldset class="form-item">
+       <%= f.label :password_confirmation, t(:retype) %>
+       <%= f.password_field :password_confirmation, {:class => 'signin textbox default-value', :size => "35" }  %>
+     </fieldset>
+
+     <fieldset class="form-row">
+       <table>
+         <tr>
+           <td class="description" style="font-size:11px">
+             By signing up you confirm that you have read and agreed to <%= link_to "Soletron's Terms of Use", main_app.redirects_path(:q => "terms"), :target => "_blank", :id => "signup-terms-link" %>
+           </td>
+         </tr>
+       </table>
+     </fieldset>
+
+   <table class="signupTable">
+     <tr>
+       <td class="a" valign="middle">
+         <%= submit_tag 'Sign up!', { :class => 'simpleButton green', :tabindex => "104", :title => t(:signup_title), :accesskey => "s" }%>
+       </td>
+       <td class="b" valign="middle">
+         <%= f.check_box :remember_me, {:value => "1", :id => "id_remember_me", :checked => "checked"} %>
+         <%= f.label :remember_me, t('remember_me'), :for => "id_remember_me", :style => "display:inline" %>
+       </td>
+     </tr>
+   </table>
+
+   <table class="emailTable">
+     <tr>
+       <td class="a" valign="top">
+         <%= f.check_box :receive_emails, {:value => "0", :id => 'id_receive_emails', :checked => "checked"} %>
+       </td>
+       <td class="b">
+         <%= f.label :receive_emails, t('Yes, I would like to receive exclusive offers and information on new products.'), :for => "id_receive_emails", :style => "font-wize:11px;font-weight:normal" %>
+       </td>
+     </tr>
+   </table>
+
+  <% end %>
+</div>        

@@ -1,0 +1,27 @@
+<% content_for :left_sidebar_top_append do -%>
+  <%# render 'shared/taxonomies' %>
+  <%= render :partial => 'products/left_sidebar' %>
+
+  <%= render :partial => '/shared/filters', :locals => {:taxon => nil} %>
+<% end -%>
+
+<div id="collection-header">
+  <% if @acting_as and @acting_as == @user %>
+    <%= link_to "Upload Something You Own", new_user_product_path, :class => 'fancyButton green', :style => "float:right;" %>
+  <% end -%>
+  <h3 class="profile"><%= get_display_name(@parent)%> Collection</h3>
+</div>
+
+
+<div id="collections-radios"><!-- styles set up for this id, be it div or form -->
+<%= link_to "ALL PRODUCTS", member_collection_path(@user), :class => "#{@selected == :all ? 'selected' : ''}", :style => "" %><!-- styles set up for this as well, be it anchor or input -->
+
+<%= link_to "FAVORITES", favorites_member_collection_path(@user), :class => "#{@selected == :favorites ? 'selected' : ''}", :style => "" %>
+
+<%= link_to "PURCHASES", purchases_member_collection_path(@user), :class => "#{@selected == :purchases ? 'selected' : ''}", :style => "" %>
+
+<%= link_to "UPLOADED", uploaded_member_collection_path(@user), :class => "#{@selected == :uploaded ? 'selected' : ''}", :style => "" %>
+</div>
+
+<div class="clear"></div>
+<%= render "shared/products", :products => @products, :taxon => @taxon,  :sort => @sort %>

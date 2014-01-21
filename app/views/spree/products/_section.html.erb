@@ -1,0 +1,16 @@
+<!-- #TODO link this to some controller to update data. To replace: data-url / data-page-current / data-page-last. Controller should render the ul section only -->
+
+<div id="<%= section_id %>" class="section">
+  <h4><%= section_title %></h4>
+  
+  <ul class="section-product-scroller" data-url="#TODO" data-page-current="1" data-page-last="1">
+    
+    <li class="section-product-scroller-arrow prev">Previous</li>
+    <li class="section-product-scroller-arrow next">Next</li>
+    <% products.each_with_index do |product, i| %>
+       <%= render :partial => "/spree/products/product_listing.html", :locals => { :product => product, :featured => false, :klass => "product-#{i}" } %>
+
+    <% end -%>
+    
+  </ul>
+</div>

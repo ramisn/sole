@@ -1,0 +1,43 @@
+Your order has been shipped
+
+Order number: <%= @order.number %>
+
+Dear <%= @order.bill_address.full_name %>,
+
+Thank you for shopping with SOLETRON. The following items from your order have shipped.
+<% if @order.shipments.not_shipped.length == 0 %> 
+	This completes your order.
+<% else %>
+    The remaining items in your order will ship soon, and you will receive a separate email when they do.
+<% end %>
+
+Order Summary from <%= @shipment.store.name_from_taxon %> 
+
+<% for item in @shipment.line_items %>
+  [Item #<%=item.variant.sku %>] <%=item.variant.product.name%> <%= variant_options(item.variant) %> | <%=item.quantity%>
+<% end %>
+
+Track your order via <%= @shipment.vendor_shipping_method %>
+Tracking number: <%= @shipment.tracking  %>
+
+Order date
+<%= @order.completed_at.strftime('%m/%d/%Y %I:%M %p') %>
+
+Order summary
+
+Subtotal: <%= number_to_currency @order.item_total %>
+<% @order.adjustments.each do |adjustment| %>
+	<%= adjustment.label %>: <%= number_to_currency adjustment.amount %>
+<% end %>
+Total: <%= number_to_currency @order.total %>
+
+Shipping address
+<%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.ship_address} %>
+
+Billing address
+<%= render :partial => 'admin/shared/address.text', :locals => {:address => @order.bill_address} %>
+
+Questions or comments?
+Please note that your order is being shipped from an outside warehouse (one that is not owned by Soletron). If you have any questions, please contact the seller at <%= @shipment.store.email %> directly. You can also send us an email at support@soletron.com, and we’ll get back to you as soon as we can.
+<%= link_to 'Visit our FAQ', main_app.redirects_path(:q => "FAQshipping") %>
+

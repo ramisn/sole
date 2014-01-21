@@ -1,0 +1,29 @@
+<div id="account" class="account">
+  
+  <div class="column">
+    <h4>Your Account</h4>
+    <dl>
+      <dt>Info &amp; Appearance</dt>
+      <dd><%= link_to 'Name and info', main_app.edit_profile_account_path %></dd>
+      <dd><%= link_to 'Profile picture', main_app.account_profile_image_path %></dd>
+    </dl>
+    
+    <dl>
+      <dt>Connections</dt>
+      <dd><%= link_to "Link your profile to Facebook", main_app.authentications_account_path %></dd>
+      <dd><%= link_to "Change your email and password", main_app.edit_account_url %></dd>
+    </dl>
+    
+  </div>
+  
+  <div class="column">
+    <h4>&nbsp;</h4>
+    <dl>
+      <dd>Outstanding orders</dd>
+      <dd>Cancel an order</dd>
+    </dl>
+    
+  </div> 
+
+</div>
+

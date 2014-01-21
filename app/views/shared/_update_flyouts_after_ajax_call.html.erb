@@ -1,0 +1,57 @@
+<% if request.xhr? %>
+<% brand_filter = escape_javascript(render(:partial => "products/brands_filter")) %>
+<% color_filter = escape_javascript(render(:partial => "products/color_filter")) %>
+<% sex_filter = escape_javascript(render(:partial => "products/sex_filter")) %>
+<% size_filter = escape_javascript(render(:partial => "products/size_filter")) %>
+<script type="text/javascript">
+    $('#brandFilter').replaceWith('<%= brand_filter %>')
+    $('#colorFilter').replaceWith('<%= color_filter %>')    
+    $('#sexFilter').replaceWith('<%= sex_filter %>')    
+    $('#sizeFilter').replaceWith('<%= size_filter %>')    
+    $( "#slider-range" ).slider( "option", "min", <%= @min_price.floor %> );
+    $( "#slider-range" ).slider( "option", "max", <%= @max_price.ceil %> );
+    $( "#slider-range" ).slider( "option", "values", [ <%= @lower_price.to_i %>, <%= @upper_price.to_i %> ] );
+    
+      $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+    " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    
+    // setup simple search on color filter
+    $('form#color-filter').submit(function(e){
+        set_filter("color1");
+        submit_query($(this).attr('url'));
+        reset_display();
+        return false;
+    });
+
+    // setup simple search on size filter
+    $('form#size-filter').submit(function(e){
+        set_filter("size");
+        submit_query($(this).attr('url'));
+        reset_display();
+        return false;
+    });
+
+    // setup simple search on size filter
+    $('form#sex-filter').submit(function(e){
+        set_filter("sex");
+        submit_query($(this).attr('url'));
+        reset_display();
+        return false;
+    });
+    
+//     $('#clearSizeFilter').click(function(e) {
+//   $('#sizeFilter input[type=checkbox]').attr('checked', false);
+//   return false;
+// });
+
+// $('#clearSexFilter').click(function(e) {
+//   $('#sexFilter input[type=checkbox]').attr('checked', false);
+//   return false;
+// });
+
+// $('#clearColorFilter').click(function(e) {
+//   $('#colorFilter input[type=checkbox]').attr('checked', false);
+//   return false;
+// });
+</script>
+<% end %>

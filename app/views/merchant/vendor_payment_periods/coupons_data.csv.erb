@@ -1,0 +1,16 @@
+<%=
+CSV.generate do |csv|
+  csv << [
+          t('order_date'), 
+          t('order_#'), 
+          t('coupon_value')
+         ]
+  @orders_stores.each do |orders_store|
+    csv << [
+            orders_store.order.completed_at.strftime("%-m/%-d/%Y"),
+            orders_store.order.number,
+            number_to_currency(orders_store.coupons)
+           ]
+  end
+end
+%>

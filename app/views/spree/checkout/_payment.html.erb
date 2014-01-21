@@ -1,0 +1,74 @@
+<fieldset id="payment" style="float:left;">
+  <%= hook :checkout_payment_step, {:form => form} do %>
+
+    <table>
+      <tr>
+        <td valign="top">
+
+          <div style="width:300px;" class="coupon-code-area">
+            <h3 style="width:300px;"><%= t("discount_codes") %></h3>
+            <p>Enter your gift card number here. It will be applied during checkout</p>
+            <%= hook :coupon_code_field, {:form => form} %>
+
+          </div>
+
+        </td>
+        <td valign="top" width="340" style="padding-left: 40px;">
+          <div style="width:300px;">
+            <h3 style="width:300px;"><%= t("payment") %></h3>
+      			<% @order.available_payment_methods.each do |method| %>
+    				<p>
+    				  <label>
+    					<%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, button_checked(method, params, @order) %>
+    					<%= render_payment_method_radio(method) %>
+    				  </label>
+    				</p>
+    			  <% end %>
+            
+            <ul id="payment-methods" style="margin: 0 !important;">
+              <% @order.available_payment_methods.each do |method| %>
+                <li id="payment_method_<%= method.id %>"<%= ' class="last"' if method == @order.available_payment_methods.last %>>
+                  <fieldset>
+                    <%= render "checkout/payment/#{method.method_type}", :payment_method => method %>
+                  </fieldset>
+                </li>
+              <% end %>
+            </ul>
+            <!--
+                              <br style='clear:both;' />
+            -->
+          </div>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</fieldset>
+
+<!--
+<hr class="space" />
+
+<div style="width:100%;text-align: right">
+<%# form.check_box :accepted_terms, {:checked => false}, "1", "" %>
+  <span style="font-weight: bold; padding-left: 2px">
+    I have read and agreed to <%# link_to "Soletron's Terms of Use Policies", main_app.redirects_path(:q => "terms"), :style => "color:#5FBB30;", :target => "_blank" %>
+  </span>
+  <span class="asterisk-required">*</span>
+</div>
+-->
+
+<div class="form-buttons" style="float:left;">
+  <%= link_to t("previous"), checkout_state_path('delivery'), :class => 'continue fancyButton grey leftFloat' %>
+  <input type="submit" class="continue fancyButton green rightFloat" value="<%= 'Complete Purchase' %>" />
+</div>
+
+
+<%= javascript_tag do %>
+  <% if (!params[:order].blank? && !params[:order][:payments_attributes].blank? && !params[:order][:payments_attributes][0].blank? &&
+        !params[:order][:payments_attributes][0][:payment_method_id].blank?)%>
+    (function($){
+    $(document).ready(function(){
+    $("li#payment_method_<%= params[:order][:payments_attributes][0][:payment_method_id] %>").show();
+    });
+    })(jQuery);
+  <% end %>
+<% end %>

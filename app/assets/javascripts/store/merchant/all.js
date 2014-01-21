@@ -1,0 +1,1 @@
+//= require store/merchant/merchant

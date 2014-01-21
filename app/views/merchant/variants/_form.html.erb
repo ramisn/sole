@@ -1,0 +1,277 @@
+<%= text_field :check, :dirty, :value => 0, :type => "hidden" %>
+
+<% if !defined?(variants_array) || variants_array.blank? %>
+  <fieldset class="sku-variant" id="variant_data_0" data-index='0'>
+     
+        <a href="javascript:void(0)" class="remove">x</a>
+        <%= text_field :check, :dirty, :value => 0, :type => "hidden" %>
+        <%= text_field :variant_data.to_s + "[0]", :skip, :value => 1, :type => "hidden" %>
+        <%= text_field :variant_data.to_s + "[0]", :status, :type => "hidden" %>
+        <%= text_field :variant_data.to_s + "[0]", :product_id, :type => "hidden" %>
+        <p class="required inline" data-property="sku">
+          <%= label :variant_data.to_s + "[0]", :sku, t("sku"), :id => "idSku" %>
+          <%= text_field :variant_data.to_s + "[0]", :sku, :onchange => "setDirty($(this));", :class => "sku" %>
+        </p>
+        
+        <p class="required inline" data-property="primary_color">
+          <%= label :variant_data.to_s + "[0]", :primary_color, t("primary_color", :default => "Primary Color") %>
+          <select name="variant_data[0][primary_color]" class="primary-color">
+            <option></option>
+          </select>
+        </p>
+        
+        <p class="inline" data-property="secondary_color">
+          <%= label :variant_data.to_s + "[0]", :secondary_color, t("secondary_color", :default => "Secondary Color") %>
+          <select name="variant_data[0][secondary_color]" class="secondary-color">
+            <option></option>
+          </select>
+        </p>
+        <div class="size-and-quantity">
+            <p class="inline required">
+              <%= label :variant_data.to_s + "[0][" + :per_size_data.to_s + "][0]", :size, :id => "idSize" %>
+              <%= select(:variant_data.to_s + "[0][" + :per_size_data.to_s + "][0]", :size, [], {:include_blank => true}, :onchange => "setDirty($(this));", :class => "product-size") %>
+            </p>
+
+          <% if Spree::Config[:track_inventory_levels] %>
+            <p class="inline required" data-property="on_hand">
+              <%= label :variant_data.to_s + "[0][" + :per_size_data.to_s + "][0]", :on_hand, t('Quantity'), :id => "idOnHand" %>
+              <%= text_field :variant_data.to_s + "[0][" + :per_size_data.to_s + "][0]", :on_hand, {:style => "margin-right:5px;", :onchange => "setDirty($(this));"} %>
+              <a href="javascript:void(0)" onclick="setDirty($(this).parent()); removeElement($(this).parent()); return false;" style="display:none"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0" /></a>
+            </p>
+          <% end %>         
+          <a href="#" class="remove-size-and-quantity" style="display:none;"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0" /></a>
+        </div>
+        <a href="#" class="add-size-and-quantity">Add another size</a>
+  </fieldset>
+<% else %>
+  <%
+    #variants_groups = variants.inject({}) {|result, variant| key = "#{variant.sku}#{variant.primary_color}#{variant.secondary_color}"; result[key] ||= []; result[key] << variant; result}
+  %>
+  <% variants_array.each_with_index do |variants, index| %>
+    <%
+      #variant = variants.find{|v| v.errors.present?}
+      master_variant = variants.find{|v| v.persisted? && v.product.product_id.nil?}
+      variant = master_variant
+      variant ||= variants.first
+    %>
+    <fieldset class="sku-variant <%= master_variant.present? ? "master-product" : "" %>" id="variant_data_<%= index %>" data-index='<%= index %>'>
+            <a href="javascript:void(0)" class="remove remove-sku-variant" style="<%= master_variant.present? ? "display:none" : "" %>">x</a>
+            <%= text_field :check, :dirty, :value => 0, :type => "hidden" %>
+            <%= text_field :variant_data.to_s + "[" + index.to_s + "]", :skip, :value => 1, :type => "hidden" %>
+            <%= text_field :variant_data.to_s + "[" + index.to_s + "]", :status, :type => "hidden" %>
+            <% product_id = variant.product.persisted? ? variant.product.permalink : "" %>
+            <%= text_field :variant_data.to_s + "[" + index.to_s + "]", :product_id, :class => "product-id", :value => product_id, :type => "hidden" %>
+            <p class="required inline" data-property="sku">
+              <% if variant.errors[:sku].present? %>
+                <span class="field_with_errors">
+                  <%= label :variant_data.to_s + "[" + index.to_s + "]", :sku, t("sku"), :id => "idSku" %>
+                </span>
+                <span class="field_with_errors">
+                  <%= text_field :variant_data.to_s + "[" + index.to_s + "]", :sku, :value => variant.sku, :onchange => "setDirty($(this));", :class => "sku" %>
+                </span>
+                <span class="formError">
+                  <%= variant.errors[:sku].first %>
+                </span>
+              <% else %>
+                <%= label :variant_data.to_s + "[" + index.to_s + "]", :sku, t("sku"), :id => "idSku" %>
+                <%= text_field :variant_data.to_s + "[" + index.to_s + "]", :sku, :value => variant.sku, :onchange => "setDirty($(this));", :class => "sku" %>
+              <% end %>
+            </p>
+
+            <p class="required inline" data-property="primary_color">
+              <% if variant.errors[:primary_color].present? %>
+                <span class="field_with_errors">
+                  <%= label :variant_data.to_s + "[" + index.to_s + "]", :primary_color, t("primary_color", :default => "Primary Color") %>
+                </span>
+                <span class="field_with_errors">
+                  <select name="variant_data[<%= index %>][primary_color]" class="primary-color" val="<%= variant.get_primary_color %>">
+                    <option></option>
+                  </select>
+                </span>
+                <span class="formError"><%= variant.errors[:primary_color].first %></span>
+              <% else %>
+                <%= label :variant_data.to_s + "[" + index.to_s + "]", :primary_color, t("primary_color", :default => "Primary Color") %>
+                <select name="variant_data[<%= index %>][primary_color]" class="primary-color" val="<%= variant.get_primary_color %>">
+                  <option></option>
+                </select>
+              <% end %>
+            </p>
+
+            <p class="inline" data-property="secondary_color">
+              <% if variant.errors[:secondary_color].present? %>
+                <span class="field_with_errors">
+                  <%= label :variant_data.to_s + "[" + index.to_s + "]", :secondary_color, t("secondary_color", :default => "Secondary Color") %>
+                </span>
+                <span class="field_with_errors">
+                  <select name="variant_data[<%= index %>][secondary_color]" class="secondary-color" val="<%= variant.get_secondary_color %>">
+                    <option></option>
+                  </select>
+                </span>
+                <span class="formError"><%= variant.errors[:secondary_color].first %></span>
+              <% else %>
+                <%= label :variant_data.to_s + "[" + index.to_s + "]", :secondary_color, t("secondary_color", :default => "Secondary Color") %>
+                <select name="variant_data[<%= index %>][secondary_color]" class="secondary-color" val="<%= variant.get_secondary_color %>">
+                  <option></option>
+                </select>
+              <% end %>          
+            </p>
+
+            <% variants.each_with_index do |variant, i| %>
+            <div class="size-and-quantity">
+              <% if variant.persisted? %>
+                <input type="hidden" name="variant_data[<%= index %>][per_size_data][<%= i %>][id]" value="<%= variant.id %>" class="variant-id" />
+              <% end %>
+              <p class="inline required">
+                <% if variant.errors[:size].present? %>
+                  <span class="field_with_errors">
+                    <%= label :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :size, :id => "idSize" %>
+                  </span>
+                  <span class="field_with_errors">
+                    <%= select(:variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :size, [], {:include_blank => true}, :val => variant.get_size, :onchange => "setDirty($(this));", :class => "product-size") %>
+                  </span>
+                  <span class="formError"><%= variant.errors[:secondary_color].first %></span>
+                <% else %>
+                  <%= label :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :size, :id => "idSize" %>
+                  <%= select(:variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :size, [], {:include_blank => true}, :val => variant.get_size, :onchange => "setDirty($(this));", :class => "product-size") %>
+                <% end %>
+              </p>
+
+            <% if Spree::Config[:track_inventory_levels] %>
+              <p class="inline required" data-property="on_hand">
+                <% if variant.errors[:on_hand].present? %>
+                  <span class="field_with_errors">
+                    <%= label :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :on_hand, t('Quantity'), :id => "idOnHand" %>
+                  </span>
+                  <span class="field_with_errors">
+                  <%= text_field :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :on_hand, {:value => variant.on_hand, :style => "margin-right:5px;", :onchange => "setDirty($(this));"} %>
+                        <a href="javascript:void(0)" onclick="setDirty($(this).parent()); removeElement($(this).parent()); return false;" style="display:none"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0" /></a>
+                  </span>
+                  <span class="formError"><%= variant.errors[:on_hand].first %></span>
+                <% else %>
+                  <%= label :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :on_hand, t('Quantity'), :id => "idOnHand" %>
+                  <%= text_field :variant_data.to_s + "[" + index.to_s + "][" + :per_size_data.to_s + "][#{i}]", :on_hand, {:value => variant.on_hand, :style => "margin-right:5px;", :onchange => "setDirty($(this));"} %>
+                        <a href="javascript:void(0)" onclick="setDirty($(this).parent()); removeElement($(this).parent()); return false;" style="display:none"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0" /></a>
+                <% end %>
+              </p>
+            <% end %> 
+              <a href="#" class="remove-size-and-quantity" style="<%= master_variant.present? && variant.id == master_variant.id || i == 0 ? "display:none" : "" %>"><img src="/assets/white-x.png" alt="Remove this Size" style="border:0;" /></a>
+            </div>
+            <% end if variants.present? %>
+            <a href="#" class="add-size-and-quantity">Add another size</a>
+    </fieldset>
+  <% end if variants_array.present? %>
+<% end %>
+
+
+<script type="text/javascript">
+  store_username = "<%= @store.username %>";
+  $(".add-size-and-quantity").live("click", function(event) {
+    event.preventDefault();
+    var $html = $(this).prev().clone();
+    $html.find("input, select").each(function(index, element) {
+      var name = $(element).attr("name");
+      var numbers = name.match(/\d+/g);
+      var number = numbers[numbers.length - 1];
+      if (number) {
+        var lastIndex = name.lastIndexOf(number);
+        var newName = name.substr(0, lastIndex) + (1*number + 1) + name.substr(lastIndex + (number.length));
+        $(element).attr("name", newName);
+        $(element).val("");
+      }
+    });
+    $html.find(".remove-size-and-quantity").css({display: "inline-block"});
+    $(this).before($html);
+  });
+  
+  $(".remove-size-and-quantity").live("click", function(event) {
+    event.preventDefault();
+    if (confirm("Are you sure? This can't be undone")) {
+      var $this = $(this);
+      var $sizeContainer = $this.parents(".size-and-quantity");
+      var $skuContainer = $this.parents(".sku-variant");
+      if ($skuContainer.find(".size-and-quantity").length > 1) {
+        $sizeContainer.hide();
+        var variant_id = $sizeContainer.find(".variant-id").val();
+        if (variant_id) {
+          $.ajax({
+            url: "/merchant/store/" + store_username + "/products/delete_variants",
+            type: "delete",
+            data: {variant_ids: [variant_id]},
+            success: function(data) {
+              $sizeContainer.remove();
+            },
+            error: function(response) {
+              var message = "Error delete sku, please try again later.";
+              alert(message);
+              $this.parents(".size-and-quantity").show();
+            }
+          });
+        } else {
+          $sizeContainer.remove();
+        }
+      } else {
+        $skuContainer.find(".remove-sku-variant").click();
+      }
+    }
+  });
+  $(".sku").live("change", function(event) {
+    var index = $(this).parents(".sku-variant").attr("data-index");
+    $("#image-uploads-" + index).find(".sku-id").html($(this).val());
+  });
+  $(".sku").change();
+
+  function setDirty(element)
+  {
+    /*$("input#check_dirty").val(1);
+    if ((element != null) && (element.attr("row_number") != undefined))
+    {
+      parent_id = "divSKU" + element.attr("row_number");
+      parent = element.parent();
+      while ((parent != null) && (parent.html() != null))
+      {
+        if (parent.attr("id") == parent_id)
+          break;
+        else
+          parent = parent.parent();
+      }
+      if (parent != null)
+      {
+        var status_input = $("input#variant_data_status_" + parent_id, parent);
+        if (status_input.val() == "<%= STATUS[:default] %>")
+        {
+          status_input.val("<%= STATUS[:edit] %>");
+        }
+      }
+    }*/
+  }
+
+  $(document).ready(function()
+  {
+  try
+  {
+  <% if params[:action] == :index.to_s %>
+    var sizes;
+    <% @product.get_siblings.each do |product| %>
+      <% if product.variants.blank? %>
+        insertSKU(null, <%= !product.draft? ? product.id : "null" %>);
+      <% else %>
+        sizes = [];
+        <% product.variants.each do |variant| %>
+          sizes.push(new Size("<%= variant.get_size %>", <%= variant.count_on_hand %>, <%= variant.id %> ));
+        <% end %>
+        var sku = new SKU(<%= product.primary_color %>, <%= product.secondary_color %>, "<%= product.get_variant_sku %>", <%= product.id %>, "<%= product.get_attribute_value %>", sizes);
+        insertSKU(sku, null);
+      <% end %>
+    <% end %>
+  <% else %>
+    //insertSKU(null, null);
+  <% end %>
+    $("input#check_dirty").val(0);
+  }
+  catch (e)
+  {
+    alert("Exception caught: " + e.description);    // BUGBUG (aslepak) - remove for production!
+  }
+  });
+
+</script>

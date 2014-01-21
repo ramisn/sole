@@ -1,0 +1,5 @@
+<%= render "/spree/shared/error_messages", :target => @order %>
+
+<%= order_form.fields_for :line_items do |item_form| %>
+  <%= render '/spree/orders/line_item', :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form, :condensed => condensed %>
+<% end %>

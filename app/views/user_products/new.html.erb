@@ -1,0 +1,9 @@
+
+<h2>Upload a product you own</h2>
+
+  <%= form_for(@product, :url => main_app.user_products_path, :html => { :multipart => true}) do |f| %>
+    <%= render '/user_products/form', :f => f %>
+    <p>
+      <%= f.submit "Save Product", :class => "simpleButton green"  %>
+    </p>
+  <% end -%>

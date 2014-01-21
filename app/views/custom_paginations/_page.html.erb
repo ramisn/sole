@@ -1,0 +1,16 @@
+<%# Link showing page number
+  - available local variables
+    page:          a page object for "this" page
+    url:           url to this page
+    current_page:  a page object for the currently displayed page
+    num_pages:     total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+-%>
+<%
+  url = main_app.url_for(params.merge(:page => options[:page]))
+%>
+
+<span class="page<%= ' current' if options[:page] == options[:current_page] %>">
+  <%= link_to_unless options[:page] == options[:current_page], options[:page], url, opts = {:remote => options[:remote], :rel => options[:page] < options[:num_pages] ? 'next' : options[:page] > 1 ? 'prev' : nil} %>
+</span>

@@ -1,0 +1,41 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag '/assets/store/directory' %>
+<% end %>
+
+<div id="<%= klass.pluralize %>" class="directory">
+  
+  <%- if @search.nil? -%>
+    <h2>Explore <%= klass.pluralize %></h2>
+  <%- elsif @search.q.blank? -%>
+    <h2><%= klass.capitalize  %> Search Results</h2>
+  <%- else -%>
+    <h2><%= klass.capitalize %> Search Results: "<%= @search.q %>"</h2><%= link_to 'clear all', "/#{klass.pluralize}", :style => "position: relative; left: 80px;" %>
+  <%- end -%>
+  
+  <div id="sorting">
+    <ul>
+      <li><%= link_to "A - Z", "/#{klass}s?order=a2z"  %></li>
+      <li><%= link_to "Z - A","/#{klass}s?order=z2a" %></li>
+      <li class="last"><%= link_to "Most Popular","/#{klass}s?order=pop" %></li>
+    </ul>
+  </div>
+
+  <% if results.any? %>
+    <ul id="results-<%= klass %>" class="results">
+
+        <% results.each_with_index do |result, i| -%>
+
+          <%= render :partial => "/shared/directory_result", :locals => {:result => result, :column => i%4 }%>
+
+        <% end -%>
+
+    </ul>
+    <div id="bottom-pagination">
+      <%= paginate(results, :window => 2, :previous_label => "&#171; #{t('previous')}", :next_label => "#{t('next')} &#187;") %>
+    </div>
+  <% else %>
+    <p>We're sorry. We are unable to find any <%= klass %> matching your request.</p>
+  <% end -%>
+
+</div>
+

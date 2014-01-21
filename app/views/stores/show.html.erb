@@ -1,0 +1,36 @@
+<section id="store-hero">
+  <% if @store.banner_image -%>
+    <%= image_tag(@store.banner_image.attachment.url, :alt => @store.banner_image.alt)%>
+  <% else %>
+    <img src="/assets/hero-member-page.png" />
+  <% end -%>
+</section>
+
+<% if @store.facebook_link %>
+  <div class="fb-like" data-href="<%= @store.facebook_link %>" data-send="false" data-layout="button_count" data-width="auto" data-show-faces="false" style="position:absolute;right:0"></div>
+<% end -%>
+
+
+<%= render :partial => "/spree/products/section", :locals => {
+  :section_id     => 'featured-items',
+  :section_title  => "Featured Products from #{@store.name}",
+  :products       => @store.featured_products(4)
+}%>
+
+<% unless @store.taxon.nil? %>
+  <div id="collection" data-per="<%= session[:per] %>">
+    <!-- #TODO filters need to be wired for profiles -->
+    <%= render :partial => '/shared/filters', :locals => {:taxon => @taxon, :filters => @default_product_groups} %>
+
+    <%= render :partial => "/spree/shared/products", :locals => {
+      :products => @store.taxon.published_products(params[:page]), 
+      :taxon => @store.taxon,
+      :sort     => @sort
+      } %>
+   
+  
+  </div>
+<% end -%>
+
+
+

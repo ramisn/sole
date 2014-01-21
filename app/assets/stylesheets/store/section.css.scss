@@ -1,0 +1,126 @@
+@import "store/configuration";
+
+.section {
+  position      : relative;
+  display       : block;
+  clear         : both;
+  padding       : 30px 0 20px 0;
+  
+  h4 {
+    padding     : 0 0 10px 0;
+  }
+  
+  ul {
+    
+  }
+  
+  li {
+    padding     : 5px 0 5px 0;
+  }
+  
+  .image {
+    width       : 178px;
+    height      : 178px;
+    border      : solid 1px #ccc;
+    overflow    : hidden;
+    
+    img {
+      width     : 100%;
+    }
+  }
+  
+  .product-item {
+    position    : relative;
+    width       : 180px;
+    //    height      : 230px;
+    float       : left;
+    margin      : 0 10px 0 0;
+    padding     : 0;
+    
+    .seller-avatar, .overlay {
+      display   : none;
+    }
+    
+    .overlay {
+      display   : none;
+      height: 100%;
+      a.add-to-cart {
+        width: 100px;
+      }
+      .social-icons {
+        display: none;
+      }
+    }
+    
+    .wrap {
+      padding   : 5px 0 0 0;
+    }
+    
+    h5 {
+      padding   : 0 0 0 0;
+    }
+    
+    .price {
+      font-weight : bold;
+      
+    }
+    
+    .metadata {
+      p, a , div {
+        font-size   : 10px;
+      }
+    }
+  }
+  
+  
+  .section-product-scroller {
+    position      : relative;
+    overflow      : hidden;
+    margin        : 0 0 0 -20px;
+    padding       : 0 0 0 20px;
+    
+    
+    li.section-product-scroller-arrow {
+      position    : absolute !important;
+      top         : 80px; 
+      width       : 20px !important;
+      height      : 25px !important;
+      text-indent : -10000px;
+      cursor      : pointer;
+    }
+    
+    li.next {
+      right       : 0;
+      background  : transparent $sprite -240px -80px no-repeat;
+      
+      &:hover {
+        background-position  :-240px -120px;
+      } 
+    }
+    
+    li.prev {
+      left        : 0;
+      background  : transparent $sprite -200px -80px no-repeat;
+
+      &:hover {
+        background-position  :-200px -120px;
+      }
+    }
+    
+
+  }
+  
+  .page-first .prev {
+    display     : none;
+  }
+  
+  .page-last .next {
+    display     : none;
+  }
+  
+
+}
+
+.with-side-bar .section {
+  clear         : none;
+}

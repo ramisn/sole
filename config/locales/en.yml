@@ -1,0 +1,328 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  payment_processing_failed: Payment could not be processed. Please ensure that your billing address and credit card details are entered correctly.
+  email_not_yet_validated: "Your account has not yet been validated.  Check your email for message from Soletron."
+  hello: "Hello world"
+  confirmation_failed: "We're sorry, but your account was not able to be confirmed."
+  admin_portal: "Admin Portal"
+  merchant_portal: "Merchant Portal"
+  merchant: "Merchant"
+  store_manager: "Store Manager"
+  store_tier: Store Tier
+  merchants_stores: "Merchant's Stores"
+  new_store: "Create a New Store"
+  new_store_tier: "New Store Tier"
+  stores: "Stores"
+  store_products: "Products for"
+  departments: "All Departments"
+  explore: "Explore"
+  footwear: "Footwear"
+  soletron_sellers: "Soletron Sellers"
+  members: "Members"
+  followers: "Your Followers"
+  following: "People You Follow"
+  high_profile: "High Profile"
+  bloggers: "Bloggers"
+  popular: "Popular"
+  recent: "Recent"
+  product_type: "Product Type"
+  mens: "Men's"
+  womens: "Women's"
+  unisex: "Unisex"
+  childrens: "Children's"
+  yes: "Yes"
+  no: "No"
+  add_image: "Add Image"
+  size: "Size"
+  sku_legend: "Indicate Size, Color, & SKU's"
+  describe: "Describe your item"
+  product_title: "Product Title"
+  meta: "Provide metadata ... meta keywords and meta descriptions do not appear next to your listings, but they will help search engines, and the people using them, find your products easier, meaning you can make more sales"
+  price_availability: "Price and Availability"
+  custom_products: "Custom Products (hand-painted sneakers, custom watches and hats, etc.)"
+  customized: "Is this item customized?"
+  tags_label: "Provide tags. Tags are indicators that help shoppers search for and find your products more easily."
+  tags: "Tags"
+  master_price: "Master Price"
+  sale_price: "Sale Price"
+  date_available: "Date Available"
+  size_color_sku_label: "<Provide label text!>"
+  sizes: "Choose a Size"
+  finish: "Finish"
+  product_complete: "Complete Product Creation and Add the New Product to the Marketplace"
+  prod_next: "Next >>"
+  next_to_images: "Next to Product Images"
+  next_to_skus: "Next to SKUs, Sizes, Colors, and other Product Properties"
+  sales_listing: "Sales Listings"
+  users_list: "Users"
+  orders_list: "Orders"
+  products_list: "Products"
+  stores_list: "Stores"
+  store_tiers: "Store Tiers"
+  site_settings: "Site Settings"
+  payments_center: "Payments Center (TBD)"
+  add_image: "Add an Image"
+  sale_start_at: "Sale Start"
+  sale_end_at: "Sale End"
+  promotions_coupons: "Promotions & Coupons"
+  flexible_percent: Flexible Percent
+  free_item: Free Item
+  
+  # From spree_social
+  add_another_service_to_sign_in_with: Add another service to sign in with
+  attach_error: 'That %{kind} account is attached to a another user.'
+  devise:
+    omniauth_callbacks:
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+    user_passwords:
+      user:
+        send_instructions: 'You will receive an email with instructions about how to reset your password. Please check your Spam folder if you do not see the email in a few minutes.'
+  edit_social_method: Edit Provider
+  edit_social_method_warning: You must restart Spree if you change your key and / or secert for the change to take effect
+  linked_accounts: Linked Accounts
+  new_social_method: New Provider
+  new_social_method_warning: You must restart Spree for these changes to take effect
+  one_more_step: 'One more step to complete your registration from %{kind}'
+  reason_user_was_not_valid: user was not valid
+  remove_authentication_option_confirmation: 'Are you sure you want to remove this authentication option?'
+  sign_in_through_one_of_these_services: Sign in through one of these services
+  sign_in_to_associate_with_existing_email: 'There is already an account with that email. Please sign in to associate these accounts.'
+  sign_in_with_provider: 'Sign in with %{provider}'
+  social_api_key: Authentication API Key
+  social_api_secret: Authentication Secret
+  social_enable_provider: Enable Authentication Source
+  social_link: Please provide your email address to continue
+  social_methods: Social Network Providers
+  social_provider: Authentication Source
+  social_servers: Social Network Providers
+  social_servers_description: Configure Social Networks for login authorizations.
+  successfully_linked_your_accounts: Succesfully linked your accounts
+  successfully_deleted_authentication_source: Successfully deleted authentication source
+  you_have_signed_in_with_these_services: You have signed in with these services
+  admin_settings: Settings
+  back_to_store: Merchant Panel
+  new_product: New Product
+  manager: Store Manager
+  admin_panel_home: Admin Panel Home
+  store_name: Store Name
+  login_title: Enter your username and password in the boxes provided to login, or click the 'Sign Up' link to create a profile for yourself.
+  signup_title: Fill out the short form and click the 'SIGN UP!' button to create a profile for yourself.
+  forgot_password: Forgot your password
+  enter_email: Enter Your Email
+  create_password: Create a Password
+  retype: Re-Enter Password
+  dob: Date of Birth
+  create_account: Create Account
+  art_toys: art, toys & electronics
+  previous: Previous
+  preview: Preview
+  preview_alt: Preview Product Listing in the Marketplace
+  edit_message: Please note that your item will remain visible in the marketplace while you are editing it
+  add_featured: Click to Add this item to your store's Featured Items List
+  remove_featured: Click to Remove this item from your store's Featured Items List
+  product_deleted: Products that have been deleted may not be Featured in your store
+  product_not_published: This product has not yet been published to the Marketplace and therefore cannot be Featured. Please Edit it and complete the product creation process.
+  user_product_cant_feature: User Uploaded Products may not be featured
+  img_preview: Image Preview
+  featured_img: Featured Image
+  brands: Brands
+  coming_soon: Coming Soon
+  notice_messages:
+    product_deleted: Product, and all of its SKU's, have been deleted
+    product_not_deleted: Product, or some of its SKU's, could not be deleted
+  flexible_per_merchant_rate: Flexible Rate Per Merchant
+  store_policies: Customer Service
+  store_policies_long: View this store's Customer Service information...
+  customer_service: Your store's Customer Support email address
+  customer_service_phone: Your store's Customer Support phone number
+  store_about: What we're about
+  login_as_existing: "Log On with an Existing Account"
+  customer_phone: Customer Phone
+  sold: Open
+  csv_downloads: CSV Downloads
+  line_items_csv: Line Items CSV
+  shipping_csv: Shipping CSV
+  coupons_csv: Coupons CSV
+  view_vendor_payments: View Vendor Payments
+  view_reversed_vendor_payments: View Reversed Vendor Payments
+  view_vendor_payment_periods: View Vendor Payment Periods
+  view_all_payments_in_admin: View All Payments in Admin
+  order_#: 'Order #'
+  '#_items': '# Items'
+  total_shipping: Total Shipping
+  quantity: Quantity
+  price: Price
+  merchant_amount: Merchant Amount
+  merchant_%: Merchant %
+  commission: Commission
+  commission_%: Commission %
+  commission_$: Commission $
+  commission_before_coupons: Commission (before coupons)
+  coupon_value: Coupon Value
+  usa_epay_customer_number: USA ePay Customer Number
+  response_code: Response Code
+  product_type: Product Type
+  order_completed_at: Order Completed At
+  order_number: Order Number
+  shipping_to: Shipping To
+  coupon_codes: Coupon Codes
+  coupon_code: Coupon Code
+  coupon_code_%: Coupon Code %
+  coupon_discount: Coupon Discount
+  checkout_stage: Checkout Stage
+  merchant_coupons: Coupons Vendor Cut
+  product_sale_price: Product Sale Price
+  num_merchants: Num Merchants
+  num_items: Num Items
+  product_sales: Product Sales
+  coupon_discpount: Coupon Discount
+  shipping: Shipping
+  tax: Tax
+  total: Total
+  status: Status
+  payment_state: Payment State
+  shipment_state: Shipment State
+  customer: Customer
+  last_shipping_date: Last Shipping Date
+  payments_from_soletron: Payments from Soletron
+  items_purchased_during_period: Items Purchased During Period
+  shipping_reimbursement: Shipping Reimbursement
+  coupons_discounted: Coupons Discounted
+  order_reimbursement_detail_for: Order Reimbursement Detail for 
+  reimbursement_status: Reimbursement Status
+  total_reimbursement_owed_by_soletron: Total Reimbursement Owed by Soletron
+  total_paid_by_soletron: Total Paid by Soletron
+  product_reimbursement: Product Reimbursement
+  cancel_remaining: cancel remaining
+  
+  buy_x_get_y_at_z_percent_off: Buy X Get Y at Z% off
+  flat_percent: Flat Percent
+  
+  follow_mailer:
+    user_followed:
+      subject: You have just been followed by
+    store_followed:
+      subject: Your store has just been followed by
+  favorite_mailer:
+    product_favorited:
+      subject: One of your products was just favorited
+      
+  
+  shipment_states:
+    past_due: past due
+    shipped: complete
+    shipped_late: closed late
+    partial_late: past due
+    partial: open
+    canceled: canceled
+    ready: open
+  vendor_payment_period_states:
+    inactive: Not Yet Due
+    payable: Payable
+    paid: Paid
+    chargeback_required: Chargeback Required
+  product_reimbursement: Product Reimbursement
+  shipping_method: Shipping Method
+  last_shipment_date: Last Shipment Date
+  shipping_state: Shipping State
+  reference_numbers: Reference Numbers
+  carriers: Carriers
+  taxons:
+    art: Art
+    toys: Toys
+    skateboards: Skateboards
+    headphones: Headphones
+    cases: Cases
+    speakers: Speakers
+    departments: Departments
+    footwear: Footwear
+    tops: Tops
+    bottoms: Bottoms
+    hats: Hats
+    accessories: Accessories
+
+  product_scopes:
+    scopes:
+      active:
+        description: "Active products"
+        name: "Product is active"
+        sentence: "is active"
+      newly_added:
+        description: "Newly added products"
+        name: "Newly added product"
+        sentence: "is newly added"
+    groups:
+      status:
+        description: "Scopes for selecting products based on their status"
+        name: Status
+  
+  editing_promotions: Please Provide the Details of Your Promotion
+  promotion_rule_types:
+    automatic:
+      name: Automatic
+      description: This promotion will automatically be applied to all orders when active.
+    store_total:
+      name: Store Total
+      description: Store Total meets these criteria
+
+  links:
+    advertise: Advertise
+    terms: Terms of Use
+    privacy: Pivacy Policy
+    partners: Partners
+    press: Press
+    careers: Careers
+    contact: Contact
+    about: About Us
+    home: Home
+
+  meta:
+    social_title: Solefeed | Log On Sneakerheads
+    social_description: Soletron allows retailers to be connected to the sneakerhead, streetwear, and urban fashion communities.
+    social_keywords: solefeed, streetwear, urban clothing, sneakerhead, street style, urban wear, urban apparel, Santonio Holmes
+    sellers: Streetwear | Urban Clothing | Soletron Sellers
+    members: Streetwear | Urban Clothing | Members
+    followers: Streetwear | Urban Clothing | Your Followers
+    following: Streetwear | Urban Clothing | People You Follow
+
+  errors:
+    devise:
+      user_registrations:
+        inactive_signed_up: 'test message'
+
+  activerecord:
+    attributes:
+      product:
+        name: "Product Title"
+        product_type: "Product Type"
+        product_category: "Product Category"
+        price: "Retail price"
+        product_department: "Department"
+    
+    errors:
+      models:
+        user:
+          attributes:
+            birthday:
+              invalid_date: "is invalid."
+  
+  favorite_mailer:
+    product_favorited:
+      subject: Your product was favorited by
+  
+  follow_mailer:
+    user_followed:
+      subject: You were followed
+    store_followed:
+      subject: Your store was followed by
+  
+  views:
+    pagination:
+      previous: "&lt; Previous"  
+      next: "Next &gt;"  
+      truncate: "&hellip;"
+  
+  

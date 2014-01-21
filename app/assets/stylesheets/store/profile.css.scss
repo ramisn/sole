@@ -1,0 +1,488 @@
+@import "store/configuration";
+
+@mixin icon($row, $col) {
+  background            : transparent $sprite $col*-40px $row*-40px no-repeat;
+  
+  &:hover {
+    background-position : $col*-40px ($row+1)*-40px;
+  }
+}
+
+#profile-snapshot {
+  
+  .polaroid {
+    padding     : 10px;
+    width       : 170px;
+    border      : solid 1px #ccc;
+    background  : #FFF;
+    
+    img {
+      width     : 100%;
+    }
+  }
+  
+  .metadata {
+    background  : #F0EDED;
+    border      : 1px solid #BBBBBB;
+    position    : absolute;
+    top         : 120px;
+    padding     : 5px 5px 5px 20px;
+    left        : -18px;
+    width       : 200px;
+
+    h4 {
+      font-size : 22px;
+    }
+    
+    small {
+      text-transform  : uppercase;
+    }
+    
+    a.followers-count {
+      text-transform  : uppercase;
+      text-decoration : underline;
+      color           : $green;
+      font-size       : 10px;
+      position        : absolute;
+      right           : 16px;
+      top             : 6px;
+
+    }
+
+    .follower-following {
+      text-transform  : uppercase;
+      text-decoration : underline;
+      font-size       : 10px;
+      position        : absolute;
+      top             : 6px;
+      right           : 16px;
+      a {
+        color           : $green;
+      }
+    }
+  }
+  
+  .ribbon-tail {
+    background: url("/assets/profile-ribbon-tail.png") no-repeat;
+    height: 12px;
+    width: 16px;
+    position: absolute;
+    bottom: -13px;
+    left: 1px;
+  }
+}
+
+#profile-follow-link {
+  display             : block;
+  width               : 100px;
+  text-align          : center;
+  margin              : 5px auto;
+}
+
+#profile-menu {
+  position            : relative;
+  margin              : 20px 0 0 0;
+  > a {
+    text-transform    : uppercase;
+    display           : block;
+    font-size         : 17px;
+    letter-spacing    : 1px;
+    font-family       : TrumpGothic;
+  }
+  
+}
+
+#sidebar {
+  .addthis_toolbox {
+    position            : relative;
+    margin              : 10px 0 0 0;
+
+    ul li {
+      display           : inline-block;
+      width             : 25px;
+      height            : 25px;
+      text-indent       : -10000px;
+    }
+
+    #profile-facebook {
+      @include icon(5,0);
+    }
+
+    #profile-twitter {
+      @include icon(5,1);
+    }
+
+    #profile-rss {
+      @include icon(5,6);
+    }
+
+    #profile-share {
+      @include icon(5,7);
+    }
+
+    .uiShare a {
+      display           : block;
+      text-indent       : -10000px;
+    }
+
+    .uiShare a span {
+      width             : 20px;
+      height            : 20px;
+      display           : block;
+      text-indent       : -10000px;
+    } 
+
+    .addthis_button_facebook span {
+      background        : transparent $sprite -320px -200px no-repeat;
+    }
+
+    .addthis_button_twitter span {
+      background        : transparent $sprite -345px -200px no-repeat;
+    }
+
+    .atom-feed {
+
+    }
+
+    .atom-feed span {
+      background        : transparent $sprite -370px -200px no-repeat;
+      line-height       : 50px;
+      display           : block;
+    }
+
+    .addthis_button_compact span {
+      background        : transparent $sprite -395px -200px no-repeat;
+    }
+
+    .uiShare a:hover {
+      background-position-y : -240px;
+    };
+  }
+}
+
+
+
+.section {
+  clear             : none;
+  padding           : 0 0 0 0;
+  margin            : 0 0 30px 0;
+  overflow          : visible;
+  
+  ul {
+    padding         : 0;
+    margin          : 0;
+  }
+  
+  .product-item {
+    float   : none;
+    display : inline-block;
+    width   : 175px !important;
+    margin  : 0 0 0 12px !important;
+    
+    .image {
+      width   : 173px;
+      height  : 173px;
+    }
+    
+    &.product-0 {
+      margin  : 0 !important;
+    }
+  }
+  
+
+}
+
+.stores #featured-items .metadata h5 {
+//  display     : none;
+}
+
+#store-hero {
+  margin      : 0 0 20px 0;
+}
+
+.text-page {
+  
+  dl {
+    text-align    : left;
+    margin        : 20px 0 20px 0;
+  }
+  
+  dt {
+    margin        : 20px 0 4px 0;
+    display       : block;
+    font-weight   : bold;
+ 
+  }
+  
+  dd {
+    width         : 740px;
+    word-wrap     : break-word;
+    
+  }
+}
+
+
+
+.follow-list {
+  width           : 750px !important;
+  
+  .result {
+    position      : relative;
+    float         : left;
+    width         : 160px;
+    margin        : 0 10px 10px 0;
+    
+    .avatar, .avatar img {
+      width       : 100%;
+    }
+  }
+  
+  .overlay {
+    width         : 140px !important;
+  }
+  
+  h4 {
+    width         : 160px;
+  }
+  
+  .result.c-3 {
+    margin        : 0 0 10px 0;
+  }
+  
+  .action {
+    display       : block;
+    padding       : 5px;
+    text-align    : center;
+  }
+}
+
+
+#profile-feed {
+  
+  #profile-feed-tabs {
+    position          : relative;
+    padding           : 0 0 0 80px;
+    
+    dt {
+      color           : $grey;
+      text-transform  : uppercase;
+      font-family     : TrumpGothic;
+      font-size       : 14px;
+      display         : inline-block;
+    }
+    
+    dd {
+      display         : inline-block;
+    }
+    
+    dd a {
+      display         : block;
+      padding         : 5px;
+      text-transform  : uppercase;
+      color           : $grey;
+      font-size       : 11px;
+    }
+    
+    dd a:hover {
+      text-decoration : underline;
+    }
+    
+    dd a.selected {
+      background      : $green;
+      color           : #FFF;
+    }
+  }
+  
+}
+
+#feed-item-list {
+  position          : relative;
+  margin            : 10px 0 0 0;
+  
+  .feed_item {
+    position        : relative;
+    margin          : 0 0 10px 0;
+  }
+  
+  .memberName, span.meta {
+    color         : #999;
+    font-size     : 11px;
+  }
+
+  
+  .memberAvi {
+    position      : absolute;
+    left          : 0;
+    width         : 60px;
+    height        : 60px;
+    text-align    : center;
+    
+    a {
+      color       : $green;
+      text-decoration: underline;
+      text-transform: lowercase;
+    }
+    
+    img {
+      width       : 60px;
+      height      : 60px;
+    }
+  }
+  
+  .memberContent {
+    position      : relative;
+    margin        : 0 0 0 80px;
+    width         : 500px;
+    padding       : 10px;
+    background    : #FFF;
+    min-height    : 60px;
+    
+    a {
+      color       : $green;
+    }
+  }
+  
+  .favorite {
+    display       : none;
+  }
+  
+  .arrow {
+    position      : absolute;
+    display       : block;
+    top           : 10px;
+    left          : -10px;
+    border-right  : solid #FFF 10px;
+    border-top    : solid transparent 10px;
+    border-bottom : solid transparent 10px;
+    height        : 0;
+    width         : 0;
+  }
+  
+  .product-item {
+    display       : inline-block;
+    
+    .metadata {
+      display       : none !important;
+    }
+  }
+  img {
+    border: #DDDDDD solid 1px;
+  }
+  
+  .image-0 {
+    position        : relative;
+    display         : block;
+    margin          : 0 0 10px 0;
+    
+    .overlay {
+      height        : 100%;
+      padding       : 100px 0;
+    }
+    
+    img {
+      width: 498px;
+      display: block;
+    }
+  }
+  
+  .closeBtn {
+    position      : absolute;
+    top           : 5px;
+    right         : 5px;
+    line-height   : 20px;
+    font-size     : 14px;
+    color         : #FFF;
+    background    : #000;
+    width         : 20px;
+    text-align    : center;
+    font-weight   : bold;
+  }
+  
+  .username {
+    font-weight   : bold;
+  }
+  
+  .timeStamp {
+    font-style    : italic;
+  }
+  
+  .data {
+    padding       : 3px 0 0 0;
+  }
+  
+  .options {
+    padding       : 20px 0 0 0;
+    a {
+      color       : $green;
+    }
+  }
+  
+  .mtm {
+    margin        : 10px 0 0 0;
+  }
+  
+  .comment-form {
+    position      : relative;
+    border-top    : solid 1px $light;
+    margin        : 10px 0 0 0;
+    padding       : 10px 0 0 0;
+
+    input {
+      display     : inline-block;
+    }
+    
+    input[type="text"] {
+      width       : 300px;
+    }
+  }
+  
+  .comments, .comment-form {
+    display       : none;
+  }
+  
+  .show-comments {
+    padding       : 0;
+  }
+  
+  .show-comments:before {
+    content       : '|';
+    padding       : 0 5px 0 5px;
+  }
+  
+
+}
+
+#view-more-items {
+  width       : 500px;
+  padding     : 20px 0 20px 80px;
+  a {
+    
+  }
+}
+
+.members .with-side-bar, .collections .with-side-bar  {
+  
+  #sidebar {
+    width         : 190px !important;
+  }
+  
+  #content {
+    margin        : 0 0 0 220px !important;
+  }
+}
+
+
+.stores #featured-items {
+  .description {
+    display       : none;
+  }
+  
+  h5 {
+    font-weight   : normal;
+  }
+}
+
+.fb-like {
+  position        : absolute;
+  right           : 0;
+}

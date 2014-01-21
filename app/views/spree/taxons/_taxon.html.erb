@@ -1,0 +1,7 @@
+<div class="taxon">
+  <h2><%= link_to seo_url(taxon) + "#{get_params}", :class => 'breadcrumbs' do %>
+  <%= taxon.name %> <span>view all</span>
+  <% end %>
+  </h2>
+  <%= render :partial => "shared/products", :locals => {:products => @products, :taxon => taxon} %>
+</div>

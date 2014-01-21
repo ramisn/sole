@@ -1,0 +1,49 @@
+<div id="signin-screen" class="modal-screen">
+  <div class="modal-window" >
+    <div class="modal-window-header">
+      <a href="#" class="close">X</a>
+      <h2>Sign In</h2>
+    </div>
+    <div class="modal-window-content">
+      <div id="fb_connect_widget-3" class="widget-item-container widget_fb_connect_widget">
+        <div>
+          <fb:login-button perms="email" size="small" >
+            <%= link_to content_tag(:span, 'Login with Facebook', :class => 'fb_button_text'), authenticate_url('facebook'), :class => "fb_button fb_button_small signin-social-button", :id => "signin-facebook" %>
+          </fb:login-button>
+          <%= link_to 'Login with Twitter', '#TODO', :class => "signin-social-button", :id => "signin-twitter" %>
+        </div>
+      </div>
+      <h4 style="text-transform:none;font-family:Verdana, sans-serif;padding: 0 0 10px 0">or</h4>
+      <% if Rails.env == "development" %>
+        <% form_url = spree.user_session_url %>
+      <% else %>
+        <% form_url = spree.user_session_url(:only_path => false, :protocol => 'https') %>
+      <% end %>
+      <%= form_for(:user, :url => form_url) do |f| %>
+      
+        <fieldset style="column">
+          <%= f.label(:login, t("username_or_email:")) %>
+          <%= f.text_field(:login, { :class => "textbox default-value", :id => "navbar_username", :accesskey => "u", :tabindex => "101", :value => ""}) %>  
+        </fieldset>
+        
+        <fieldset style="column">
+          <%= f.label :password, t("password:") %>
+          <%= f.password_field :password, { :class => "textbox", :tabindex => "102", :id => "navbar_password"} %>
+        </fieldset>
+
+        <%= submit_tag "log on", { :class => 'simpleButton green logon', :tabindex => "104", :accesskey => "s", :style => "display:inline-block"} %>
+        <div id="remember" class="remember" style = "display:inline-block" >
+          <%= f.check_box :remember_me, {:value => "1", :id => "cb_cookieuser_navbar", :class => "cb_cookieuser_navbar", :accesskey => "c", :tabindex => "103", :checked => "checked"} %>
+          <%= f.label :remember_me, t('remember_me'), :for => "cb_cookieuser_navbar", :style => "display:inline" %>
+        </div>
+      <% end %>
+      
+      <div id="signin-screen-footer">
+        <a href="#" title="Sign up to Soletron" id="signin-screen-signup-link">Sign up</a>
+        <%= link_to t(:forgot_password), spree.new_user_password_url, { :title => t(:forgot_password), :id => "forgot-pw-link"} %>
+      </div>
+     
+
+    </div><!-- modal-window-content -->
+  </div><!-- modal-window-wrap -->
+</div><!-- modal-window -->

@@ -1,0 +1,28 @@
+<%=
+CSV.generate do |csv|
+  csv << [
+          t('order_date'), 
+          t('order_#'), 
+          t('sku'), 
+          t('name'), 
+          t('description'), 
+          t('quantity'), 
+          t('price'), 
+          t('merchant_%'), 
+          t('merchant_amount') 
+         ]
+  @line_items.each do |line_item|
+    csv << [
+            line_item.order.completed_at.strftime("%-m/%-d/%Y"),
+            line_item.order.number,
+            line_item.variant.sku,
+            line_item.variant.product.name,
+            variant_options(line_item.variant),
+            line_item.quantity,
+            number_to_currency(line_item.price),
+            "#{(100 - line_item.commission_percentage)}%",
+            number_to_currency(line_item.store_amount)
+           ]
+  end
+end
+%>

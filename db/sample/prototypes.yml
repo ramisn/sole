@@ -1,0 +1,39 @@
+proto_shirts:
+  name: Shirt
+  properties: prop_manufacturer, prop_brand, prop_model, prop_shirt_type, prop_shirt_sleeve_type, prop_shirt_fabric, prop_shirt_fit, prop_gender
+proto_bags:
+  name: Bag
+  properties: prop_bag_type, prob_bag_size, prop_bag_material
+proto_mugs:
+  name: Mug
+  properties: prop_mug_size, prop_mug_type
+proto_shoes:
+  name: Shoe
+  properties: prop_brand, prop_model, prop_attribute, prop_shirt_fabric
+  option_types: color1, color2, size_shoes
+  taxon_id: 1004
+proto_hats:
+  name: Hat
+  properties: prop_brand, prop_model, prop_attribute, prop_shirt_fabric
+  option_types: color1, color2, size_hats
+  taxon_id: 2003
+proto_tops:
+  name: Top
+  properties: prop_brand, prop_model, prop_attribute, prop_shirt_fabric, prop_shirt_sleeve_type, prop_shirt_fit
+  option_types: color1, color2, size_tops
+  taxon_id: 2001
+proto_bottoms:
+  name: Bottom
+  properties: prop_brand, prop_model, prop_attribute, prop_shirt_fabric, prop_shirt_fit
+  option_types: color1, color2, size_bottoms
+  taxon_id: 2002
+proto_socks:
+  name: Sock
+  properties: prop_brand, prop_model, prop_attribute, prop_shirt_fabric
+  option_types: color1, color2, size_sock
+  taxon_id: 3021
+proto_misc:
+  name: Misc
+  properties: color1, color2, prop_brand, prop_model, prop_attribute
+  option_types: color1, color2
+  taxon_id: 1005

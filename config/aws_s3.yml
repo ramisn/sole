@@ -1,0 +1,19 @@
+common: &common
+  access_key_id: AKIAIYLNZCHSQSVA2WRQ
+  secret_access_key: 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
+
+test:
+  bucket: SoletronDev
+  <<: *common
+
+development:
+  bucket: SoletronDev
+  <<: *common
+
+staging:
+  bucket: SoletronDev
+  <<: *common
+
+production:
+  bucket: SoletronDev
+  <<: *common

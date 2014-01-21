@@ -1,0 +1,27 @@
+<div class="yui-gc">
+  <div class="yui-u first">
+    <fieldset>
+      <%= f.label :attachment, t("attachment") %> <span class="required">*</span><br />
+      <%= f.file_field :attachment  %>
+      <%= f.error_message_on :attachment %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.label :alt, "Alt Text"%><br />
+      <span class="alt_input_message"><em>Providing alt text will help more people find your store on search engines.</em></span><br />
+      <%= f.text_field :alt %>
+      <%= f.error_message_on :alt %>
+    </fieldset>
+  </div>
+</div>
+<% if @store.facebook_id -%>
+  <br/>
+  <%= check_box_tag :facebook_picture %>
+  <%= label_tag :facebook_picture, :style => "display:inline-block;" do %>
+    <%= image_tag("/assets/social/facebook_32.png", :height => 15) %>
+    Use Facebook picture instead
+  <% end -%>
+  <br/>
+  <%= image_tag(facebook_picture_url(@store.facebook_id )) %>
+  <br/>
+<% end -%>

@@ -1,0 +1,121 @@
+@import "store/configuration";
+
+$directoryItemWidth : 220px;
+
+
+.directory {
+  position        : relative;
+  
+  #sorting {
+    li {
+      width           : auto;
+      display         : inline-block;
+      
+      a {
+        color           : $grey;
+      }
+      
+    }
+    
+    li:after {
+      padding         : 0 .3em;
+      content         : "|"; 
+    }  
+    
+    li.last:after {
+      content         : none;
+    }
+      
+  }
+  
+  
+  
+  p {
+    padding     : 20px 0 0 0;
+  }
+  
+
+  .follow-name-link {
+    font-weight : bold;
+  }
+  
+
+  
+}
+
+
+.results {
+  position        : relative;
+  overflow        : hidden;
+  width           : 980px;
+
+  li {
+    position      : relative;
+    float         : left;
+    width         : $directoryItemWidth; 
+    margin        : 25px 25px 0 0;
+
+    .avatar {
+      width       : 100%;
+
+      img {
+        width     : 100%;
+      }
+    }
+    
+    h4 {
+      position    : absolute;
+      top         : 50px;
+      width       : 220px;
+      text-align  : center;
+      display     : none;
+      
+      a {
+        color       : #FFF;
+        font-family : TrumpGothic;
+        font-size   : 40px;
+      }
+    }
+    
+    &:hover h4 {
+      display     : block;
+    }
+
+    .overlay {
+      position    : absolute;
+      bottom      : 20px;
+      height      : 30px;
+      padding     : 10px;
+      display     : block;
+      width       : $directoryItemWidth - 20px;
+      background  : transparent image_url('overlay-bg.png') 0 0 repeat;
+      
+      a {
+        color     : #FFF;
+      }
+      
+      .location {
+        display     : block;
+        color       : #FFF;
+      }
+    }
+    
+    &.c-3 {
+      //      padding     : 25px 0 0 0;
+    }
+    
+    .action {
+      position    : relative;
+      display     : block;
+      padding     : 5px;
+      text-align  : center;
+    }
+  }
+}
+
+.pagination {
+  position    : relative;
+  clear       : both;
+  margin      : 25px 0 0 0;
+  text-align  : right;
+}

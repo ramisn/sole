@@ -1,0 +1,30 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<% @body_id = 'stores' %>
+  <div class="admin-panel-group-container-container">
+    <h2>Manage your store administrators</h2>
+    <p>Enter the email address of the person you'd like to make an administrator (the person must have a Soletron account).</p>
+<br /><br />
+    <%= form_tag "/merchant/store_admin" do %>
+	<%= hidden_field_tag :id, @store.id %>
+    <%= hidden_field_tag :store_id, @store.id %>
+	<%= text_field_tag :email, '', :style => "height:26px; font-size:18px;" %>
+	<%= submit_tag 'Add New Admin', :class => "simpleButton green", :style => "display:inline-block;" %>
+    <% end %>
+<br /><br />
+    <table>
+      <% @store.users.each do |user| %>
+        <tr>
+          <td style="padding-right:20px">
+            <%= user.name %>
+          </td>
+          <td>
+            <%= user.email %>
+          </td>
+          <td class="no-button">
+            <%= link_to "Remove as Admin", "/merchant/store_admin/#{@store.id}?user_id=#{user.id}", :method => :delete, :confirm => "Are you sure?", :style => "margin: 0 0 0 10px"%>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>

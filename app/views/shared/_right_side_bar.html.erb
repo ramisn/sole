@@ -1,0 +1,247 @@
+<h4 class="widget-title">
+  <span>Featured Item</span>
+</h4>
+
+<br /><br />
+
+<% featured = @store.featured_products() %>
+<% hottest = @store.hot_products() %>
+<% if (!featured.nil? && !featured.empty?) %>
+
+
+<script type="text/javascript">
+  //<![CDATA[
+    $(function() {
+      $("#sidebar").accordion({
+        event: "mouseover",
+        icons: { 'header': 'accordion-no-icons', 'headerSelected': 'accordion-no-icons'}
+      });
+      
+      rotateHero();
+    });
+    
+    var current_sidekick = 2;
+    function rotateHero() {
+      current_sidekick = (current_sidekick + 1) % <%= featured.size %> ;
+      
+      $('#sidekick div').removeClass('boxActive').addClass('box');
+      $('#sidekick div:eq(' + current_sidekick + ')').removeClass('box').addClass('boxActive');
+
+      for (var i = 0; i < <%= featured.size %>; i++)
+      {
+        if (i == current_sidekick)
+        {
+          $('#storeFeature.storeFeature' + i).show();
+        }
+        else
+        {
+          $('#storeFeature.storeFeature' + i).hide();
+        }
+      }
+      
+      setTimeout("rotateHero()", <%= Spree::Config[:auto_rotate_msec] %>);
+    }
+  //]]>
+</script>
+
+
+
+
+  <div id="storeFeature" class="mbx storeFeature0">
+    <div class="storeFeatureInner">
+      <div class="storeFeatureBox">
+        <div class="slide-wrap">
+          <div id="product" class="">
+            <ul id="products" class="product-listing">
+              <%= render :partial => "/spree/products/product_featured.html", :locals => {:product => featured[0]}%>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% if featured.size > 1 %>
+  <div id="storeFeature" class="mbx storeFeature1">
+    <div class="storeFeatureInner">
+      <div class="storeFeatureBox">
+        <div class="slide-wrap">
+          <div id="product" class="">
+            <ul id="products" class="product-listing">
+              <%= render :partial => "/spree/products/product_featured.html", :locals => {:product => featured[1]}%>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if featured.size > 2 %>
+    <div id="storeFeature" class="mbx storeFeature2">
+      <div class="storeFeatureInner">
+        <div class="storeFeatureBox">
+          <div class="slide-wrap">
+            <div id="product" class="">
+              <ul id="products" class="product-listing">
+                <%= render :partial => "/spree/products/product_featured.html", :locals => {:product => featured[2]}%>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if featured.size > 3 %>
+      <div id="storeFeature" class="mbx storeFeature3">
+        <div class="storeFeatureInner">
+          <div class="storeFeatureBox">
+            <div class="slide-wrap">
+              <div id="product" class="">
+                <ul id="products" class="product-listing">
+                  <%= render :partial => "/spree/products/product_featured.html", :locals => {:product => featured[3]}%>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end # > 3 %>
+  <% end # > 2 %>
+<% end # > 1 %>
+<% end %>
+
+
+<% if (!hottest.nil? && !hottest.empty?) %>
+<h4 class="widget-title">
+  <span>Hottest Items
+  <span class="viewAllrt">
+    <a href="<%= main_app.store_path(@store) %>">view all</a>
+  </span></span>
+</h4>
+<div class="mbm hottest">
+  <ul class="rtColFeed">
+ 
+
+  
+    <li id="storeFeature" class="storeFeature0">
+<%= link_to small_image(hottest[0], :width => "100", :height => "100", :border => "0"), hottest[0] %> 
+    </li>  
+         <% if hottest.size > 1 %>
+    <li id="storeFeature" class="storeFeature0">
+<%= link_to small_image(hottest[1], :width => "100", :height => "100", :border => "0"), hottest[1] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 2 %>
+    <li id="storeFeature" class="storeFeature0">
+<%= link_to small_image(hottest[2], :width => "100", :height => "100", :border => "0"), hottest[2] %> 
+    </li> 
+		<% end %> 
+         <% if hottest.size > 3 %>
+    <li id="storeFeature" class="storeFeature0">
+<%= link_to small_image(hottest[3], :width => "100", :height => "100", :border => "0"), hottest[3] %> 
+    </li> 
+		<% end %>
+  
+  
+   
+         <% if hottest.size > 4 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[4], :width => "100", :height => "100", :border => "0"), hottest[4] %> 
+    </li> <% elsif hottest.size > 0 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[0], :width => "100", :height => "100", :border => "0"), hottest[0] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 1 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[1], :width => "100", :height => "100", :border => "0"), hottest[1] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 2 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[2], :width => "100", :height => "100", :border => "0"), hottest[2] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 5 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[5], :width => "100", :height => "100", :border => "0"), hottest[5] %> 
+    </li> <% elsif hottest.size > 3 %>
+    <li id="storeFeature" class="storeFeature1">
+<%= link_to small_image(hottest[3], :width => "100", :height => "100", :border => "0"), hottest[3] %> 
+    </li> 
+		<% end %>
+  
+  
+          <% if hottest.size > 4 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[4], :width => "100", :height => "100", :border => "0"), hottest[4] %> 
+    </li> <% elsif hottest.size > 0 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[0], :width => "100", :height => "100", :border => "0"), hottest[0] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 6 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[6], :width => "100", :height => "100", :border => "0"), hottest[6] %> 
+    </li>  <% elsif hottest.size > 1 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[1], :width => "100", :height => "100", :border => "0"), hottest[1] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 7 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[7], :width => "100", :height => "100", :border => "0"), hottest[7] %> 
+    </li>  <% elsif hottest.size > 2 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[2], :width => "100", :height => "100", :border => "0"), hottest[2] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 5 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[5], :width => "100", :height => "100", :border => "0"), hottest[5] %> 
+    </li> <% elsif hottest.size > 3 %>
+    <li id="storeFeature" class="storeFeature2">
+<%= link_to small_image(hottest[3], :width => "100", :height => "100", :border => "0"), hottest[3] %> 
+    </li> 
+		<% end %>
+  
+  
+  
+         <% if hottest.size > 0 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[0], :width => "100", :height => "100", :border => "0"), hottest[0] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 6 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[6], :width => "100", :height => "100", :border => "0"), hottest[6] %> 
+    </li>  <% elsif hottest.size > 1 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[1], :width => "100", :height => "100", :border => "0"), hottest[1] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 7 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[7], :width => "100", :height => "100", :border => "0"), hottest[7] %> 
+    </li>  <% elsif hottest.size > 2 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[2], :width => "100", :height => "100", :border => "0"), hottest[2] %> 
+    </li> 
+		<% end %>
+         <% if hottest.size > 3 %>
+    <li id="storeFeature" class="storeFeature3">
+<%= link_to small_image(hottest[3], :width => "100", :height => "100", :border => "0"), hottest[3] %> 
+    </li> 
+		<% end %>
+
+    
+  
+<% end %>
+  </ul>
+  <div class="clearBoth"></div>
+</div>
+<%# <h4 class="widget-title">
+  Lookbooks
+</h4>
+<div class="lookbookImage">
+        <a href="#">
+          <img src="/assets/store_feature_main.jpg" width="210" alt="video" />
+        </a>
+</div> %>

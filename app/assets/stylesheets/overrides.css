@@ -1,0 +1,162 @@
+@font-face {
+
+ /*   font-family: 'AdelleBasicBold';*/
+
+   /* src: url('/font-tool/adellebasic_bold-webfont.eot');
+
+    src: url('/font-tool/adellebasic_bold-webfont.eot?iefix') format('eot'),
+
+         url('/font-tool/adellebasic_bold-webfont.woff') format('woff'),
+
+         url('/font-tool/adellebasic_bold-webfont.ttf') format('truetype'),
+
+         url('/font-tool/adellebasic_bold-webfont.svg#webfontJgsJMF3q') format('svg');*/
+
+    font-weight: normal;
+
+    font-style: normal;
+
+
+
+}
+
+#body-header{
+
+  display: block;
+
+  width: 100%;
+
+  min-width: 1179px;
+
+  height: 668px;
+
+  margin: 0px;
+
+  padding: 0px;
+
+  background: url('/assets/body-header-background.jpg') repeat-x;
+
+}
+
+#body-header {
+  background: url('/assets/body-header-background.jpg') repeat-x;
+}
+
+#header-container #logo a {
+    background: url('/assets/logo.png') no-repeat;
+}
+
+#primary-navigation ul li.current-menu-item a,
+#primary-navigation ul li a:hover {
+	/*font-family: Tahoma, Sans-Serif;*/
+
+    background: url('/assets/primary-navigation-background.png') repeat-x;
+}
+
+#primary-navigation ul li.deativated a:hover {
+    background: url('/assets/primary-navigation-background-deativated.jpg') repeat-x;
+}
+
+.search-legend {
+    background: url('/assets/search-legend-background.png') no-repeat;
+}
+
+#searchsubmit {
+    background: url('/assets/search-button-background.png') no-repeat left bottom;
+}
+
+#secondary-navigation {
+    background: url('/assets/menu-background.png') no-repeat;
+}
+
+#image-overlay {
+    background: url('/assets/image-overlay.png') no-repeat top left;
+}
+
+.tw-tabbed-nav li a {
+    background: #fff url('/assets/tab-background.jpg') no-repeat center top;
+}
+
+.tw-tabbed-nav li.ui-tabs-selected a,
+.tw-tabbed-nav li.ui-state-hover a,
+.tw-tabbed-nav li a:hover{
+    background: #fff url('/assets/tab-hover-background.jpg') no-repeat center top;
+}
+
+#sign-up-form form .cc-submit {
+    background: url('/assets/sign-up-background.png') no-repeat left bottom;
+}
+
+#footer-container{
+
+	background: url('/assets/soletron-dude.png') no-repeat top left;
+
+}
+
+#footer-container #logo a {
+    background: url('/assets/logo-2.png') no-repeat;
+}
+
+#accordion-template .ui-accordion-header {
+    background: #E5E5E5 url('/assets/expand-icon.jpg') no-repeat 580px center;
+}
+
+.form-submit #submit {
+    background: #D3DBDE url('/assets/comment-submit-background.jpg') repeat-x;
+}
+
+#secondary-navigation ul {
+    margin: 0px;
+}
+
+#secondary-navigation ul li a {
+    padding: 12px 26px 13px 26px;
+}
+#secondary-navigation ul li ul li a:hover {
+	color:#FFF;
+}
+#template {
+}
+
+.liright {
+    float: right
+}
+
+#home #topten div.tt {
+  width:150px; 
+  height:70px; 
+  padding:0; 
+  overflow: hidden;
+} 
+
+#home #hero div.sidekicktitle {
+  height:40px; 
+  background-color:#7f7f7f;
+}
+.activeSidekick {
+  background-color:red;
+}
+
+/*
+ul.menu {
+  color: #353535
+  font-family: Arial, Tahoma, Sans-Serif
+}
+*/
+
+ul.uiShare li {
+	position:relative;
+	height:25px;
+	width:200px;
+	display:block;
+	float:left;
+}
+#social_buffer_override{
+	position:absolute;
+	top:4px;
+	left:40px;
+	font-size:12px;
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	overflow:hidden;
+}

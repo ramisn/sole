@@ -1,0 +1,15 @@
+<% @body_id = 'stores' %>
+<p><%= link_to t('back_to_promotions'), merchant_store_promotions_path(@store) %></p>
+<h1>New Promotion</h1>
+
+<p class="tip">Tip: To make the promotion automatically checked in the shopping cart without the customer having to put in a coupon code, just leave the code field blank.</p>
+
+<%= form_for [:merchant, @store, @promotion] do |form| %>
+  <%= render "admin/promotions/form", :f => form %>
+   
+  <hr />
+  
+  <%= render "merchant/promotions/product_field", :f => form %>
+  
+  <%= button "Create Promotion", nil, 'submit', :id => "submit_button", :class => "fancyButton green noMargin" %>
+<% end -%>

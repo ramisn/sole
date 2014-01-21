@@ -1,0 +1,17 @@
+<% if !@taxon.nil? %>
+  <% parent = @taxon.children.empty? ? @taxon.parent : @taxon %>
+
+  <div id="filter-taxonomies">
+    <h4><%= parent.display_name unless parent.nil?%></h4>
+    <% 
+      misc = Spree::Taxon.find_by_name("Miscellaneous") 
+      accessories = Spree::Taxon.find_by_name("Accessories") 
+    %>
+    <% if @taxon ==  misc || @taxon.has_parent?(misc) && @taxon.name != I18n.t("taxons.accessories") && !@taxon.has_parent?(accessories) %>
+      <%=  accessories_taxons_tree(@taxon) %>
+    <% else %>
+      <%= taxons_tree(parent, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
+    <% end %>
+  </div>
+  
+<% end %>

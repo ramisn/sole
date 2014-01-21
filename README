@@ -1,0 +1,86 @@
+Soletron eCommerce Application, Ruby on Rails
+
+Setup instructions:
+
+ 1) install Ruby, Rails, Rake and the rest of the RoR tools. I recommend you start here: http://railsinstaller.org/. For the Soletron project, we are currently using stable versions: Ruby 1.9.2 (1.8.7. generally works too, but with occasional hiccups) and Rails 3.0.7
+ 2) clone the SoletronSpree github repository from git@github.com:soletron/SoletronSpree.git
+	- this is Private repository contact aslepak@soletron.com if you need access
+ 3) install MySQL 5.5.15+ locally - the application will use MySQL for the local database engine
+ 4) run bundle install to install all the gem dependencies
+    - if running on Windows, installing the mysql2 gem can be troublesome, see instructions here: 
+	  http://rorguide.blogspot.com/2011/03/installing-mysql2-gem-on-ruby-192-and.html
+ 5) assuming all the gems had installed correctly, you now have the entire code base on your system, including dependencies, such as Spree. The Gemfile specifies all the relevant versions to be used, e.g. Spree 0.60.0
+ 6) One needs to copy sample_datebase.yml to database.yml THEN MAKE ANY CHANGES NEEDED for your SQL server's credentials. 
+    This file will be automatically ignored on your checkins
+    
+        unix -- cp config/sample_database.yml config/database.yml
+        windows -- copy app\config\sample_database.yml to app\config\database.yml
+    
+ 7) to populate the database, you can plug in Spree's sample data to get started - see reference here: http://spreecommerce.com/documentation/overview.html
+    You will, however, need the updated Soletron schema, which you can get from our staging server http://shop-stage-298.soletron.com/
+
+	ASLEPAK/BRETT: need to provide instructions for how to do this!
+	
+ 8) There are four servers actually running the application (all hosted with HostGator):
+     - the dev server: shop-dev-298.soletron.com, update this one any time you push a change to the master branch
+	 - the staging (testing) server: shop-stage-298.soletron.com, this one will be updated roughly once a week, so we can test on it and stabilize prior to pushing the changes to the actual live server
+	 - the [almost] live server: shop-live-298.soletron.com, this one will be updated once we are satisfied with how stable (and relatively bug free) the staging server is, and it will be running in an environment as nearly identical to the actual production server as possible. Any last second tweaks to be done here.
+	 - the live server: shop.soletron.com, this is the one our customers use, so only change with great care and trepidation.
+    All changes are now deployed via Capistrano - see doc/branch management.txt for more details. Prior to being able to use Capistrano, you will need to add your public key to the server's authorized_keys. Log on to the server (see doc/HOST_GATOR_SERVER_INFO.txt for instructions and credentials), navigate to the ~/.ssh directory and append your public key to the authorized_keys file. If you want to see (or change) what Capistrano does, see config/deploy.rb
+
+ 9) for more detail about managing the remote servers, see doc/HOST_GATOR_SERVER_INFO.txt file
+    for more detail on branch management and updating the servers, see doc/branch management.txt
+	
+Other considerations:
+ - checking in: 
+    - first pull down the latest sources via 'git pull' - manually resolve any conflicts that git will advise you of
+	- if the conflict is in schema.rb, it simply means that the schema has changed - you shouldn't resolve this manually, just run 'rake db:migrate'
+	- run 'git add .' from the root directory to add all the currently edited/added/deleted files to the default changelist (git rm <file name> for deleted files)
+	- run 'git commit -m "<message>"' to commit your changes to your local git repository
+	- run 'git push origin master' to push your changes to the origin - the repository up on github so that they are available to everyone else
+	- run 'cap deploy:dev' to deploy your changes to the staging server: see doc/branch management.txt for more info on dealing with branches and deploying to various servers
+ - debugging: uncomment the appropriate (based on the Ruby version you are using) debugger gem in the Gemfile and re-run bundle install to make sure the ruby debugger gem is installed. You can now start the server with the -debugger flag and add breakpoints to your Ruby code by simply inserting a 'debugger' statement in your code and the application will pause there.
+ - debugging Spree code: if you want to put a breakpoint in the code that comes from Spree (or any other gem for that matter), you will be able to find a copy of the appropriate source file under your local gems directory. Put a 'debugger' statement into the appropriate location here and the execution will stop when the code is hit
+ - extending the Spree code: please review the Spree Commerce guides on customization as a starting point for extending built-in Spree functionality:
+   http://spreecommerce.com/documentation/customization.html. 
+     - In order to replace a Spree view (or a partial), simply create a file with the identical name in the same (relative) location in the soletron application as to where the file had originally been in Spree (e.g. copy spree\app\views\admin\products\index.html.erb tp soletronspree\app\views\admin\products\index.html.erb) and modify it as you please. The router built into the Spree engine will always check the override location in our application first, before falling back onto the original Spree file
+	 - in order to add/replace/remove a part of a view, you can use the Deface infrastructure. It's screwy and complicated and actively evolving as Spree moves towards 0.70.0 - check with one of us about the details. You can take a look at some of the examples in app\overrides. Refer to Deface Readme here: http://rubydoc.info/gems/deface/0.1.0/file/README.markdown
+	 - to extend a controller or a model, once again, create a new file in the same relative location in soletronspree tree to where the original is located in Spree. Keep the name the same, but append '_decorator' to it. See other decorators already in place for examples.
+	    - instead of declaring a new class or module, eval the one that you're extending/overriding via '<ClassName>.class_eval do ... end' or '<ModuleName>.module_eval do ... end' for a module
+		- you can now add new functions to this class, or override existing ones. The procedure works the exact same way for Controller and Model classes
+ - User Credentials: the Spree System comes with a lot of users built-in, and I've updated a few of them to make them Merchants. If you want to log in and have access to the merchant or admin panels, you will need to log in with the following accounts:
+   
+   Merchants: 
+	<need to provide sample merchant credentials>
+   
+   Administrator: 
+      <need to provide sample admin credentials>
+
+   You can also access http://<server-name>/admin/users to see a complete list of users. This link is soon to be available via the Admin panel. 
+   
+
+Other known setup issues and caveats:
+   
+- MySQL on Mac OS X:
+
+There is a defect in connecting MySQL with the mysql2 gem.  It can be fixed by running the following:
+  sudo install_name_tool -change libmysqlclient.18.dylib /usr/local/<where you keep your MySQL>/lib/libmysqlclient.18.dylib /Users/jtg/<where you keep your gems>/gems/mysql2-0.2.11/lib/mysql2/mysql2.bundle
+
+  Example:
+  sudo install_name_tool -change libmysqlclient.18.dylib /usr/local/mysql-5.5.15-osx10.6-x86_64/lib/libmysqlclient.18.dylib /Users/jtg/.rvm/gems/ruby-1.9.2-p180@soletron/gems/mysql2-0.2.11/lib/mysql2/mysql2.bundle
+
+- Getting the cookies to work (i.e. being able to log in and use the shopping cart on your local server)
+  The cookies in the system expect to live on a certain domain name, and, as of yet, localhost is not one of the accepted domain names. Workaround for this is as follows:
+  On Linux:
+  - edit (or create if necessary) your /etc/hosts file and add the following line to it:
+
+		127.0.0.1 shop.soletron.dev
+		
+  - save the file - this effectively aliases your local server to shop.soletron.dev
+  - restart apache server using:
+	- On Ubuntu: sudo /etc/init.d/apache2 restart
+	- On Mac OS X: sudo /usr/sbin/apachectl restart
+  - start your server as normal via 'rails s', but access it at shop.soletron.dev:3000 - cookies should now work.
+
+=======
+All that's missing is the fork. Heh.

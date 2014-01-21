@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# pull latest code
+printf "\n\n==========================\nSTEP 1 of 8: PULL LATEST CODE FROM GITHUB\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; git pull origin live
+
+
+# pull latest code
+printf "\n\n==========================\nSTEP 2 of 8: BUNDLE\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; bundle
+
+# stop delayed_job
+printf "\n\n==========================\nSTEP 3 of 8: STOPPING DELAYED JOB\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop script/delayed_job stop
+
+# Then migrate the database:
+printf "\n\n==========================\nSTEP 4 of 8: MIGRATING DATABASE\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop rake db:migrate
+
+# Restart the first 5 servers:
+printf "\n\n==========================\nSTEP 5 of 8: RESTARTING PORTS 12002-12006\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop thin -d -e production -p 12002 --servers 5 restart
+
+# give it at least 5 minutes, it tries to wait for each process to finish, and each session to move on.  I would give it no less than 2 minutes after the command line tells you it has started the 5 servers back up, no less than 5 mins in total, and honestly there's no reason not to give it plenty of time.
+
+# Start the jobs:
+printf "\n\n==========================\nSTEP 6 of 8: STARTING DELAYED JOB\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop script/delayed_job start
+
+# Reindex solr:
+printf "\n\n==========================\nSTEP 7 of 8: REINDEXING SOLR\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop rake sunspot:solr:reindex
+
+# Then do start the last 5 servers:
+printf "\n\n==========================\nSTEP 8 of 8: RESTARTING PORTS 12007-12011\n==========================\n\n\n"
+cd /home/buysolet/rails_apps/SoletronTest; RAILS_ENV=production SERVER=shop thin -d -e production -p 12007 --servers 5 restart

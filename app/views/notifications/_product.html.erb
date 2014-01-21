@@ -1,0 +1,3 @@
+<% if !product.nil? %>
+	<%= link_to product.store_taxon.store.display_name, entity_profile_path(product.store_taxon.store) %> added <%= link_to product.name, product_path(product) %> to their store.
+<% end %>

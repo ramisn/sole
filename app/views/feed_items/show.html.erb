@@ -1,0 +1,42 @@
+
+<ul>
+<%= render :partial => 'feed_items/item', :locals => {:feed_item => @feed_item, :hide_comments => true} %>
+</ul>
+
+
+<%  if @comments.size > 0 -%>
+  <h3>Comments</h3>
+  
+  <ul>
+  <% @comments.each do |comment| -%>
+    <li>
+      <div class="postWrapper" id="comment-<%= comment.id %>">
+        <%= link_to image_tag(profile_picture_url(comment.commenter, :size => :small), :width => 50, :height => 50, :alt => 'avatar'), entity_profile_path(comment.commenter), :class => "memberAvi" %>
+        <div class="memberContent">
+          <% if @acting_as == comment.commenter -%>
+            <div class="closeBtn"><%= link_to image_tag("/assets/blank.gif", :width => 13, :height => 26, :alt => "close"), comment_path(comment), :method => :delete %></div>
+          <% end -%>
+          <div class="memberName"><%= link_to comment.commenter.display_name, entity_profile_path(comment.commenter) %></div>
+          <span><%= comment.message %></span>
+          <div class="timeStamp">posted <%= time_ago_in_words(comment.created_at) %> ago</div>
+          <div class="clearBoth"></div>
+        </div>
+      </div>
+    </li>
+  <% end -%>
+  </ul>
+<% else -%>
+  <h3>There are currently no comments</h3>
+<% end -%>
+
+<% if @acting_as -%>
+  <div class="comment_form">
+    <div class="widget-item-container shoutOut">
+      <h4>Add New Comment</h4>
+      <%= form_for [@feed_item, (@comment ? @comment : Comment.new)], :url => main_app.feed_item_comments_path(@feed_item)  do |comment_form| %>
+        <%= comment_form.text_field :message, :class => "mc_email_form" %>
+        <%= comment_form.submit 'COMMENT', :class => 'fancyButton green', :style => "margin:0px;" %>
+      <% end -%>
+    </div>
+  </div>
+<% end -%>

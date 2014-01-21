@@ -1,0 +1,40 @@
+<% @body_id = 'registration' %>
+<div id="registration-container">
+  <h2 class="header"><span><%= t(:secure_checkout) %></span><a href="/cart"><img src="/assets/registration-x.png" border="0" /></a></h2>
+  <div id="registration-container-inner">
+    <table class="registration-table">
+        <td valign="top" class="registration-td">
+          <div style="padding:0px 0px 0px 20px; width:246px;">
+            <% if Spree::Config[:allow_guest_checkout] %>
+            <div id="guest_checkout">
+              <%= render "/spree/shared/error_messages", :target => @order %>
+              <h2><%= t(:email_activation) %></h2>
+              <p>
+                <strong>Check your email for a message from Soletron.  Please click on the link provided in that message to verify your email address.  
+				  You will be able to continue checkout on Soletron once your email has been verified.</strong>
+              </p>
+			  <p>If you have trouble with the link in your email message, you may cut and paste the activation code provided into the field below.</p>
+              <%= form_tag checkout_path, :method => :get, :id => "guest_confirmation" do %>
+              <p>
+                <%= label_tag :confirmation_token, t("activation_code") %>
+                <br/>
+                <%= text_field_tag :confirmation_token, '', :class => 'title', :style => "width:246px;" %>
+              </p>
+              <p>
+                Email verification is required to prevent other people from using your credentials to make unauthorized purchases
+              </p>
+              <p>
+                <%= submit_tag 'ACTIVATE', :class => "fancyButton green" %>
+              </p>
+              <% end %>
+            </div>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<p id="registration-text">
+  Soletron checkout is safe and secure.  Information you submit is encrypted and sent over a secure server.
+</p>

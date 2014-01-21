@@ -1,0 +1,55 @@
+<tr>
+  <td class="td-image">
+    <div class="product-image">
+      <% if variant.images.length == 0 %>
+        <%= small_image(variant.product) %>
+      <% else %>
+        <%= image_tag variant.images.first.attachment.url(:small)   %>
+      <% end %>
+    </div>
+  </td>
+  
+  <td class="td-name">
+    <strong><%= link_to variant.product.name, spree.product_path(variant.product) %></strong>
+    <span><a href="#" class="company-name"><%= store_name_link(line_item.variant.product, false) %></a></span>
+    <span>Color: <%= variant.product.colors  %></span>
+    <% if variant.get_size #TODO doesn't seem to work -%>
+      <span>Size: <%= variant.size_options[0].presentation %></span>
+    <% end -%>
+    
+  </td>
+  
+  <% unless condensed %>
+  
+    <td class="td-delivery">
+      <%= t(:default_estimated_delivery_time, :default => "5-10 days") %>
+    </td>
+  
+    <td class="td-unit-price">
+      <%= product_price(line_item) %>
+    </td>
+    
+  <% end -%>
+  
+  <td class="td-quantity">
+    <% if condensed %>
+      <%= line_item.quantity %>
+    <% else -%>
+     <%= item_form.select :quantity, options_for_select([1,2,3,4,5].first(line_item.variant.count_on_hand), line_item.quantity), {}, {
+       :onchange =>"this.form.submit();"
+      } %>
+    <% end -%>
+  </td>
+  
+  <td class="td-subtotal">
+    <%= format_price(product_price(line_item, :format_as_currency => false) * line_item.quantity) unless line_item.quantity.nil? %>
+  </td>
+  
+  <% unless condensed %>
+    <td class="td-options">
+      <%= link_to('remove', main_app.remove_item_path(line_item), :class => "remove") %>
+      <%= link_to_favorite(line_item.variant.product) if current_user  %>
+    </td>
+  <% end -%>
+  
+</tr>

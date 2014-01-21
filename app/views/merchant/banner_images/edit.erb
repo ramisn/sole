@@ -1,0 +1,15 @@
+<%= render :partial => "/merchant/shared/sidebar" %>
+
+<div class="admin-panel-group-container-container">
+
+<%= form_for @store.banner_image, :url => merchant_store_banner_image_path(@store), :html => { :method => :put, :multipart => true } do |image_form| %>
+  <%= render :partial => '/spree/shared/error_messages', :locals => {:target => @banner_image} %>
+  <%= render :partial => 'form', :locals => {:f => image_form} %>
+  <%# render :partial => 'admin/shared/edit_resource_links' %>
+  <p class="form-buttons">
+    <table><tr><td width="190"><%= image_form.submit 'Update Banner Picture', :class => "fancyButton green" %></td><td>
+    <%= t('or') %> <%= link_to t("cancel"), merchant_store_banner_image_path(@store), :id => "cancel_link", :style => "display:inline-block;" %></td></tr></table>
+  </p>
+<% end %>
+
+</div>

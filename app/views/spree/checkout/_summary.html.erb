@@ -1,0 +1,58 @@
+<div class="seals">
+  <script type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=I3O3OXmF5HvQwmAKrCe2GPNPsL7ohFqZej1LsUhxwDSdgJWtrEwZ"></script>
+</div>
+
+<%= form_for(order, :url => update_cart_path, :html=>{:id=>'summary'}) do |order_form| %>
+  <h4><%= t(:order_summary) %></h4>
+  
+  <table class="cart" width="350px">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th></th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </thead>
+    
+    <tbody>
+      <%= render :partial => '/spree/orders/form', :locals => {:order_form => order_form, :condensed => true } %>
+    </tbody>
+  </table>
+  <a href="<%= spree.cart_path %>" id="edit-cart-link" >edit</a>
+  <ul>
+    
+    <li>
+      <label>Item sub-total</label>
+      <span><%= number_to_currency order.item_total %></span>
+    </li>
+    
+    <!-- #TODO. Looks like changes to adjustments broke this logic. Tax... are not showing anymore. -->
+    <% order.adjustments.each do |adjustment| %>
+      <li>
+        <label><%= adjustment.label %></label>
+        <span><%= number_to_currency adjustment.amount %></span>
+      </li>
+    <% end %>
+
+    <li>
+      <label>Shipping</label>
+      <span><%= number_to_currency Soletron::ShipmentCalculator.compute(order) %></span>
+    </li>
+
+    <li id="checkout-summary-total">
+      <label>Total</label>
+      <span><%= number_to_currency @order.total %></label>
+    </li>
+  </ul>
+
+<% end -%>
+
+<div class="section">
+  <h4>Need Help?</h4>
+  <p>Need help? Give us a call at (305) 793-4430 or email us at <a href="mailto:support@soletron.com">support@soletron.com</a></p>
+</div>
+
+<div class="section">
+  <h4>Shipping Info</h4>
+  <p>Please note that your order is being shipped to by the brand(s) from which you purchased (not Soletron).</p>
+</div>

@@ -1,0 +1,31 @@
+<% @body_id = 'stores-account' %>
+  <div id="new-product-container">
+  <%= form_for([:merchant, @store, @product, Variant.new]) do |f| %>
+
+    <div id="header">
+      <table width="890" style="margin:0px 10px; display:block; width:890px;">
+        <tr>
+          <td align="center">
+            <%= image_tag("size-sku.png", :alt => "SKU Options", :style => "margin:0px 165px;") %>
+          </td>
+        </tr>
+        <tr>
+          <td width="400">
+            <span style="line-height:24px;">
+              <strong><%= (@updating ? "Editing" : "New") + " product \"" + @product.name + "\"" %></strong>
+            </span>
+            <br />
+            <strong>Create SKU(s) and indicate Color, Size and Inventory</strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <%= render :partial => "merchant/variants/form", :locals => { :f => f } %>
+
+    <p class="form-buttons">
+      <%= render :partial => 'merchant/shared/new_product_links', :locals => { :button_text_next => 'Next: Add Images >>', :button_text_prev => "<< Previous", :alt_text_next => t(:next_to_images), :alt_text_prev => "Back to Product Details" }%>
+    </p>
+
+  <% end %>
+  </div>

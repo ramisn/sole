@@ -1,0 +1,113 @@
+<%= form_for :order, :url => populate_orders_url do |f| %>
+  <div id="cart-form">
+	
+	<% if @product.sale? %>
+      <div>
+        <dl id="product-price">
+          <dd><span class="price sale"><%= product_price(@product) %> <span>USD</span></span></dd>
+          <dd><span class="price original"><span class="out"><%= product_price(@product, :uniform_price => false) %> USD </span> <span class="percent">&nbsp;<%= (((@product.price - @product.sale_price) / @product.price) * 100).ceil %>% off</span></span></dd>
+        </dl>
+      </div>
+
+    <% elsif @product.price %>
+      <div>
+        <dl id="product-price">
+          <dd><span class="price selling"><%= product_price(@product) %> <span>USD</span></span></dd>
+        </dl>
+      </div>
+    <% end %>
+  
+  <% if @product.deleted_at.blank? -%>
+
+    <% size_options = size_select(@product) %>
+    <% if @product.has_size? %>
+      <div id="product-variants">
+        <span class="size-select">
+          Size: <%= select(:products, @product.id, size_options[:sizes], {:include_blank => true}) %>
+        </span>
+      </div>
+    <% else %>
+      <%= hidden_field_tag "products[#{@product.id}]", @product.variants[0].id unless @product.variants.empty? %>
+    <% end %>
+    <span style=" width:200px;">
+      <% if @action == :preview %>
+        <button type="submit" class="fancyButton green" id="add-to-cart-button-preview" style="" onclick="alert('You may not place items in the Shopping Cart in Preview Mode'); return false;" >
+      <% else %>
+        <button type="submit" class="fancyButton green" id="add-to-cart-button" style="" >
+      <% end %>
+      add to cart
+        <%# image_tag('add-to-cart-big.png') %>
+      </button>
+    </span>
+    &nbsp;
+
+    <span class="input-title">
+      
+      <span style="position:relative; top:0px;">&nbsp;Qty:</span>
+      <span id="id_size_selects" style="position:relative; top:0px;">
+        <% if @product.has_size? %>
+          <select id="blank">
+            <option></option>
+          </select>
+        <% end %>
+        <% selects = quantity_selects(@product, size_options) %>
+        <% selects.each do |select| %>
+          <%= select %>
+        <% end %>
+        <span id="id_out_of_stock" style="display:none"><%= content_tag('strong', "Sold Out") %></span>
+      </span>
+      
+   
+
+      <%= link_to(image_tag("/assets/faq.png", :size => "20x19", :alt => "FAQ"), "/redirects?q=FAQlookup&varname=purchaselimit", :target => "_blank", :class => "size-faq", :id => "open-faq-dialog", :onMouseover => "ddrivetip( '#{begin; Net::HTTP.get('soletron.com', '/faq_search.php?&varname=purchaselimit'); rescue; end}' ,'#000', 500)", :onMouseout => "hideddrivetip()") %>
+
+    </span>
+  <% else -%>
+    <p style="margin-top: 50px; margin-left: 20px;">This product is no longer available.</p>
+  <% end -%>
+
+<%= javascript_tag do %>
+<% if @product.has_size? || @product.variants.empty? %>
+var cur_select = $("select#blank");
+<% else %>
+var cur_select = $("select#<%= @product.variants[0].id%>");
+cur_select.attr("name", "<%= :quantity %>")
+<% end %>
+$("select#products_<%= @product.id%>").change(function()
+{
+  cur_select.attr("name", "<%= :quantity_pre %>")
+  cur_select.hide();
+  size_name = $(this).val();
+  if (size_name == "")
+  {
+    size_name = "blank";
+  }
+  cur_select = $("select#" + size_name);
+  if (cur_select.length == 0)
+  {
+    cur_select = $("span#id_out_of_stock");
+  }
+  cur_select.attr("name", "<%= :quantity %>")
+  cur_select.show();
+}).keypress(function() { $(this).change(); });
+
+$("button#add-to-cart-button").click(function()
+{
+  if ((cur_select == $("select#blank")) || (cur_select.val() == ""))
+  {
+    alert("Please select a <%= "size and a " if @product.has_size? %>quantity before adding this item to your Shopping Cart");
+    return false;
+  }
+  return true;
+});
+<% end %>
+
+  </div>
+<% end -%>
+
+<% content_for :head do %>
+  <%= javascript_include_tag '/assets/store/product' %>
+  <%= javascript_tag do %>
+    $(document).ready(function() { $("select#products_<%= @product.id%>").change(); });
+  <% end %>
+<% end %>
